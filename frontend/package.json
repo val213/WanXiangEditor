@@ -1,0 +1,30 @@
+{
+  "name": "WangXiangEditor-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^3.36.1",
+    "tsrpc-browser": "^3.4.14",
+    "vue": "^3.4.22"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "@vue/cli-plugin-babel": "^4.5.19",
+    "@vue/cli-plugin-eslint": "^4.5.19",
+    "@vue/cli-plugin-typescript": "^4.5.19",
+    "@vue/cli-service": "^4.5.19",
+    "@vue/compiler-sfc": "^3.4.22",
+    "@vue/eslint-config-typescript": "^7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^7.20.0",
+    "less": "^3.13.1",
+    "less-loader": "^5.0.0",
+    "typescript": "^4.9.5"
+  }
+}
