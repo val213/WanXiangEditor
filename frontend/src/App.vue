@@ -1,42 +1,22 @@
 <template>
-  <div class="App">
-    <h1>TSRPC Chatroom</h1>
-
-    <div>
-      <Chatroom title="Client #1" />
-      <Chatroom title="Client #2" />
-    </div>
+  <div id="app">
+    <p>Vue3 wangEditor demo</p>
+    <BasicEditor></BasicEditor>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import Chatroom from "./Chatroom.vue";
-
-export default defineComponent({
-  name: "App",
+<script>
+// import HelloWorld from './components/HelloWorld.vue'
+import BasicEditor from './components/BasicEditor.vue';
+import Chatroom from './components/Chatroom.vue';
+export default {
+  name: 'App',
   components: {
-    Chatroom,
+    // HelloWorld
+    BasicEditor,
+    //Chatroom,
   },
-});
+};
 </script>
 
-<style lang="less">
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.App {
-  > h1 {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  > div {
-    display: flex;
-    justify-content: center;
-  }
-}
-</style>
+<style></style>

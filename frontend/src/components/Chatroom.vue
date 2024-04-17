@@ -19,9 +19,9 @@
 </template>
 
 <script lang="ts">
-import { getClient } from "./getClient";
+import { getClient } from "../getClient";
 import { defineComponent, nextTick } from "vue";
-import { MsgChat } from "./shared/protocols/MsgChat";
+import { MsgChat } from "../shared/protocols/MsgChat";
 
 export default defineComponent({
   name: "Chatroom",
