@@ -46,7 +46,7 @@ export default {
       })
     };
     const handleDelete = (key) => {
-      const number = count--;
+      count--;
       data.value = data.value.filter(item => item.key !== key)
     };
 
