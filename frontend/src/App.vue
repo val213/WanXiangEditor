@@ -1,21 +1,21 @@
 <template>
   <a-layout>
-  <div id="app" style="display: flex; flex-direction: column; height: 100vh;" class="WorkBench">
-        <a-layout-header>
-          <Menu />
-        </a-layout-header>
-        <a-layout>
-              <a-layout-sider :resize-directions="['right']">
-                <Tree :treeData="treeData" />
-              </a-layout-sider>
-              <a-layout-content>
-                <Tabs :tabs="tabs" />
-                <BasicEditor />
-              </a-layout-content>
-            </a-layout>
-        <a-layout-footer>
-          <Statusbar />
-        </a-layout-footer>
+    <div id="app" style="display: flex; flex-direction: column; height: 100vh;" class="WorkBench">
+      <a-layout-header>
+        <Menu />
+      </a-layout-header>
+      <a-layout>
+            <a-layout-sider :resize-directions="['right']">
+              <Tree :treeData="treeData" />
+            </a-layout-sider>
+            <a-layout-content>
+              <Tabs :tabs="tabs" />
+              <BasicEditor />
+            </a-layout-content>
+      </a-layout>
+      <a-layout-footer>
+        <Statusbar />
+      </a-layout-footer>
     </div>
     </a-layout>
 </template>
