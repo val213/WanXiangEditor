@@ -40,6 +40,16 @@
       import '@wangeditor/editor/dist/css/style.css';
       import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
       import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+      import { DomEditor } from '@wangeditor/editor';
+//       //import { IToolbarConfig } from '@wangeditor/editor'
+//       const toolbarConfig = {
+//         /* 工具栏配置 */
+//         excludeKeys: [
+//         'headerSelect',
+//         'italic',
+//         'group-more-style' // 排除菜单组，写菜单组 key 的值即可
+//     ]
+// }
       
       export default {
         components: { Editor, Toolbar },
@@ -59,7 +69,7 @@
       
           const toolbarConfig = {};
           const editorConfig = { placeholder: '请输入内容...' };
-      
+          
           // 组件销毁时，也及时销毁编辑器，重要！
           onBeforeUnmount(() => {
             const editor = editorRef.value;
@@ -95,8 +105,8 @@
             editor.insertText('xxx');
       
             // 返回值（注意，vue 事件的返回值，不能用 return）
-            callback(false); // 返回 false ，阻止默认粘贴行为
-            // callback(true) // 返回 true ，继续默认的粘贴行为
+            // callback(false); // 返回 false ，阻止默认粘贴行为
+            callback(true) // 返回 true ，继续默认的粘贴行为
           };
       
           const insertText = () => {
@@ -104,8 +114,11 @@
             if (editor == null) return;
       
             editor.insertText('Hello WangXiangEditor!');
-          };
-      
+            const toolbar = DomEditor.getToolbar(editor)
+
+            console.log(toolbar.getConfig().toolbarKeys);
+
+          }
           const printHtml = () => {
             const editor = editorRef.value;
             if (editor == null) return;
