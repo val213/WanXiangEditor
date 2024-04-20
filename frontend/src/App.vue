@@ -1,17 +1,23 @@
 <template>
-  <div id="app" style="display: flex; flex-direction: column; height: 100vh;">
-    <Menu />
-    <div style="display: flex; flex-grow: 1;">
-      <div style="width: 20%; overflow: auto;">
-        <Tree :treeData="treeData" />
-      </div>
-      <div style="width: 80%;">
-        <Tabs :tabs="tabs" />
-        <BasicEditor />
-      </div>
+  <a-layout>
+  <div id="app" style="display: flex; flex-direction: column; height: 100vh;" class="WorkBench">
+        <a-layout-header>
+          <Menu />
+        </a-layout-header>
+        <a-layout>
+              <a-layout-sider :resize-directions="['right']">
+                <Tree :treeData="treeData" />
+              </a-layout-sider>
+              <a-layout-content>
+                <Tabs :tabs="tabs" />
+                <BasicEditor />
+              </a-layout-content>
+            </a-layout>
+        <a-layout-footer>
+          <Statusbar />
+        </a-layout-footer>
     </div>
-    <Statusbar />
-  </div>
+    </a-layout>
 </template>
 
 <script>
@@ -29,6 +35,12 @@ export default {
     Tree,
     BasicEditor,
     Menu,
+  },
+  data() {
+    return {
+      treeData: [], // Define treeData here
+      // other data...
+    };
   },
 };
 </script>
