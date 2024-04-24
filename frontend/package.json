@@ -10,6 +10,7 @@
   "dependencies": {
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
+    "axios": "^1.6.8",
     "core-js": "^3.36.1",
     "tsrpc-browser": "^3.4.14",
     "vue": "^3.4.22"

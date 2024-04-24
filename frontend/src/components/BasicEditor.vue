@@ -41,6 +41,7 @@ import '@wangeditor/editor/dist/css/style.css';
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { DomEditor } from '@wangeditor/editor';
+import axios from 'axios';
 //       //import { IToolbarConfig } from '@wangeditor/editor'
 //       const toolbarConfig = {
 //         /* 工具栏配置 */
@@ -52,19 +53,39 @@ import { DomEditor } from '@wangeditor/editor';
 // }
 
 export default {
+  props: {
+    tabKey: {
+      type: String,
+      default: '1'
+    }
+  },
+  watch: {
+    tabKey() {
+      const valueHtml = ref('<p>万象Editor</p>');
+      console.log(this.tabKey);
+      let path = '/editors/editor'+ this.tabKey + '.html';
+      axios.get(path).then(response => {
+        valueHtml.value = response.data;
+      })
+      this.valueHtml = valueHtml;
+    } 
+  },
   components: { Editor, Toolbar },
-  setup() {
+  setup(props) {
     // 编辑器实例，必须用 shallowRef，重要！
     const editorRef = shallowRef();
 
     // 内容 HTML
     const valueHtml = ref('<p>万象Editor</p>');
+    let path = '/editors/editor'+ props.tabKey + '.html';
 
     // 模拟 ajax 异步获取内容
     onMounted(() => {
       setTimeout(() => {
-        valueHtml.value = '<p>万象Editor</p>';
-      }, 1500);
+        axios.get(path).then(response => {
+        valueHtml.value = response.data;
+      })
+      }, 150);
     });
 
     const toolbarConfig = {};
