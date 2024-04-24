@@ -9,8 +9,8 @@
               <Tree :treeData="treeData" />
             </a-layout-sider>
             <a-layout-content>
-              <Tabs :tabs="tabs" />
-              <BasicEditor />
+              <Tabs :tabs="tabs" @tab-click="changeKey" />
+              <BasicEditor :tabKey="tabKey"/>
             </a-layout-content>
       </a-layout>
       <a-layout-footer>
@@ -40,7 +40,14 @@ export default {
     return {
       treeData: [], // Define treeData here
       // other data...
+      tabKey: '1',
     };
   },
+  methods: {
+    changeKey(key) {
+      this.tabKey = key;
+      console.log(this.tabKey);
+    }
+  }
 };
 </script>
