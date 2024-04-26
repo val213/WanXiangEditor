@@ -56,14 +56,14 @@ export default {
   props: {
     tabKey: {
       type: String,
-      default: '1'
+      //default: 'editor4'
     }
   },
   watch: {
     tabKey() {
-      const valueHtml = ref('<p>万象Editor</p>');
+      const valueHtml = ref('<p>[请打开文件]</p>');
       console.log(this.tabKey);
-      let path = '/editors/editor'+ this.tabKey + '.html';
+      let path = '/editors/'+ this.tabKey;
       axios.get(path).then(response => {
         valueHtml.value = response.data;
       })
@@ -76,8 +76,8 @@ export default {
     const editorRef = shallowRef();
 
     // 内容 HTML
-    const valueHtml = ref('<p>万象Editor</p>');
-    let path = '/editors/editor'+ props.tabKey + '.html';
+    const valueHtml = ref('<p>[请选中文件]</p>');
+    let path = '/editors/'+ props.tabKey + '.html';
 
     // 模拟 ajax 异步获取内容
     onMounted(() => {

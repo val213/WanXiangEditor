@@ -40,7 +40,7 @@ export default {
     return {
       treeData: [], // Define treeData here
       // other data...
-      tabKey: '1',
+      tabKey: '',
     };
   },
   methods: {
