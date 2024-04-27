@@ -50,7 +50,7 @@ export default {
       treeData: [], // Define treeData here
       // other data...
       CurrentComponent: 'Editor',
-      tabKey: '1',
+      tabKey: '',
     };
   },
   methods: {

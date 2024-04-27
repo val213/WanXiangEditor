@@ -1,6 +1,6 @@
 <!-- Tabs.vue -->
 <template>
-  <a-tabs type="card-gutter" :editable="true" @add="handleAdd" @delete="handleDelete" show-add-button auto-switch>
+  <a-tabs type="card-gutter" :editable="true" @add="handleAdd" @delete="handleDelete"  auto-switch>
     <a-tab-pane v-for="(item, index) of data" :key="item.key" :title="item.title" :closable="index!==2">
       {{ item?.content }}
     </a-tab-pane>
@@ -10,43 +10,44 @@
 <script>
 import { ref } from 'vue';
 
-let count = 5;
+let count = 0;
 
 export default {
   setup() {
     const data = ref([
       {
-        key: '1',
-        title: 'Tab 1',
+        key: 'editor1.html',
+        title: 'editor1.html',
         content: 'Content of Tab Panel 1'
       },
       {
-        key: '2',
-        title: 'Tab 2',
+        key: 'editor2.html',
+        title: 'editor2.html',
         content: 'Content of Tab Panel 2'
       },
       {
-        key: '3',
-        title: 'Tab 3',
+        key: 'editor3.html',
+        title: 'editor3.html',
         content: 'Content of Tab Panel 3'
       },
       {
-        key: '4',
-        title: 'Tab 4',
+        key: 'editor4.html',
+        title: 'editor4.html',
         content: 'Content of Tab Panel 4'
       }
-    ]);
 
-    const handleAdd = () => {
-      const number = count++;
-      data.value = data.value.concat({
-        key: `${number}`,
-        title: `Tab ${number}`,
-        content: `Content of New Tab Panel ${number}`
-      })
-    };
+    ]);
+// show-add-button 属性在a-tabs 中被关闭，handleAdd不可用。
+    // const handleAdd = () => {
+    //   count++;
+    //   data.value = data.value.concat({
+    //     key: `${count}`,
+    //     title: `Undifined`,
+    //     // 日志打印count
+    //     content: `Content of New Tab Panel ${count}`
+    //   })
+    // };
     const handleDelete = (key) => {
-      count--;
       data.value = data.value.filter(item => item.key !== key)
     };
 
