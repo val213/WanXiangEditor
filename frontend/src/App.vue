@@ -32,7 +32,6 @@ import Tree from './components/Tree.vue';
 import Editor from './components/BasicEditor.vue';
 import Menu from './components/Menu.vue';
 import SideMenu from './components/SideMenu.vue';
-import PDF from './components/Pdf.vue';
 
 export default {
   name: 'App',
@@ -43,7 +42,6 @@ export default {
     Editor,
     Menu,
     SideMenu,
-    PDF
   },
   data() {
     return {
