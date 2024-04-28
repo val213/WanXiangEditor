@@ -45,3 +45,14 @@ export default {
 ### StatusBar
 ### Tabs
 ### Tree
+### SideMenu 
+左侧功能栏，实现右侧组件随选中的功能动态切换，在SideMenu.vue文件中添加a-menu-item，并在app.vue中添加组件即可实现动态切换。
+```html
+<a-menu mode="vertical" :default-selected-keys="['Editor']" @menu-item-click="changeComponent">
+        <a-menu-item key="资源管理器">资源管理器</a-menu-item>
+        <a-menu-item key="Editor">Editor</a-menu-item>
+        <a-menu-item key="PDF">PDF</a-menu-item>
+        <a-menu-item key="新功能">新功能</a-menu-item>
+        //继续添加功能
+</a-menu>
+```

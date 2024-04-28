@@ -56,6 +56,7 @@ export default {
       this.tabKey = key;
       console.log(this.tabKey);
     },
+    //组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
     componentChange(key){
       console.log(key);
       this.CurrentComponent = key;
