@@ -4,7 +4,7 @@
         <a-menu-item key="资源管理器">资源管理器</a-menu-item>
         <a-menu-item key="Editor">Editor</a-menu-item>
         <a-menu-item key="PDF">PDF</a-menu-item>
-        <a-menu-item key="4">新功能</a-menu-item>
+        <a-menu-item key="新功能">新功能</a-menu-item>
       </a-menu>
     </div>
   </template>
