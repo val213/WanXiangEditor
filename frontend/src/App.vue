@@ -8,7 +8,7 @@
             <a-layout-sider :width="120">
               <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange"/>
             </a-layout-sider>
-            <a-layout-sider :resize-directions="['right']">
+            <a-layout-sider :resize-directions="['right']" :style="{maxWidth: '80%', textAlign: 'center' }">
               <Tree :treeData="treeData" />
             </a-layout-sider>
             <a-layout-content>
