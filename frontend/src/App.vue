@@ -5,12 +5,17 @@
         <Menu />
       </a-layout-header>
       <a-layout>
+            <a-layout-sider :width="120">
+              <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange"/>
+            </a-layout-sider>
             <a-layout-sider :resize-directions="['right']">
               <Tree :treeData="treeData" />
             </a-layout-sider>
             <a-layout-content>
               <Tabs :tabs="tabs" @tab-click="changeKey" />
-              <BasicEditor :tabKey="tabKey"/>
+              <KeepAlive>
+                <component :is="CurrentComponent" :tabKey="tabKey"></component>
+              </KeepAlive>
             </a-layout-content>
       </a-layout>
       <a-layout-footer>
@@ -24,8 +29,9 @@
 import Statusbar from './components/Statusbar.vue';
 import Tabs from './components/Tabs.vue';
 import Tree from './components/Tree.vue';
-import BasicEditor from './components/BasicEditor.vue';
+import Editor from './components/BasicEditor.vue';
 import Menu from './components/Menu.vue';
+import SideMenu from './components/SideMenu.vue';
 
 export default {
   name: 'App',
@@ -33,13 +39,15 @@ export default {
     Statusbar,
     Tabs,
     Tree,
-    BasicEditor,
+    Editor,
     Menu,
+    SideMenu,
   },
   data() {
     return {
       treeData: [], // Define treeData here
       // other data...
+      CurrentComponent: 'Editor',
       tabKey: '',
     };
   },
@@ -47,7 +55,11 @@ export default {
     changeKey(key) {
       this.tabKey = key;
       console.log(this.tabKey);
-    }
-  }
+    },
+    componentChange(key){
+      console.log(key);
+      this.CurrentComponent = key;
+    },
+  },
 };
 </script>

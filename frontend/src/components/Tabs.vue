@@ -10,8 +10,6 @@
 <script>
 import { ref } from 'vue';
 
-let count = 0;
-
 export default {
   setup() {
     const data = ref([
@@ -53,7 +51,6 @@ export default {
 
     return {
       data,
-      handleAdd,
       handleDelete
     }
   },
