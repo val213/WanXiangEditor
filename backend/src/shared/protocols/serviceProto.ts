@@ -1,8 +1,8 @@
 import { ServiceProto } from 'tsrpc-proto';
+
 import { ReqAdminAction, ResAdminAction } from './action/PtlAdminAction';
 import { ReqGuestAction, ResGuestAction } from './action/PtlGuestAction';
 import { ReqNormalAction, ResNormalAction } from './action/PtlNormalAction';
-import { MsgChat } from './MsgChat';
 import { ReqClear, ResClear } from './PtlClear';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
@@ -44,9 +44,6 @@ export interface ServiceType {
             res: ResLogout
         }
     },
-    msg: {
-        "Chat": MsgChat
-    }
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
@@ -78,11 +75,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "conf": {
                 "needLogin": true
             }
-        },
-        {
-            "id": 0,
-            "name": "Chat",
-            "type": "msg"
         },
         {
             "id": 2,
@@ -234,25 +226,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "result",
                     "type": {
                         "type": "String"
-                    }
-                }
-            ]
-        },
-        "MsgChat/MsgChat": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
-                    "name": "content",
-                    "type": {
-                        "type": "String"
-                    }
-                },
-                {
-                    "id": 1,
-                    "name": "time",
-                    "type": {
-                        "type": "Date"
                     }
                 }
             ]

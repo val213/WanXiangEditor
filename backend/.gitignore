@@ -1,3 +1,4 @@
 node_modules
+src/models/BackConfig.ts
 dist
 .DS_STORE

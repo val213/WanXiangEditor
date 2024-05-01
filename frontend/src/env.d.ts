@@ -5,7 +5,8 @@ declare module '*.vue' {
   export default component
 }
 
-// TSRPC would decode ObjectId as string in frontend.
+// 在tsrpc下，可以直接使用ObjectId类型
+// 因为前端未安装mongodb，所以需要手动声明
 declare module 'mongodb' {
   export type ObjectId = string;
   export type ObjectID = string;

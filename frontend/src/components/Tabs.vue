@@ -1,7 +1,7 @@
 <!-- Tabs.vue -->
 <template>
-  <a-tabs type="card-gutter" :editable="true"  @delete="handleDelete"  auto-switch>
-    <a-tab-pane v-for="(item, index) of data" :key="item.key" :title="item.title" :closable="index!==2">
+  <a-tabs type="card-gutter" :editable="true" @add="handleAdd" @delete="handleDelete"  auto-switch>
+    <a-tab-pane v-for="item of data" :key="item.key" :title="item.title">
       {{ item?.content }}
     </a-tab-pane>
   </a-tabs>
