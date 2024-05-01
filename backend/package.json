@@ -1,5 +1,5 @@
 {
-  "name": "WangXiangEditor-backend",
+  "name": "wangxiangeditor-backend",
   "version": "0.1.0",
   "main": "index.js",
   "private": true,
@@ -22,6 +22,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "mongodb": "^7.0.9",
     "tsrpc": "^3.4.14"
   }
 }
