@@ -9,6 +9,7 @@ import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
+import { MsgExpire } from './user/MsgExpire';
 import { ReqLogin, ResLogin } from './user/PtlLogin';
 import { ReqLogout, ResLogout } from './user/PtlLogout';
 
@@ -64,7 +65,7 @@ export interface ServiceType {
         }
     },
     msg: {
-
+        "user/Expire": MsgExpire
     }
 }
 
@@ -138,6 +139,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "id": 4,
             "name": "SetSession",
             "type": "api"
+        },
+        {
+            "id": 10,
+            "name": "user/Expire",
+            "type": "msg"
         },
         {
             "id": 8,
@@ -559,6 +565,18 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "user/MsgExpire/MsgExpire": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "content",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]

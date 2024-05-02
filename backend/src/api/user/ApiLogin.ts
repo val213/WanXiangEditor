@@ -10,7 +10,7 @@ export async function ApiLogin(call: ApiCall<ReqLogin, ResLogin>) {
         username: call.req.username,
         roles: []
     };
-
+    call.conn.userId = user.uid;
     call.succ({
         __ssoToken: sso,
         user: user

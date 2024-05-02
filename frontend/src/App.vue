@@ -4,7 +4,7 @@
       <a-layout-header>
         <a-space :size="970" direction="horizontal" fill align="center">
           <Menu />
-          <HeadPortrait />
+          <HeadPortrait ref="headPortrait" />
         </a-space>
       </a-layout-header>
       <a-layout>
@@ -68,6 +68,16 @@ export default {
       if (!v.isSucc) {
         alert("= 连接失败 =\n" + v.errMsg);
       }
+    });
+
+    // 监听token过期消息
+    let handler = this.client.listenMsg('user/Expire', msg => {
+      console.log(msg);
+      alert("Token expired, please login again.");
+      // 退出登录
+      this.$refs.headPortrait.handleLogout();
+      // 解除监听
+      // this.client.unlistenMsg('user/Expire', handler);
     });
 
     // 处理服务端断开连接的情况, 可以向postDisconnectFlow中添加处理函数

@@ -1,9 +1,13 @@
 import * as uuid from "uuid";
 import { CurrentUser } from "../shared/models/CurrentUser";
 
-const SSO_VALID_TIME = 86400000 * 7;
+const SSO_VALID_TIME = 10* 1000;
 
 export class UserUtil {
+    static isTokenExpired(token: string) {
+        let info = this.ssoTokenInfo[token];
+        return !info || info.expiredTime < Date.now();
+    }
 
     // 这里存储了用户的信息，后面要从数据库获取用户信息
     static users: {
