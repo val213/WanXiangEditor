@@ -70,7 +70,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 6,
+    "version": 7,
     "services": [
         {
             "id": 5,
@@ -463,7 +463,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 1,
+                                "id": 2,
                                 "type": {
                                     "type": "Partial",
                                     "target": {
@@ -473,8 +473,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                         },
                                         "keys": [
                                             "username",
-                                            "password",
-                                            "roles"
+                                            "password"
                                         ],
                                         "type": "Pick"
                                     }
