@@ -5,35 +5,38 @@ const SSO_VALID_TIME = 86400000 * 7;
 
 export class UserUtil {
 
-    // Store data in memory for test
-    // You can store data into database
+    // 这里存储了用户的信息，后面要从数据库获取用户信息
     static users: {
         uid: number,
         username: string,
         password: string,
         roles: string[]
     }[] = [
-            {
-                uid: 1,
-                username: 'Normal',
-                password: '123456',
-                roles: ['Normal']
-            },
-            {
-                uid: 2,
-                username: 'Admin',
-                password: '123456',
-                roles: ['Admin']
-            }
-        ];
+        {
+            uid: 1,
+            username: 'Normal',
+            password: '123456',
+            roles: ['Normal']
+        },
+        {
+            uid: 2,
+            username: 'Admin',
+            password: '123456',
+            roles: ['Admin']
+        }
+    ];
 
+    // sso token的信息, 这个ssoTokenInfo应该是个Hash映射
+    // uid：用户的唯一标识符
+    // expiredTime：过期时间
     static ssoTokenInfo: {
-        [token: string]: { expiredTime: number, uid: number }
+        [token: string]: { uid: number ,expiredTime: number, }
     } = {};
 
+    // 生成一个sso token
     static async createSsoToken(uid: number): Promise<string> {
         let token = uuid.v1();
-        // Expired after some time without any action
+        // 计算sso token过期时间
         let expiredTime = Date.now() + SSO_VALID_TIME;
 
         this.ssoTokenInfo[token] = {
@@ -44,33 +47,34 @@ export class UserUtil {
         return token;
     }
 
+    // 销毁一个sso token
     static async destroySsoToken(ssoToken: string): Promise<void> {
         delete this.ssoTokenInfo[ssoToken];
     }
 
+    // 解析一个sso token
     static async parseSSO(ssoToken: string): Promise<CurrentUser | undefined> {
         let info = this.ssoTokenInfo[ssoToken];
-        // Token not exists or expired
+        
+        // sso token不存在或已经过期了
         if (!info || info.expiredTime < Date.now()) {
             return undefined;
         }
 
-        // Parse User
+        // 没有找到匹配的用户
         let user = this.users.find(v => v.uid === info.uid);
         if (!user) {
             return undefined;
         }
 
-        // Extend expired time
+        // 每次解析sso都会延长其过期时间
         info.expiredTime = Date.now() + SSO_VALID_TIME;
 
-        // Return parsed CurrentUser
+        // 返回当前用户
         return {
             uid: user.uid,
             username: user.username,
-            roles: user.roles
+            roles: user.roles,
         }
-
     }
-
 }

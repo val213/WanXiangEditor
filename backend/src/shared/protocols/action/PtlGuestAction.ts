@@ -9,5 +9,6 @@ export interface ResGuestAction extends BaseResponse {
 }
 
 export const conf: BaseConf = {
-    needLogin: false
+    needLogin: false,
+    needRoles: ['Guest'],
 };

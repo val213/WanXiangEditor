@@ -2,7 +2,10 @@
   <a-layout>
     <div id="app" style="display: flex; flex-direction: column; height: 100vh;" class="WorkBench">
       <a-layout-header>
-        <Menu />
+        <a-space :size="970" direction="horizontal" fill align="center">
+          <Menu />
+          <HeadPortrait />
+        </a-space>
       </a-layout-header>
       <a-layout>
             <a-layout-sider :width="120">
@@ -35,6 +38,9 @@ import Editor from './components/BasicEditor.vue';
 import Menu from './components/Menu.vue';
 import SideMenu from './components/SideMenu.vue';
 import Search from './components/Search.vue';
+import HeadPortrait from './components/HeadPortrait.vue';
+import { client } from './client';
+
 export default {
   name: 'App',
   components: {
@@ -45,6 +51,7 @@ export default {
     Menu,
     SideMenu,
     Search,
+    HeadPortrait,
   },
   data() {
     return {
@@ -52,7 +59,23 @@ export default {
       CurrentComponentContent: 'Editor',
       CurrentComponentSider: 'Explorer',
       tabKey: '',
+      client: client,
     };
+  },
+  mounted() {
+    // 开始连接客户端
+    this.client.connect().then((v) => {
+      if (!v.isSucc) {
+        alert("= 连接失败 =\n" + v.errMsg);
+      }
+    });
+
+    // 处理服务端断开连接的情况, 可以向postDisconnectFlow中添加处理函数
+    // 这些函数会在服务器断开连接后被调用
+    this.client.flows.postDisconnectFlow.push((v) => {
+      alert("Server disconnected");
+      return v;
+    });
   },
   methods: {
     changeKey(key) {
@@ -75,3 +98,4 @@ export default {
   },
 };
 </script>
+
