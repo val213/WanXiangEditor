@@ -9,7 +9,7 @@
               <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange"/>
             </a-layout-sider>
             <a-layout-sider :resize-directions="['right']" :style="{maxWidth: '80%', textAlign: 'center' }">
-              <Tree :treeData="treeData" />
+              <Tree />
             </a-layout-sider>
             <a-layout-content>
               <Tabs :tabs="tabs" @tab-click="changeKey" />
@@ -32,7 +32,6 @@ import Tree from './components/Tree.vue';
 import Editor from './components/BasicEditor.vue';
 import Menu from './components/Menu.vue';
 import SideMenu from './components/SideMenu.vue';
-
 export default {
   name: 'App',
   components: {
@@ -45,7 +44,6 @@ export default {
   },
   data() {
     return {
-      treeData: [], // Define treeData here
       // other data...
       CurrentComponent: 'Editor',
       tabKey: '',

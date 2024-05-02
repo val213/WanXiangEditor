@@ -1,5 +1,4 @@
 import { ServiceProto } from 'tsrpc-proto';
-
 import { ReqAdminAction, ResAdminAction } from './action/PtlAdminAction';
 import { ReqGuestAction, ResGuestAction } from './action/PtlGuestAction';
 import { ReqNormalAction, ResNormalAction } from './action/PtlNormalAction';
@@ -44,6 +43,9 @@ export interface ServiceType {
             res: ResLogout
         }
     },
+    msg: {
+
+    }
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
