@@ -16,9 +16,13 @@
     <a-modal
       v-model:visible="modalVisible"
       title="登录"
-      @cancel="handleCancel && formRef &&formRef.resetFields()"
+      @cancel="formRef && formRef.resetFields()"
       @before-ok="handleBeforeOk"
       draggable
+    >
+    <a-space 
+     direction="vertical"
+     align="end"
     >
       <a-form 
         ref="formRef"
@@ -34,13 +38,19 @@
         <a-form-item field="password" label="密码">
           <a-input-password
           v-model="form.password"
-          v-model:visibility="visibility"
           :style="{ width: '320px' }"
-          :defaultVisibility="true"
           allow-clear
           />
         </a-form-item>
       </a-form>
+      <a-button 
+        type="primary"
+        status="success"
+        @click="handleRegister"
+      >
+        注册
+      </a-button>
+    </a-space>
     </a-modal>
     <!-- 登录成功后的头像 -->
     <a-avatar shape="square"
@@ -55,13 +65,48 @@
       <template #trigger-icon>
       </template>
     </a-avatar>
+    <!-- 注册框 -->
+    <a-modal
+      v-model:visible="registerVisible"
+      title="注册"
+      @cancel="formRegisterRef && formRegisterRef.resetFields()"
+      @before-ok="handleRegisterBeforeOk"
+      draggable
+    >
+      <a-form 
+        ref="formRegisterRef"
+        :model="formRegister"
+      >
+        <a-form-item field="newUsername" label="用户名">
+          <a-input 
+          v-model="formRegister.newUsername"
+          :style="{ width: '320px' }"
+          allow-clear
+          />
+        </a-form-item>
+        <a-form-item field="password" label="密码">
+          <a-input-password
+          v-model="formRegister.password"
+          :style="{ width: '320px' }"
+          allow-clear
+          />
+        </a-form-item>
+        <a-form-item field="againPassword" label="再次输入密码">
+          <a-input-password
+          v-model="formRegister.againPassword"
+          :style="{ width: '320px' }"
+          allow-clear
+          />
+        </a-form-item>
+      </a-form>
+    </a-modal>
 </template>
 
 
 <script>
 import { client } from '@/client';
 import { Modal } from '@arco-design/web-vue';
-import { reactive, ref} from 'vue';
+import { reactive, ref } from 'vue';
 
 export default {
   setup() {
@@ -78,6 +123,15 @@ export default {
     // 用户名
     const username = ref('');
 
+    // 是否显示注册框
+    const registerVisible = ref(false);
+    const formRegisterRef = ref(null);
+    const formRegister = reactive({
+      newUsername: '',
+      password: '',
+      againPassword: '',
+    });
+
     // 初始化登录状态
     isLogin.value = !!localStorage.getItem('SSO_TOKEN');
     username.value = localStorage.getItem('USERNAME');
@@ -87,30 +141,39 @@ export default {
       modalVisible.value = true;
     };
 
-    // 处理点击弹出的Modal的取消按钮的事件
-    const handleCancel = () => {
-      modalVisible.value = false;
-    };
-
     // 处理点击弹出的Modal的确定按钮的事件
     const  handleBeforeOk =  async (done) => {
       console.log(form);
-
-      // 调用登录api
-      let ret = await client.callApi('user/Login', {
-          username: form.username,
-          password: form.password,
+      // 查找是否存在该用户
+      let retGetUser = await client.callApi('database/GetUser', {
+        username: form.username,
       });
-      // 如果登录失败，弹出错误提示
-      if (!ret.isSucc) {
-        // console.error(ret.errMsg);
-        Modal.error({
-          title: '登录失败',
-          content: ret.errMsg,
+      console.log("retGetUser: ", retGetUser);
+      // 用户不存在
+      if (!retGetUser) {
+        Modal.errro({
+          title: '用户名不存在',
+          contetn: '请检查用户名是否正确',
         });
         done(false);
         return;
       }
+      // 检查密码是否正确
+      if (retGetUser.res.user.password != form.password) {
+        Modal.error({
+          title: '密码错误',
+          content: '请检查密码是否正确',
+        });
+        done(false);
+        return;
+      }
+
+      // 调用登录api
+      let ret = await client.callApi('user/Login', {
+        uid: retGetUser.res.user.uid,
+        username: retGetUser.res.user.username,
+        password: retGetUser.res.user.password,
+      });
       // 登录成功，切换头像状态
       isLogin.value = true;
       username.value = form.username;
@@ -148,8 +211,42 @@ export default {
         title: '登出成功',
         content: '期待您的下次使用',
       });
-
     };
+
+    // 处理注册按钮事件
+    const handleRegister = () => {
+      registerVisible.value = true;
+      formRef.value.resetFields();
+    }
+
+    // 处理注册框确定事件
+    const handleRegisterBeforeOk = async (done) => {
+      // 先判断两次输入的密码是否一致
+      if (formRegister.password !== formRegister.againPassword) {
+        Modal.error({
+          title: '注册失败',
+          content: '两次输入的密码不一致',
+        });
+        done(false);
+        return;
+      }
+
+      // 调用添加新用户api
+      let ret = await client.callApi('database/AddUser', {
+        newUser: {
+          username: formRegister.newUsername,
+          password: formRegister.password,
+        }
+      });
+      if (!ret) {
+        console.log("注册失败");
+      }
+
+      // 延迟3秒后关闭登录框
+      window.setTimeout(() => {
+        done();
+      }, 3000);
+    }
 
     return {
       modalVisible,
@@ -157,10 +254,14 @@ export default {
       formRef,
       isLogin,
       username,
+      registerVisible,
+      formRegisterRef,
+      formRegister,
       handleClick,
-      handleCancel,
       handleBeforeOk,
       handleLogout,
+      handleRegister,
+      handleRegisterBeforeOk,
     };
   },
 };

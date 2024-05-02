@@ -2,6 +2,10 @@ import { ServiceProto } from 'tsrpc-proto';
 import { ReqAdminAction, ResAdminAction } from './action/PtlAdminAction';
 import { ReqGuestAction, ResGuestAction } from './action/PtlGuestAction';
 import { ReqNormalAction, ResNormalAction } from './action/PtlNormalAction';
+import { ReqAddUser, ResAddUser } from './database/PtlAddUser';
+import { ReqDelUser, ResDelUser } from './database/PtlDelUser';
+import { ReqGetUser, ResGetUser } from './database/PtlGetUser';
+import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
@@ -21,6 +25,22 @@ export interface ServiceType {
         "action/NormalAction": {
             req: ReqNormalAction,
             res: ResNormalAction
+        },
+        "database/AddUser": {
+            req: ReqAddUser,
+            res: ResAddUser
+        },
+        "database/DelUser": {
+            req: ReqDelUser,
+            res: ResDelUser
+        },
+        "database/GetUser": {
+            req: ReqGetUser,
+            res: ResGetUser
+        },
+        "database/UpdateUser": {
+            req: ReqUpdateUser,
+            res: ResUpdateUser
         },
         "Clear": {
             req: ReqClear,
@@ -49,7 +69,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 4,
+    "version": 6,
     "services": [
         {
             "id": 5,
@@ -83,6 +103,26 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "Normal"
                 ]
             }
+        },
+        {
+            "id": 11,
+            "name": "database/AddUser",
+            "type": "api"
+        },
+        {
+            "id": 12,
+            "name": "database/DelUser",
+            "type": "api"
+        },
+        {
+            "id": 13,
+            "name": "database/GetUser",
+            "type": "api"
+        },
+        {
+            "id": 14,
+            "name": "database/UpdateUser",
+            "type": "api"
         },
         {
             "id": 2,
@@ -238,6 +278,219 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
+        "database/PtlAddUser/ReqAddUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "newUser",
+                    "type": {
+                        "target": {
+                            "type": "Reference",
+                            "target": "../collectionType/DbUser/DbUser"
+                        },
+                        "keys": [
+                            "_id",
+                            "uid",
+                            "create",
+                            "update"
+                        ],
+                        "type": "Omit"
+                    }
+                }
+            ]
+        },
+        "../collectionType/DbUser/DbUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "uid",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "username",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "password",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 5,
+                    "name": "create",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "uid",
+                                "type": {
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "time",
+                                "type": {
+                                    "type": "Date"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": 6,
+                    "name": "update",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "uid",
+                                "type": {
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "time",
+                                "type": {
+                                    "type": "Date"
+                                }
+                            }
+                        ]
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "database/PtlAddUser/ResAddUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "insertedId",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "database/PtlDelUser/ReqDelUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "_id",
+                    "type": {
+                        "type": "Reference",
+                        "target": "?bson/ObjectId"
+                    }
+                }
+            ]
+        },
+        "database/PtlDelUser/ResDelUser": {
+            "type": "Interface"
+        },
+        "database/PtlGetUser/ReqGetUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "username",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "database/PtlGetUser/ResGetUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "user",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../collectionType/DbUser/DbUser"
+                    }
+                }
+            ]
+        },
+        "database/PtlUpdateUser/ReqUpdateUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "update",
+                    "type": {
+                        "type": "Intersection",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "target": {
+                                        "type": "Reference",
+                                        "target": "../collectionType/DbUser/DbUser"
+                                    },
+                                    "keys": [
+                                        "_id"
+                                    ],
+                                    "type": "Pick"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Partial",
+                                    "target": {
+                                        "target": {
+                                            "type": "Reference",
+                                            "target": "../collectionType/DbUser/DbUser"
+                                        },
+                                        "keys": [
+                                            "username",
+                                            "password",
+                                            "roles"
+                                        ],
+                                        "type": "Pick"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "database/PtlUpdateUser/ResUpdateUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "matchedCount",
+                    "type": {
+                        "type": "Number"
+                    }
+                }
+            ]
+        },
         "PtlClear/ReqClear": {
             "type": "Interface",
             "extends": [
@@ -322,6 +575,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ],
             "properties": [
+                {
+                    "id": 2,
+                    "name": "uid",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
                 {
                     "id": 0,
                     "name": "username",

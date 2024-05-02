@@ -1,5 +1,5 @@
 export interface BaseRequest {
-        __ssoToken?: string;
+    __ssoToken?: string;
 }
 
 export interface BaseResponse {

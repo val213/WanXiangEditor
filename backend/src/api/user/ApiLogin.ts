@@ -1,17 +1,15 @@
 import { ApiCall } from "tsrpc";
 import { UserUtil } from "../../models/UserUtil";
 import { ReqLogin, ResLogin } from "../../shared/protocols/user/PtlLogin";
+import { CurrentUser } from "../../shared/models/CurrentUser";
 
 export async function ApiLogin(call: ApiCall<ReqLogin, ResLogin>) {
-    // 查找是否存在用户
-    let user = UserUtil.users.find(v => v.username === call.req.username && v.password === call.req.password);
-    
-    if (!user) {
-        call.error('用户名/密码错误！');
-        return;
-    }
-
-    let sso = await UserUtil.createSsoToken(user.uid);
+    let sso = await UserUtil.createSsoToken(call.req.uid);
+    let user: CurrentUser = {
+        uid: call.req.uid,
+        username: call.req.username,
+        roles: []
+    };
 
     call.succ({
         __ssoToken: sso,

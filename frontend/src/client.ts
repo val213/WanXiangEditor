@@ -1,5 +1,4 @@
 import {  WsClient } from "tsrpc-browser";
-import { BaseResponse } from "./shared/protocols/base";
 import { serviceProto } from "./shared/protocols/serviceProto";
 import { ResLogin } from "./shared/protocols/user/PtlLogin";
 
@@ -16,9 +15,12 @@ export const client = new WsClient(serviceProto, {
 // 设置一个请求发送前的处理流程。
 // 在发送请求前，如果本地存储中有SSO_TOKEN，则将其添加到请求头中
 client.flows.preCallApiFlow.push(v => {
-    const ssoToken = localStorage.getItem('SSO_TOKEN');
-    if (ssoToken) {
-        v.req.__ssoToken = ssoToken;
+    // 判断是否为登录请求，再执行分支中代码
+    if (v.apiName == 'user/Login') { 
+        const ssoToken = localStorage.getItem('SSO_TOKEN');
+        if (ssoToken) {
+            v.req.__ssoToken = ssoToken;
+        }
     }
     return v;
 })
