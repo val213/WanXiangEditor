@@ -49,7 +49,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 3,
+    "version": 4,
     "services": [
         {
             "id": 5,
@@ -67,7 +67,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "name": "action/GuestAction",
             "type": "api",
             "conf": {
-                "needLogin": false
+                "needLogin": false,
+                "needRoles": [
+                    "Guest"
+                ]
             }
         },
         {
@@ -75,7 +78,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "name": "action/NormalAction",
             "type": "api",
             "conf": {
-                "needLogin": true
+                "needLogin": true,
+                "needRoles": [
+                    "Normal"
+                ]
             }
         },
         {

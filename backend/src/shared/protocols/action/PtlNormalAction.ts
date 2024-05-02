@@ -9,5 +9,6 @@ export interface ResNormalAction extends BaseResponse {
 }
 
 export const conf: BaseConf = {
-    needLogin: true
+    needLogin: true,
+    needRoles: ['Normal'],
 };

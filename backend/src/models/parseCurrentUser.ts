@@ -1,10 +1,13 @@
-import { HttpServer } from "tsrpc";
+import { WsServer } from "tsrpc";
 import { BaseRequest } from "../shared/protocols/base";
 import { CurrentUser } from "../shared/models/CurrentUser";
 import { UserUtil } from "./UserUtil";
 
-export function parseCurrentUser(server: HttpServer) {
-    // Auto parse call.currentUser
+/**
+ * 解析当前用户
+ */
+export function parseCurrentUser(server: WsServer) {
+    // 在执行API接口实现之前解析当前用户
     server.flows.preApiCallFlow.push(async call => {
         let req = call.req as BaseRequest;
         if (req.__ssoToken) {

@@ -2,6 +2,8 @@ import * as path from "path";
 import { WsServer } from "tsrpc";
 import { serviceProto } from './shared/protocols/serviceProto';
 import { Global } from "./models/Global";
+import { parseCurrentUser } from "./models/parseCurrentUser";
+import { enableAuthentication } from "./models/enableAuthentication";
 
 // Create the Server
 export const server = new WsServer(serviceProto, {
@@ -12,6 +14,12 @@ export const server = new WsServer(serviceProto, {
 
 // 初始化启动前的服务
 async function init() {
+    // 解析当前用户
+    parseCurrentUser(server);
+    
+    // 启用身份验证
+    enableAuthentication(server);  
+
     // 自动实现API
     await server.autoImplementApi(path.resolve(__dirname, 'api'));
 

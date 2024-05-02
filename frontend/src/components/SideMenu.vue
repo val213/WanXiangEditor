@@ -1,5 +1,5 @@
-//新功能的前端扩展在这里进,在a-menu-item下添加新的item。
 <template>
+  <!--新功能的前端扩展在这里进,在a-menu-item下添加新的item。-->
     <div class="menu">
       <a-menu mode="vertical" :default-selected-keys="['Editor']" @menu-item-click="changeComponent">
         <a-menu-item key="Explorer">Explorer</a-menu-item>
@@ -9,14 +9,7 @@
         <a-menu-item key="新功能">新功能</a-menu-item>
       </a-menu>
     </div>
-  </template>
-  <style scoped>
-  .menu {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 10px;
-  }
-  </style>
+</template>
 
 <script>
 export default {
@@ -29,4 +22,11 @@ export default {
     }
 }
 </script>
-  
+
+<style scoped>
+.menu {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+}
+</style>
