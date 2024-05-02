@@ -1,4 +1,4 @@
-<!-- Tree.vue -->
+<!-- Explorer.vue -->
 <template>
   <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
     <a-collapse-item header="OPEN EDITORS" :key="1">

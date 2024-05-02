@@ -2,9 +2,10 @@
 <template>
     <div class="menu">
       <a-menu mode="vertical" :default-selected-keys="['Editor']" @menu-item-click="changeComponent">
-        <a-menu-item key="资源管理器">资源管理器</a-menu-item>
+        <a-menu-item key="Explorer">Explorer</a-menu-item>
         <a-menu-item key="Editor">Editor</a-menu-item>
         <a-menu-item key="PDF">PDF</a-menu-item>
+        <a-menu-item key="Search">Search</a-menu-item>
         <a-menu-item key="新功能">新功能</a-menu-item>
       </a-menu>
     </div>

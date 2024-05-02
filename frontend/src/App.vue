@@ -9,12 +9,14 @@
               <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange"/>
             </a-layout-sider>
             <a-layout-sider :resize-directions="['right']" :style="{maxWidth: '80%', textAlign: 'center' }">
-              <Tree />
+              <KeepAlive>
+                <component :is="CurrentComponentSider" :tabKey="tabKey"></component>
+              </KeepAlive>
             </a-layout-sider>
             <a-layout-content>
               <Tabs :tabs="tabs" @tab-click="changeKey" />
               <KeepAlive>
-                <component :is="CurrentComponent" :tabKey="tabKey"></component>
+                <component :is="CurrentComponentContent" :tabKey="tabKey"></component>
               </KeepAlive>
             </a-layout-content>
       </a-layout>
@@ -28,24 +30,27 @@
 <script>
 import Statusbar from './components/Statusbar.vue';
 import Tabs from './components/Tabs.vue';
-import Tree from './components/Tree.vue';
+import Explorer from './components/Explorer.vue';
 import Editor from './components/BasicEditor.vue';
 import Menu from './components/Menu.vue';
 import SideMenu from './components/SideMenu.vue';
+import Search from './components/Search.vue';
 export default {
   name: 'App',
   components: {
     Statusbar,
     Tabs,
-    Tree,
+    Explorer,
     Editor,
     Menu,
     SideMenu,
+    Search,
   },
   data() {
     return {
       // other data...
-      CurrentComponent: 'Editor',
+      CurrentComponentContent: 'Editor',
+      CurrentComponentSider: 'Explorer',
       tabKey: '',
     };
   },
@@ -54,10 +59,18 @@ export default {
       this.tabKey = key;
       console.log(this.tabKey);
     },
-    //组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
+    // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
+    // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
     componentChange(key){
       console.log(key);
-      this.CurrentComponent = key;
+      if (key == 'Explorer') {
+        this.CurrentComponentSider = key;
+      } else if (key == 'Search') {
+        this.CurrentComponentSider = key;
+      }
+      else {
+        this.CurrentComponentContent = key;
+      }
     },
   },
 };
