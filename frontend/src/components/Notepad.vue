@@ -19,6 +19,8 @@
 </template>
   
 <script>
+import { watch } from 'vue';
+
 export default {
     props: {
         nowTabKey: String,
@@ -58,30 +60,25 @@ export default {
             // console.log("光标是否在行尾：", isAtLineEnd);*/
         },
         // 处理键盘按下事件
-        handleKeyDown() {
-            // 触发处理光标事件
-            this.handleCursor();
-
+        /*handleKeyDown() {
             // 判断按下的键是否为回车键
             // if (event.keyCode == 13) {
             // }
             // 判断按下的键是否为退格键
             // else if (event.keyCode == 8) {
             // }
-        },
+        },*/
         // 处理输入事件
         handleInput() {
-            // 触发处理光标事件
-            this.handleCursor();
-
             // 将当前数据存入sessionStorage
             sessionStorage.setItem(this.nowTabKey, this.content);
         },
         // 处理点击事件
-        handleClick(event) {
-            // 触发处理光标事件
-            this.handleCursor(event);
-        }
+        // handleClick() {
+        // }
+    },
+    mounted() {
+        watch(() => this.content, this.handleCursor);
     }
 };
 </script>
