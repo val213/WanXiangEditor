@@ -2,5 +2,6 @@
         "editor.wordSegmenterLocales": null,
         "editor.language.brackets": [
                 
-        ]
+        ],
+        "editor.detectIndentation": false
 }
