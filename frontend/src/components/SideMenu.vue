@@ -1,11 +1,11 @@
 <template>
   <!--新功能的前端扩展在这里进,在a-menu-item下添加新的item。-->
     <div class="menu">
-      <a-menu mode="vertical" :default-selected-keys="['Editor']" @menu-item-click="changeComponent">
-        <a-menu-item key="Explorer">Explorer</a-menu-item>
-        <a-menu-item key="Search">Search</a-menu-item>
-        <!-- <a-menu-item key="Editor">Editor</a-menu-item> -->
-        <a-menu-item key="PDF">PDF</a-menu-item>
+      <a-menu mode="vertical" :default-selected-keys="['Explorer']" @menu-item-click="changeComponent">
+        <a-menu-item key="Explorer"><icon-home :size="25"/></a-menu-item>
+        <a-menu-item key="Search"><icon-find-replace :size="25"/></a-menu-item>
+        <!-- <a-menu-item key="Editor"><icon-file-pdf :size="25"/></a-menu-item> -->
+        <a-menu-item key="PDF"><icon-file-pdf :size="25"/></a-menu-item>
         <!-- <a-menu-item key="notepad">Notepad</a-menu-item> -->
       </a-menu>
     </div>

@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@imengyu/vue3-context-menu": "^1.4.1",
     "@tato30/vue-pdf": "^1.9.6",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",

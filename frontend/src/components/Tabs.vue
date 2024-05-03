@@ -1,22 +1,22 @@
 <!-- Tabs.vue -->
 <template>
-  <a-tabs 
-    type="card-gutter"
-    :active-key="nowTabKey"
-    :editable="true"
-    @add="handleAdd"
-    @delete="handleDelete"
-    auto-switch 
-    show-add-button
-  >
-    <a-tab-pane 
-      v-for="(item, index) of data"
-      :key="item.key" 
-      :title="item.title"
-      :closable="index!==0"
+    <a-tabs 
+        type="card-gutter"
+        :active-key="nowTabKey"
+        :editable="true"
+        @add="handleAdd"
+        @delete="handleDelete"
+        auto-switch 
+        show-add-button
     >
-    </a-tab-pane>
-  </a-tabs>
+        <a-tab-pane 
+        v-for="(item, index) of data"
+        :key="item.key" 
+        :title="item.title"
+        :closable="index!==0"
+        >
+        </a-tab-pane>
+    </a-tabs>
 </template>
 
 <script>
