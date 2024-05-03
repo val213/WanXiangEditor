@@ -48,17 +48,17 @@ export default {
     Statusbar,
     Tabs,
     Explorer,
-    Editor,
+    // Editor,
     Menu,
     SideMenu,
     Search,
     HeadPortrait, // 头像组件
-    Notepad,
+    Notepad, // 记事本组件
   },
   data() {
     return {
       // other data...
-      CurrentComponentContent: 'Editor',
+      CurrentComponentContent: 'Notepad',
       CurrentComponentSider: 'Explorer',
       tabKey: '',
       client: client,
