@@ -1,10 +1,10 @@
 <!-- Explorer.vue -->
 <template>
   <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
-    <a-collapse-item header="OPEN EDITORS" :key="1">
+    <a-collapse-item header="打开的编辑器" :key="1">
       <div></div>
     </a-collapse-item>
-    <a-collapse-item header="Projct name" key="2">
+    <a-collapse-item header="<项目名>" key="2">
       <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
         <a-tree
           class="tree-demo"
@@ -16,13 +16,13 @@
         />
       </a-collapse>
     </a-collapse-item>
-    <a-collapse-item header="OUTLINE" :key="3">
+    <!--<a-collapse-item header="OUTLINE" :key="3">
       <div></div>
     </a-collapse-item>
     <a-collapse-item header="TIMELINE" key="4">
       <div>todo: file saved now</div>
       <div>todo: file saved 1 min</div>
-    </a-collapse-item>
+    </a-collapse-item>-->
   </a-collapse>
 </template>
 
