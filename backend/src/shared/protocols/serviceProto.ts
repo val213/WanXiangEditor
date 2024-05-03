@@ -9,6 +9,7 @@ import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
+import { ReqUpload, ResUpload } from './PtlUpload';
 import { MsgExpire } from './user/MsgExpire';
 import { ReqLogin, ResLogin } from './user/PtlLogin';
 import { ReqLogout, ResLogout } from './user/PtlLogout';
@@ -55,6 +56,10 @@ export interface ServiceType {
             req: ReqSetSession,
             res: ResSetSession
         },
+        "Upload": {
+            req: ReqUpload,
+            res: ResUpload
+        },
         "user/Login": {
             req: ReqLogin,
             res: ResLogin
@@ -70,7 +75,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 7,
+    "version": 8,
     "services": [
         {
             "id": 5,
@@ -138,6 +143,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 4,
             "name": "SetSession",
+            "type": "api"
+        },
+        {
+            "id": 15,
+            "name": "Upload",
             "type": "api"
         },
         {
@@ -564,6 +574,38 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "PtlUpload/ReqUpload": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "fileName",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "fileData",
+                    "type": {
+                        "type": "Buffer",
+                        "arrayType": "Uint8Array"
+                    }
+                }
+            ]
+        },
+        "PtlUpload/ResUpload": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "url",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]
