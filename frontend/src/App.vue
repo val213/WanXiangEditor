@@ -35,7 +35,6 @@
       </a-layout>
       <a-layout-footer>
         <Statusbar />
-        <FileUpload />
       </a-layout-footer>
     </div>
     </a-layout>
@@ -52,6 +51,7 @@ import Search from './components/Search.vue';
 import HeadPortrait from './components/HeadPortrait.vue';
 import Notepad from './components/Notepad.vue';
 import FileUpload from './components/FileUpload.vue';
+import PDFLoader from './components/PDFLoader.vue';
 import { client } from './client';
 
 export default {
@@ -67,6 +67,7 @@ export default {
     HeadPortrait, // 头像组件
     Notepad, // 记事本组件
     FileUpload,
+    PDFLoader,
   },
   data() {
     return {
@@ -132,6 +133,8 @@ export default {
       if (key == 'Explorer') {
         this.CurrentComponentSider = key;
       } else if (key == 'Search') {
+        this.CurrentComponentSider = key;
+      } else if (key == 'PDFLoader') {
         this.CurrentComponentSider = key;
       }
       else {

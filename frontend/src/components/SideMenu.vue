@@ -5,7 +5,7 @@
         <a-menu-item key="Explorer"><icon-home :size="25"/></a-menu-item>
         <a-menu-item key="Search"><icon-find-replace :size="25"/></a-menu-item>
         <!-- <a-menu-item key="Editor"><icon-file-pdf :size="25"/></a-menu-item> -->
-        <a-menu-item key="PDF"><icon-file-pdf :size="25"/></a-menu-item>
+        <a-menu-item key="PDFLoader"><icon-file-pdf :size="25"/></a-menu-item>
         <!-- <a-menu-item key="notepad">Notepad</a-menu-item> -->
       </a-menu>
     </div>
