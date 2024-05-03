@@ -8,7 +8,7 @@
         </a-space>
       </a-layout-header>
       <a-layout>
-            <a-layout-sider :width="120">
+            <a-layout-sider :width="70">
               <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange"/>
             </a-layout-sider>
             <a-layout-sider :resize-directions="['right']" :style="{maxWidth: '80%', textAlign: 'center' }">
