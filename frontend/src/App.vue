@@ -17,9 +17,19 @@
               </KeepAlive>
             </a-layout-sider>
             <a-layout-content>
-              <Tabs :tabs="tabs" @tab-click="changeKey" />
+              <Tabs 
+                :tabs="tabs" 
+                :nowTabKey="nowTabKey"
+                @tab-click="changeKey" 
+                @tab-add="changeKey"
+                @tab-del="changeToLastKey"
+              />
               <KeepAlive>
-                <component :is="CurrentComponentContent" :tabKey="tabKey"></component>
+                <component 
+                  :is="CurrentComponentContent"
+                  :nowTabKey="nowTabKey"
+                   ref="childComponentRef"
+                ></component>
               </KeepAlive>
             </a-layout-content>
       </a-layout>
@@ -34,7 +44,7 @@
 import Statusbar from './components/Statusbar.vue';
 import Tabs from './components/Tabs.vue';
 import Explorer from './components/Explorer.vue';
-import Editor from './components/BasicEditor.vue';
+// import Editor from './components/BasicEditor.vue';
 import Menu from './components/Menu.vue';
 import SideMenu from './components/SideMenu.vue';
 import Search from './components/Search.vue';
@@ -57,10 +67,12 @@ export default {
   },
   data() {
     return {
-      // other data...
+      // 主组件的数据
       CurrentComponentContent: 'Notepad',
       CurrentComponentSider: 'Explorer',
-      tabKey: '',
+      lastTabKey: '1',
+      nowTabKey: '1',
+      notepadContent: '', // notepad的内容
       client: client,
     };
   },
@@ -90,9 +102,25 @@ export default {
     });
   },
   methods: {
+    // 切换到上一个标签页
+    changeToLastKey() {
+      this.nowTabKey = this.lastTabKey;
+      // TODO；这里是有问题的，因为继续回溯，直到没有上一个标签页为止，而且如果是最后一个标签页，这里应该设置为-1，然后判断
+      // 目前解决方案是可以把第一个标签页定为首页，然后不能能被关闭
+      this.lastTabKey = '1';
+
+      // 加载当前标签的内容
+      this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+      this.notepadContent = this.$refs.childComponentRef.content;
+    },
     changeKey(key) {
-      this.tabKey = key;
-      console.log(this.tabKey);
+      this.lastTabKey = this.nowTabKey;
+      this.nowTabKey = key;
+      // console.log(this.tabKey);
+
+      // 加载当前标签的内容
+      this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+      this.notepadContent = this.$refs.childComponentRef.content;
     },
     // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
     // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
