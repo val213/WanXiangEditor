@@ -7,6 +7,7 @@ import { ReqDelUser, ResDelUser } from './database/PtlDelUser';
 import { ReqGetUser, ResGetUser } from './database/PtlGetUser';
 import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
+import { ReqGetFileList, ResGetFileList } from './PtlGetFileList';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
 import { ReqUpload, ResUpload } from './PtlUpload';
@@ -48,6 +49,10 @@ export interface ServiceType {
             req: ReqClear,
             res: ResClear
         },
+        "GetFileList": {
+            req: ReqGetFileList,
+            res: ResGetFileList
+        },
         "SetCookie": {
             req: ReqSetCookie,
             res: ResSetCookie
@@ -75,7 +80,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 8,
+    "version": 9,
     "services": [
         {
             "id": 5,
@@ -134,6 +139,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "id": 2,
             "name": "Clear",
             "type": "api"
+        },
+        {
+            "id": 16,
+            "name": "GetFileList",
+            "type": "api",
+            "conf": {}
         },
         {
             "id": 3,
@@ -526,6 +537,42 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "PtlGetFileList/ReqGetFileList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "PtlGetFileList/ResGetFileList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "fileList",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "String"
+                        }
                     }
                 }
             ]

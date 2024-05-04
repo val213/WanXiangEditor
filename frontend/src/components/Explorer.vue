@@ -1,6 +1,5 @@
 <!-- Explorer.vue -->
 <template>
-<a-space direction="vertical" fill>
   <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
     <a-collapse-item header="打开的编辑器" :key="1">
       <div></div>
@@ -25,23 +24,14 @@
       <div>todo: file saved 1 min</div>
     </a-collapse-item>-->
   </a-collapse>
- 
-    <FileUpload />
-  </a-space>
-  
 </template>
 
 <script>
 import { ref } from 'vue';
-import FileUpload from './FileUpload.vue';
-import { Space } from '@arco-design/web-vue';
-export default { 
-    components: {
-      FileUpload,
-    },
+export default {
   setup() {
     const treeData = ref(defaultTreeData);
-   
+
     return {
       treeData,
       onDrop({ dragNode, dropNode, dropPosition }) {
