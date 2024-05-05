@@ -4,7 +4,7 @@
       <a-layout-header>
         <a-space :size="970" direction="horizontal" fill align="center">
           <Menu />
-          <HeadPortrait ref="headPortrait" />
+          <HeadPortrait ref="headPortrait" @login-success="handleLoginSuccess" />
         </a-space>
       </a-layout-header>
       <a-layout>
@@ -12,8 +12,9 @@
               <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange"/>
             </a-layout-sider>
             <a-layout-sider :resize-directions="['right']" :style="{maxWidth: '80%', textAlign: 'center' }">
+
               <KeepAlive>
-                <component :is="CurrentComponentSider" :tabKey="tabKey"></component>
+                <component :is="CurrentComponentSider" :tabKey="tabKey"   :username="currentUsername" ></component>
               </KeepAlive>
             </a-layout-sider>
             <a-layout-content>
@@ -78,6 +79,7 @@ export default {
       nowTabKey: '1',
       notepadContent: '', // notepad的内容
       client: client,
+      currentUsername: '未登录'  //用户名，传给子组件Explorer
     };
   },
   mounted() {
@@ -87,6 +89,7 @@ export default {
         alert("= 连接失败 =\n" + v.errMsg);
       }
     });
+
 
     // 监听token过期消息
     let handler = this.client.listenMsg('user/Expire', msg => {
@@ -98,12 +101,15 @@ export default {
       // this.client.unlistenMsg('user/Expire', handler);
     });
 
+
     // 处理服务端断开连接的情况, 可以向postDisconnectFlow中添加处理函数
     // 这些函数会在服务器断开连接后被调用
     this.client.flows.postDisconnectFlow.push((v) => {
       alert("Server disconnected");
       return v;
     });
+
+
   },
   methods: {
     // 切换到上一个标签页
@@ -140,6 +146,10 @@ export default {
       else {
         this.CurrentComponentContent = key;
       }
+    },
+    //实现对currentUsername的同步更改（通过HeadPortrait传给App,App再传给Explorer实现子组件间的通信同步
+    handleLoginSuccess(username) {
+        this.currentUsername = username;
     },
   },
 };

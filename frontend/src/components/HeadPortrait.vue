@@ -27,12 +27,14 @@
       <a-form 
         ref="formRef"
         :model="form"
+
       >
         <a-form-item field="username" label="用户名">
           <a-input 
           v-model="form.username"
           :style="{ width: '320px' }"
           allow-clear
+          
           />
         </a-form-item>
         <a-form-item field="password" label="密码">
@@ -109,7 +111,7 @@ import { Modal } from '@arco-design/web-vue';
 import { reactive, ref } from 'vue';
 
 export default {
-  setup() {
+  setup(props, context) {
     // 点击登录后弹出登录框
     const modalVisible = ref(false);
     // 输入框的数据
@@ -153,7 +155,7 @@ export default {
       if (!retGetUser) {
         Modal.errro({
           title: '用户名不存在',
-          contetn: '请检查用户名是否正确',
+          content: '请检查用户名是否正确',
         });
         done(false);
         return;
@@ -174,19 +176,21 @@ export default {
         username: retGetUser.res.user.username,
         password: retGetUser.res.user.password,
       });
+
       // 登录成功，切换头像状态
       isLogin.value = true;
       username.value = form.username;
+
       formRef.value.resetFields();
       Modal.success({
         title: '登录成功',
         content: '欢迎回来',
       });
-
       // 延迟3秒后关闭登录框
       window.setTimeout(() => {
         done();
       }, 3000);
+      context.emit('login-success', username.value);
     };
 
     // 处理用户退出登录的事件
@@ -211,7 +215,9 @@ export default {
         title: '登出成功',
         content: '期待您的下次使用',
       });
+      context.emit('login-success', '未登录');
     };
+
 
     // 处理注册按钮事件
     const handleRegister = () => {
@@ -248,6 +254,8 @@ export default {
       }, 3000);
     }
 
+
+
     return {
       modalVisible,
       form,
@@ -263,6 +271,11 @@ export default {
       handleRegister,
       handleRegisterBeforeOk,
     };
+
   },
+
 };
 </script>
+
+
+

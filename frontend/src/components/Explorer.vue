@@ -5,7 +5,7 @@
     <a-collapse-item header="打开的编辑器" :key="1">
       <div></div>
     </a-collapse-item>
-    <a-collapse-item header="<项目名>" key="2">
+    <a-collapse-item :header="getProjectNameHeader" key="2">
       <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
         <a-tree
           class="tree-demo"
@@ -30,6 +30,17 @@
 </template>
 
 <script>
+<<<<<<< HEAD
+import { ref, computed } from 'vue';
+export default {
+    props : {
+        username:{
+            type:String,
+            required:true
+        },
+    },
+    setup(props) {
+=======
 import { ref } from 'vue';
 import FileUpload from './FileUpload.vue';
 import { Space } from '@arco-design/web-vue';
@@ -38,9 +49,14 @@ export default {
       FileUpload,
     },
   setup() {
+>>>>>>> b9982341b596dd31d45cc15ebec956d39b18b8f0
     const treeData = ref(defaultTreeData);
+    const getProjectNameHeader  = computed(() =>{
+        return `<项目名>   用户:${props.username}`;
+    })
 
     return {
+      getProjectNameHeader,
       treeData,
       onDrop({ dragNode, dropNode, dropPosition }) {
         const data = treeData.value;
@@ -73,7 +89,8 @@ export default {
         }
       }
       }
-    }
+    },
+
   }
 
   const defaultTreeData = [
