@@ -5,7 +5,6 @@
             <div class="line-numbers">
                 <div v-for="line in lineIndex" :key="line" class="line">{{ line }}</div>
             </div>
-            
             <!-- 右侧编辑区域 -->
             <div class="editor">
                 <textarea
@@ -20,7 +19,12 @@
 </template>
   
 <script>
+import { watch } from 'vue';
+
 export default {
+    props: {
+        nowTabKey: String,
+    },
     data() {
         return {
             content: '', // 文本内容
@@ -32,10 +36,10 @@ export default {
     },
     methods: {
         // 处理光标
-        handleCursor(event) {
+        handleCursor() {
             // 更新行数
             this.lineIndex = this.content.split('\n').length;
-            console.log("行数：",this.content.split('\n').length);
+            // console.log("行数：",this.content.split('\n').length);
 
             /*// 获取光标位置
             const cursorPosition = event.target.selectionStart;
@@ -56,27 +60,25 @@ export default {
             // console.log("光标是否在行尾：", isAtLineEnd);*/
         },
         // 处理键盘按下事件
-        handleKeyDown(event) {
-            // 触发处理光标事件
-            this.handleCursor(event);
-
+        /*handleKeyDown() {
             // 判断按下的键是否为回车键
             // if (event.keyCode == 13) {
             // }
             // 判断按下的键是否为退格键
             // else if (event.keyCode == 8) {
             // }
-        },
+        },*/
         // 处理输入事件
-        handleInput(event) {
-            // 触发处理光标事件
-            this.handleCursor(event);
+        handleInput() {
+            // 将当前数据存入sessionStorage
+            sessionStorage.setItem(this.nowTabKey, this.content);
         },
         // 处理点击事件
-        handleClick(event) {
-            // 触发处理光标事件
-            this.handleCursor(event);
-        }
+        // handleClick() {
+        // }
+    },
+    mounted() {
+        watch(() => this.content, this.handleCursor);
     }
 };
 </script>

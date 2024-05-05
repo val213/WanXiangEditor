@@ -5,15 +5,18 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/Send": {
+    "/action/AdminAction": {
       "post": {
-        "operationId": "Send",
+        "tags": [
+          "action"
+        ],
+        "operationId": "action/AdminAction",
         "requestBody": {
-          "description": "Req<Send>",
+          "description": "Req<AdminAction>",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PtlSend_ReqSend"
+                "$ref": "#/components/schemas/action_PtlAdminAction_ReqAdminAction"
               }
             }
           }
@@ -25,7 +28,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "description": "ApiReturn<ResSend>",
+                  "description": "ApiReturn<ResAdminAction>",
                   "properties": {
                     "isSucc": {
                       "type": "boolean",
@@ -35,7 +38,559 @@
                       "default": true
                     },
                     "res": {
-                      "$ref": "#/components/schemas/PtlSend_ResSend"
+                      "$ref": "#/components/schemas/action_PtlAdminAction_ResAdminAction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/action/GuestAction": {
+      "post": {
+        "tags": [
+          "action"
+        ],
+        "operationId": "action/GuestAction",
+        "requestBody": {
+          "description": "Req<GuestAction>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/action_PtlGuestAction_ReqGuestAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGuestAction>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/action_PtlGuestAction_ResGuestAction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/action/NormalAction": {
+      "post": {
+        "tags": [
+          "action"
+        ],
+        "operationId": "action/NormalAction",
+        "requestBody": {
+          "description": "Req<NormalAction>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/action_PtlNormalAction_ReqNormalAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResNormalAction>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/action_PtlNormalAction_ResNormalAction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/database/AddUser": {
+      "post": {
+        "tags": [
+          "database"
+        ],
+        "operationId": "database/AddUser",
+        "requestBody": {
+          "description": "Req<AddUser>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/database_PtlAddUser_ReqAddUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResAddUser>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/database_PtlAddUser_ResAddUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/database/DelUser": {
+      "post": {
+        "tags": [
+          "database"
+        ],
+        "operationId": "database/DelUser",
+        "requestBody": {
+          "description": "Req<DelUser>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/database_PtlDelUser_ReqDelUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResDelUser>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/database_PtlDelUser_ResDelUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/database/GetUser": {
+      "post": {
+        "tags": [
+          "database"
+        ],
+        "operationId": "database/GetUser",
+        "requestBody": {
+          "description": "Req<GetUser>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/database_PtlGetUser_ReqGetUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResGetUser>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/database_PtlGetUser_ResGetUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/database/UpdateUser": {
+      "post": {
+        "tags": [
+          "database"
+        ],
+        "operationId": "database/UpdateUser",
+        "requestBody": {
+          "description": "Req<UpdateUser>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/database_PtlUpdateUser_ReqUpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResUpdateUser>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/database_PtlUpdateUser_ResUpdateUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Clear": {
+      "post": {
+        "operationId": "Clear",
+        "requestBody": {
+          "description": "Req<Clear>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PtlClear_ReqClear"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResClear>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/PtlClear_ResClear"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/SetCookie": {
+      "post": {
+        "operationId": "SetCookie",
+        "requestBody": {
+          "description": "Req<SetCookie>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PtlSetCookie_ReqSetCookie"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSetCookie>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/PtlSetCookie_ResSetCookie"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/SetSession": {
+      "post": {
+        "operationId": "SetSession",
+        "requestBody": {
+          "description": "Req<SetSession>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PtlSetSession_ReqSetSession"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResSetSession>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/PtlSetSession_ResSetSession"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Upload": {
+      "post": {
+        "operationId": "Upload",
+        "requestBody": {
+          "description": "Req<Upload>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PtlUpload_ReqUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResUpload>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/PtlUpload_ResUpload"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/user/Login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/Login",
+        "requestBody": {
+          "description": "Req<Login>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlLogin_ReqLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResLogin>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlLogin_ResLogin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/user/Logout": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "operationId": "user/Logout",
+        "requestBody": {
+          "description": "Req<Logout>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_PtlLogout_ReqLogout"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "ApiReturn<ResLogout>",
+                  "properties": {
+                    "isSucc": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ],
+                      "default": true
+                    },
+                    "res": {
+                      "$ref": "#/components/schemas/user_PtlLogout_ResLogout"
                     }
                   }
                 }
@@ -52,23 +607,375 @@
   },
   "components": {
     "schemas": {
-      "MsgChat_MsgChat": {
+      "action_PtlAdminAction_ReqAdminAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "base_BaseRequest": {
         "type": "object",
         "properties": {
-          "content": {
+          "__ssoToken": {
             "type": "string"
+          }
+        }
+      },
+      "action_PtlAdminAction_ResAdminAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
           },
-          "time": {
-            "type": "string",
-            "format": "date-time"
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          }
+        ]
+      },
+      "base_BaseResponse": {
+        "type": "object",
+        "properties": {
+          "__ssoToken": {
+            "type": "string"
+          }
+        }
+      },
+      "action_PtlGuestAction_ReqGuestAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "action_PtlGuestAction_ResGuestAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          }
+        ]
+      },
+      "action_PtlNormalAction_ReqNormalAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "action_PtlNormalAction_ResNormalAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          }
+        ]
+      },
+      "database_PtlAddUser_ReqAddUser": {
+        "type": "object",
+        "properties": {
+          "newUser": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "username",
+              "password"
+            ]
           }
         },
         "required": [
-          "content",
-          "time"
+          "newUser"
         ]
       },
-      "PtlSend_ReqSend": {
+      "___collectionType_DbUser_DbUser": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/?mongodb_ObjectId"
+          },
+          "uid": {
+            "type": "number"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "create": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string"
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "uid",
+              "time"
+            ]
+          },
+          "update": {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string"
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "uid",
+              "time"
+            ]
+          }
+        },
+        "required": [
+          "_id",
+          "uid",
+          "username",
+          "password",
+          "create"
+        ]
+      },
+      "database_PtlAddUser_ResAddUser": {
+        "type": "object",
+        "properties": {
+          "insertedId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "insertedId"
+        ]
+      },
+      "database_PtlDelUser_ReqDelUser": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/?bson_ObjectId"
+          }
+        },
+        "required": [
+          "_id"
+        ]
+      },
+      "database_PtlDelUser_ResDelUser": {
+        "type": "object",
+        "properties": {}
+      },
+      "database_PtlGetUser_ReqGetUser": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username"
+        ]
+      },
+      "database_PtlGetUser_ResGetUser": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/___collectionType_DbUser_DbUser"
+          }
+        },
+        "required": [
+          "user"
+        ]
+      },
+      "database_PtlUpdateUser_ReqUpdateUser": {
+        "type": "object",
+        "properties": {
+          "update": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "$ref": "#/components/schemas/?mongodb_ObjectId"
+                  }
+                },
+                "required": [
+                  "_id"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "update"
+        ]
+      },
+      "database_PtlUpdateUser_ResUpdateUser": {
+        "type": "object",
+        "properties": {
+          "matchedCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "matchedCount"
+        ]
+      },
+      "PtlClear_ReqClear": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "PtlClear_ResClear": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "PtlSetCookie_ReqSetCookie": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "PtlSetCookie_ResSetCookie": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "PtlSetSession_ReqSetSession": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "PtlSetSession_ResSetSession": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "PtlUpload_ReqUpload": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "fileData": {
+            "type": "string",
+            "format": "base64"
+          }
+        },
+        "required": [
+          "fileName",
+          "fileData"
+        ]
+      },
+      "PtlUpload_ResUpload": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "user_MsgExpire_MsgExpire": {
         "type": "object",
         "properties": {
           "content": {
@@ -79,16 +986,98 @@
           "content"
         ]
       },
-      "PtlSend_ResSend": {
+      "user_PtlLogin_ReqLogin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "number"
+              },
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "uid",
+              "username",
+              "password"
+            ]
+          }
+        ],
+        "description": "请求信息：\n- username: 用户名\n- password: 密码"
+      },
+      "user_PtlLogin_ResLogin": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "__ssoToken": {
+                "type": "string"
+              },
+              "user": {
+                "$ref": "#/components/schemas/___models_CurrentUser_CurrentUser"
+              }
+            },
+            "required": [
+              "__ssoToken",
+              "user"
+            ]
+          }
+        ],
+        "description": "响应信息：\n- __ssoToken: 身份验证凭据\n- user: 当前用户信息"
+      },
+      "___models_CurrentUser_CurrentUser": {
         "type": "object",
         "properties": {
-          "time": {
-            "type": "string",
-            "format": "date-time"
+          "uid": {
+            "type": "number"
+          },
+          "username": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
-          "time"
+          "uid",
+          "username",
+          "roles"
+        ]
+      },
+      "user_PtlLogout_ReqLogout": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseRequest"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
+        ]
+      },
+      "user_PtlLogout_ResLogout": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/base_BaseResponse"
+          },
+          {
+            "type": "object",
+            "properties": {}
+          }
         ]
       },
       "?bson_ObjectID": {

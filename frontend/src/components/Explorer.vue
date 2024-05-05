@@ -1,5 +1,6 @@
 <!-- Explorer.vue -->
 <template>
+<a-space direction="vertical" fill>
   <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
     <a-collapse-item header="打开的编辑器" :key="1">
       <div></div>
@@ -24,9 +25,12 @@
       <div>todo: file saved 1 min</div>
     </a-collapse-item>-->
   </a-collapse>
+  <FileUpload />
+  </a-space>
 </template>
 
 <script>
+<<<<<<< HEAD
 import { ref, computed } from 'vue';
 export default {
     props : {
@@ -36,6 +40,16 @@ export default {
         },
     },
     setup(props) {
+=======
+import { ref } from 'vue';
+import FileUpload from './FileUpload.vue';
+import { Space } from '@arco-design/web-vue';
+export default { 
+    components: {
+      FileUpload,
+    },
+  setup() {
+>>>>>>> b9982341b596dd31d45cc15ebec956d39b18b8f0
     const treeData = ref(defaultTreeData);
     const getProjectNameHeader  = computed(() =>{
         return `<项目名>   用户:${props.username}`;
