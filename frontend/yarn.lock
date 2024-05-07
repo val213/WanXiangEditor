@@ -1081,11 +1081,6 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@imengyu/vue3-context-menu@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/@imengyu/vue3-context-menu/-/vue3-context-menu-1.4.1.tgz"
-  integrity sha512-34WInBVx0Mr0zSsRCQWG7ezHk0JzOuZqE4T8ywI82mbk/jfWBRtTkKHYSZbtmw2oYEfDFwCWdM/gur7QFAXYMA==
-
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "https://registry.npmjs.org/@intervolga/optimize-cssnano-plugin/-/optimize-cssnano-plugin-1.0.6.tgz"

@@ -1,29 +1,24 @@
-
 <template>
     <div class="notepad">
-            <!-- 左侧行数显示 -->
-            <div class="line-numbers">
-                <div v-for="line in lineIndex" :key="line" class="line">{{ line }}</div>
-            </div>
-            <!-- 右侧编辑区域 -->
-            <div class="editor">
-                <textarea
-                    v-model="content"
-                    @keydown="handleKeyDown"
-                    @input="handleInput"
-                    @click="handleClick"
-                >
+        <!-- 左侧行数显示 -->
+        <div class="line-numbers">
+            <div v-for="line in lineIndex" :key="line" class="line">{{ line }}</div>
+        </div>
+        <!-- 右侧编辑区域 -->
+        <div class="editor">
+            <textarea v-model="content" @keydown="handleKeyDown" @input="handleInput" @click="handleClick">
                 </textarea>
-            </div>
+        </div>
     </div>
 </template>
-  
+
 <script>
 import { watch } from 'vue';
 
 export default {
     props: {
         nowTabKey: String,
+        title: String,
     },
     data() {
         return {
@@ -92,11 +87,13 @@ export default {
 
 /* 左侧行数显示 */
 .line-numbers {
-    flex-shrink: 0; /* 不随着内容而扩展 */
+    flex-shrink: 0;
+    /* 不随着内容而扩展 */
     padding: 20px;
     height: 100%;
     /* border-right: 1px solid #ccc; */
 }
+
 /* 行数样式 */
 .line {
     font-size: 14px;
@@ -107,15 +104,18 @@ export default {
 }
 
 .editor {
-    flex-grow: 1; /* 随着内容而扩展 */
+    flex-grow: 1;
+    /* 随着内容而扩展 */
     padding: 10px;
-    margin-top: 8px; /* 上方的间距 */
+    margin-top: 8px;
+    /* 上方的间距 */
 }
 
 textarea {
     width: 100%;
     height: 100%;
-    resize: none; /* 禁止调整大小 */
+    resize: none;
+    /* 禁止调整大小 */
     border: none;
     outline: none;
     font-size: 14px;
