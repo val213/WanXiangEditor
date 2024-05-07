@@ -4,7 +4,7 @@
             <a-layout-header>
                 <a-space :size="970" direction="horizontal" fill align="center">
                     <Menu />
-                    <HeadPortrait ref="headPortrait" />
+                    <HeadPortrait ref="headPortrait" @login-success="handleLoginSuccess" />
                 </a-space>
             </a-layout-header>
             <a-layout>
@@ -13,7 +13,7 @@
                 </a-layout-sider>
                 <a-layout-sider :resize-directions="['right']" :style="{ maxWidth: '80%', textAlign: 'center' }">
                     <KeepAlive>
-                        <component :is="CurrentComponentSider" :tabKey="tabKey"></component>
+                        <component :is="CurrentComponentSider" :tabKey="tabKey"   :username="currentUsername" ></component>
                     </KeepAlive>
                 </a-layout-sider>
                 <a-layout-content>
@@ -182,6 +182,7 @@ export default {
             lastTabKey: '1',
             nowTabKey: '1',
             notepadContent: '', // notepad的内容
+            currentUsername: '未登录',  //用户名，传给子组件Explorer
             client: client,
         };
     },
@@ -232,25 +233,25 @@ export default {
             this.sharedTitle = this.$refs.tabsRef.data.find(item => item.key == key).title;
             // console.log("标题：", this.sharedTitle);
 
-            // 加载当前标签的内容
-            this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
-            this.notepadContent = this.$refs.childComponentRef.content;
-        },
-        // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
-        // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
-        componentChange(key) {
-            console.log(key);
-            if (key == 'Explorer') {
-                this.CurrentComponentSider = key;
-            } else if (key == 'Search') {
-                this.CurrentComponentSider = key;
-            } else if (key == 'PDFLoader') {
-                this.CurrentComponentSider = key;
-            }
-            else {
-                this.CurrentComponentContent = key;
-            }
-        },
+      // 加载当前标签的内容
+      this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+      this.notepadContent = this.$refs.childComponentRef.content;
     },
+    // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
+    // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
+    componentChange(key){
+      console.log(key);
+      if (key == 'Explorer') {
+        this.CurrentComponentSider = key;
+      } else if (key == 'Search') {
+        this.CurrentComponentSider = key;
+      } else if (key == 'PDFLoader') {
+        this.CurrentComponentSider = key;
+      }
+      else {
+        this.CurrentComponentContent = key;
+      }
+    },
+  },
 };
 </script>

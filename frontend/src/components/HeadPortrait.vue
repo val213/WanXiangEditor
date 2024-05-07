@@ -99,7 +99,7 @@ export default {
             if (!retGetUser) {
                 Modal.errro({
                     title: '用户名不存在',
-                    contetn: '请检查用户名是否正确',
+                    content: '请检查用户名是否正确',
                 });
                 done(false);
                 return;
@@ -133,6 +133,7 @@ export default {
             window.setTimeout(() => {
                 done();
             }, 3000);
+            context.emit('login-success', username.value);
         };
 
         // 处理用户退出登录的事件
@@ -157,6 +158,7 @@ export default {
                 title: '登出成功',
                 content: '期待您的下次使用',
             });
+            context.emit('login-success', '未登录');
         };
 
         // 处理注册按钮事件

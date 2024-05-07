@@ -3,19 +3,22 @@
 <a-space direction="vertical" fill>
   <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
     <a-collapse-item header="打开的编辑器" :key="1">
-      <div></div>
     </a-collapse-item>
-    <a-collapse-item header="<项目名>" key="2">
-      <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
+    <a-collapse-item :header="getProjectNameHeader" key="2">
+        <template #extra>
+            <a-button @click="method.GetTreeData">
+            <template #icon>
+                <icon-refresh />
+            </template>
+            </a-button>
+        </template> 
         <a-tree
-          class="tree-demo"
           draggable = true
           blockNode = true
-          :data= "treeData"
+          :data="treeData"
           :show-line="true"
           @drop="onDrop"
         />
-      </a-collapse>
     </a-collapse-item>
     <!--<a-collapse-item header="OUTLINE" :key="3">
       <div></div>
@@ -25,24 +28,32 @@
       <div>todo: file saved 1 min</div>
     </a-collapse-item>-->
   </a-collapse>
- 
-    <FileUpload />
+  <FileUpload />
   </a-space>
-  
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import FileUpload from './FileUpload.vue';
-import { Space } from '@arco-design/web-vue';
-export default { 
+import { client } from '@/client';
+export default {
+    props : {
+        username:{
+            type:String,
+            required:true
+        },
+    },
     components: {
       FileUpload,
     },
-  setup() {
+    setup(props) {
     const treeData = ref(defaultTreeData);
-   
+    const getProjectNameHeader  = computed(() =>{
+        return `<项目名>   用户:${props.username}`;
+    })
+
     return {
+      getProjectNameHeader,
       treeData,
       onDrop({ dragNode, dropNode, dropPosition }) {
         const data = treeData.value;
@@ -73,11 +84,32 @@ export default {
             arr.splice(dropPosition < 0 ? index : index + 1, 0, dragNode);
           });
         }
-      }
-      }
+      },
+      method:{
+        async GetTreeData(){
+    const response = await client.callApi('GetFileList', {});
+    client.logger.info('client.callApi返回的数据', response);
+    if (response.isSucc) {
+        treeData.value = response.res.fileList;
+        client.logger.info('成功赋值了treeData.value', treeData);
+        client.logger.info('treeData.value',treeData.value);
+    } else {
+        // 处理错误
+        client.logger.error('获取文件列表失败', response);
     }
-  }
+},
+    }
 
+      }
+    },
+    
+  }
+  /** 
+     data: {
+      type: Array as PropType<TreeNodeData[]>,
+      default: () => [],
+    },
+    */
   const defaultTreeData = [
     {
       title: 'Trunk 0-0',

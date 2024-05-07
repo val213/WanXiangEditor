@@ -7,6 +7,7 @@ import { ReqDelUser, ResDelUser } from './database/PtlDelUser';
 import { ReqGetUser, ResGetUser } from './database/PtlGetUser';
 import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
+import { ReqGetFileList, ResGetFileList } from './PtlGetFileList';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
 import { ReqUpload, ResUpload } from './PtlUpload';
@@ -47,6 +48,10 @@ export interface ServiceType {
         "Clear": {
             req: ReqClear,
             res: ResClear
+        },
+        "GetFileList": {
+            req: ReqGetFileList,
+            res: ResGetFileList
         },
         "SetCookie": {
             req: ReqSetCookie,
@@ -134,6 +139,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "id": 2,
             "name": "Clear",
             "type": "api"
+        },
+        {
+            "id": 16,
+            "name": "GetFileList",
+            "type": "api",
+            "conf": {}
         },
         {
             "id": 3,
@@ -527,6 +538,148 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "type": "Reference",
                         "target": "base/BaseResponse"
                     }
+                }
+            ]
+        },
+        "PtlGetFileList/ReqGetFileList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "directory",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "PtlGetFileList/ResGetFileList": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "fileList",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "PtlGetFileList/TreeNodeData"
+                        }
+                    }
+                }
+            ]
+        },
+        "PtlGetFileList/TreeNodeData": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "key",
+                    "type": {
+                        "type": "Union",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 1,
+                    "name": "title",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 2,
+                    "name": "selectable",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 3,
+                    "name": "disabled",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 4,
+                    "name": "disableCheckbox",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 5,
+                    "name": "checkable",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 6,
+                    "name": "draggable",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 7,
+                    "name": "isLeaf",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 8,
+                    "name": "children",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "PtlGetFileList/TreeNodeData"
+                        }
+                    },
+                    "optional": true
                 }
             ]
         },
