@@ -55,7 +55,7 @@ import { Modal } from '@arco-design/web-vue';
 import { reactive, ref } from 'vue';
 
 export default {
-    setup() {
+    setup(context) {
         // 点击登录后弹出登录框
         const modalVisible = ref(false);
         // 输入框的数据
