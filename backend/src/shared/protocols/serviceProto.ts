@@ -80,10 +80,10 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 9,
+    "version": 2,
     "services": [
         {
-            "id": 5,
+            "id": 0,
             "name": "action/AdminAction",
             "type": "api",
             "conf": {
@@ -94,7 +94,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 6,
+            "id": 1,
             "name": "action/GuestAction",
             "type": "api",
             "conf": {
@@ -105,7 +105,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 7,
+            "id": 2,
             "name": "action/NormalAction",
             "type": "api",
             "conf": {
@@ -116,64 +116,64 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 11,
+            "id": 3,
             "name": "database/AddUser",
             "type": "api"
         },
         {
-            "id": 12,
+            "id": 4,
             "name": "database/DelUser",
             "type": "api"
         },
         {
-            "id": 13,
+            "id": 5,
             "name": "database/GetUser",
             "type": "api"
         },
         {
-            "id": 14,
+            "id": 6,
             "name": "database/UpdateUser",
             "type": "api"
         },
         {
-            "id": 2,
+            "id": 7,
             "name": "Clear",
             "type": "api"
         },
         {
-            "id": 16,
+            "id": 8,
             "name": "GetFileList",
             "type": "api",
             "conf": {}
         },
         {
-            "id": 3,
+            "id": 9,
             "name": "SetCookie",
             "type": "api"
         },
         {
-            "id": 4,
+            "id": 10,
             "name": "SetSession",
             "type": "api"
         },
         {
-            "id": 15,
+            "id": 11,
             "name": "Upload",
             "type": "api"
         },
         {
-            "id": 10,
+            "id": 12,
             "name": "user/Expire",
             "type": "msg"
         },
         {
-            "id": 8,
+            "id": 13,
             "name": "user/Login",
             "type": "api",
             "conf": {}
         },
         {
-            "id": 9,
+            "id": 14,
             "name": "user/Logout",
             "type": "api",
             "conf": {}
@@ -196,7 +196,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 1,
+                    "id": 0,
                     "name": "__ssoToken",
                     "type": {
                         "type": "String"
@@ -230,7 +230,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 1,
+                    "id": 0,
                     "name": "__ssoToken",
                     "type": {
                         "type": "String"
@@ -360,7 +360,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 5,
+                    "id": 4,
                     "name": "create",
                     "type": {
                         "type": "Interface",
@@ -383,7 +383,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 6,
+                    "id": 5,
                     "name": "update",
                     "type": {
                         "type": "Interface",
@@ -484,7 +484,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 2,
+                                "id": 1,
                                 "type": {
                                     "type": "Partial",
                                     "target": {
@@ -551,6 +551,16 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "base/BaseRequest"
                     }
                 }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "directory",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                }
             ]
         },
         "PtlGetFileList/ResGetFileList": {
@@ -571,9 +581,105 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Array",
                         "elementType": {
-                            "type": "String"
+                            "type": "Reference",
+                            "target": "PtlGetFileList/TreeNodeData"
                         }
                     }
+                }
+            ]
+        },
+        "PtlGetFileList/TreeNodeData": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "key",
+                    "type": {
+                        "type": "Union",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 1,
+                    "name": "title",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 2,
+                    "name": "selectable",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 3,
+                    "name": "disabled",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 4,
+                    "name": "disableCheckbox",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 5,
+                    "name": "checkable",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 6,
+                    "name": "draggable",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 7,
+                    "name": "isLeaf",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 8,
+                    "name": "children",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "PtlGetFileList/TreeNodeData"
+                        }
+                    },
+                    "optional": true
                 }
             ]
         },
@@ -682,21 +788,21 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 2,
+                    "id": 0,
                     "name": "uid",
                     "type": {
                         "type": "Number"
                     }
                 },
                 {
-                    "id": 0,
+                    "id": 1,
                     "name": "username",
                     "type": {
                         "type": "String"
                     }
                 },
                 {
-                    "id": 1,
+                    "id": 2,
                     "name": "password",
                     "type": {
                         "type": "String"
