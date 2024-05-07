@@ -80,10 +80,10 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
+    "version": 10,
     "services": [
         {
-            "id": 0,
+            "id": 5,
             "name": "action/AdminAction",
             "type": "api",
             "conf": {
@@ -94,7 +94,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 1,
+            "id": 6,
             "name": "action/GuestAction",
             "type": "api",
             "conf": {
@@ -105,7 +105,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 2,
+            "id": 7,
             "name": "action/NormalAction",
             "type": "api",
             "conf": {
@@ -116,64 +116,64 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 3,
+            "id": 11,
             "name": "database/AddUser",
             "type": "api"
         },
         {
-            "id": 4,
+            "id": 12,
             "name": "database/DelUser",
             "type": "api"
         },
         {
-            "id": 5,
+            "id": 13,
             "name": "database/GetUser",
             "type": "api"
         },
         {
-            "id": 6,
+            "id": 14,
             "name": "database/UpdateUser",
             "type": "api"
         },
         {
-            "id": 7,
+            "id": 2,
             "name": "Clear",
             "type": "api"
         },
         {
-            "id": 8,
+            "id": 16,
             "name": "GetFileList",
             "type": "api",
             "conf": {}
         },
         {
-            "id": 9,
+            "id": 3,
             "name": "SetCookie",
             "type": "api"
         },
         {
-            "id": 10,
+            "id": 4,
             "name": "SetSession",
             "type": "api"
         },
         {
-            "id": 11,
+            "id": 15,
             "name": "Upload",
             "type": "api"
         },
         {
-            "id": 12,
+            "id": 10,
             "name": "user/Expire",
             "type": "msg"
         },
         {
-            "id": 13,
+            "id": 8,
             "name": "user/Login",
             "type": "api",
             "conf": {}
         },
         {
-            "id": 14,
+            "id": 9,
             "name": "user/Logout",
             "type": "api",
             "conf": {}
@@ -196,7 +196,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 0,
+                    "id": 1,
                     "name": "__ssoToken",
                     "type": {
                         "type": "String"
@@ -230,7 +230,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 0,
+                    "id": 1,
                     "name": "__ssoToken",
                     "type": {
                         "type": "String"
@@ -360,7 +360,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 4,
+                    "id": 5,
                     "name": "create",
                     "type": {
                         "type": "Interface",
@@ -383,7 +383,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 5,
+                    "id": 6,
                     "name": "update",
                     "type": {
                         "type": "Interface",
@@ -484,7 +484,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 1,
+                                "id": 2,
                                 "type": {
                                     "type": "Partial",
                                     "target": {
@@ -788,21 +788,21 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
+                    "id": 2,
                     "name": "uid",
                     "type": {
                         "type": "Number"
                     }
                 },
                 {
-                    "id": 1,
+                    "id": 0,
                     "name": "username",
                     "type": {
                         "type": "String"
                     }
                 },
                 {
-                    "id": 2,
+                    "id": 1,
                     "name": "password",
                     "type": {
                         "type": "String"
