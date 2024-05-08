@@ -54,8 +54,56 @@ export default {
     const getProjectNameHeader  = computed(() =>{
         return `<项目名>   用户:${props.username}`;
     })
+    const DownLoadIconClick = async (data) => {
+        // 在这里处理下载事件
+        client.logger.info('DownLoadIconClick 开始',data);
+        // 处理文件名->文件路径
+        const GetFilePath =(data)=>{
+            // 递归获取文件路径
+            let filepath = '';
+            let parent = data;
+            while (parent) {
+                filepath = parent.title + '/' + filepath;
+                parent = parent.parent;
+            }
+            // 去掉最后一个'/'
+            filepath = filepath.substring(0, filepath.length - 1);
+            return filepath;
+        };
+        let filePath = GetFilePath(data);
+        client.logger.info('文件路径', filePath);
+        client.logger.info('开始下载文件', data);
+        let ret = await client.callApi('DownLoad', {filePath: filePath});
+        if (ret.isSucc) {
+            client.logger.info('成功获取文件', ret);
+            // 在本地新建一个文件,将content写入,实现下载
+            let blob = new Blob([ret.res.content], {type: 'text/plain;charset=utf-8'});
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement('a');
+            link.download = 'filename.txt';
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+            // 文件写入成功
+            client.logger.info('成功下载文件', ret);
+            Modal.success({
+                title: '下载文件成功',
+                content: '文件已经下载到本地。',
+            });
+        }
+        else {
+            // 处理错误
+            client.logger.error('下载文件失败', ret.res);
+            Modal.error({
+                title: '下载文件失败',
+                content: '请检查网络连接是否正常，或者联系管理员。',
+            });
+        }
+
+    }
     return {
       getProjectNameHeader,
+      DownLoadIconClick,
       treeData,
       onDrop({ dragNode, dropNode, dropPosition }) {
         const data = treeData.value;
@@ -98,9 +146,6 @@ export default {
                 // 处理错误
                 client.logger.error('获取文件列表失败', response);
             }
-        },
-        DownLoadIconClick(nodeData){
-            client.logger.info('DownLoadIconClick',nodeData);
         },
       }
     },

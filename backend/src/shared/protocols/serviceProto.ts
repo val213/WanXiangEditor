@@ -90,7 +90,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 16,
+    "version": 17,
     "services": [
         {
             "id": 5,
@@ -573,6 +573,15 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "base/BaseRequest"
                     }
                 }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "filePath",
+                    "type": {
+                        "type": "String"
+                    }
+                }
             ]
         },
         "PtlDownLoad/ResDownLoad": {
@@ -583,6 +592,22 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Reference",
                         "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "content",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "fileType",
+                    "type": {
+                        "type": "String"
                     }
                 }
             ]
