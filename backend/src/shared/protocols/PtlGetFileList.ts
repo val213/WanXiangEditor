@@ -49,6 +49,11 @@ export interface TreeNodeData {
      * @en Child node
      * */
     children?: TreeNodeData[];
+    /**
+     * @zh 父节点
+     * @en Parent node
+     * */
+    parent?: TreeNodeData;
   }
 
 export interface ReqGetFileList extends BaseRequest {

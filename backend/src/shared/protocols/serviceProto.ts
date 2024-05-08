@@ -90,7 +90,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 13,
+    "version": 16,
     "services": [
         {
             "id": 5,
@@ -726,6 +726,15 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         }
                     },
                     "optional": true
+                },
+                {
+                    "id": 9,
+                    "name": "parent",
+                    "type": {
+                        "type": "Reference",
+                        "target": "PtlGetFileList/TreeNodeData"
+                    },
+                    "optional": true
                 }
             ]
         },
@@ -747,6 +756,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "String"
                     }
+                },
+                {
+                    "id": 3,
+                    "name": "filePath",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
                 }
             ]
         },

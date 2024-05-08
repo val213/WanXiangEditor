@@ -1,29 +1,22 @@
 <!-- Explorer.vue -->
 <template>
 <a-space direction="vertical" fill>
-  <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide @change="method.GetTreeData">
+  <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide @change="GetTreeData">
     <a-collapse-item header="打开的编辑器" :key="1">
     </a-collapse-item>
     <a-collapse-item :header="getProjectNameHeader" key="2">
-        <!-- <template #extra>
-            <a-button @click="method.GetTreeData">
-            <template #icon>
-                <icon-refresh />
-            </template>
-            </a-button>
-        </template>  -->
         <a-tree
           draggable = true
           blockNode = true
           :data="treeData"
           :show-line="true"
           @drop="onDrop"
-          @select="method.onSelect"
+          @select="onSelect"
         >
         <template #extra="nodeData">
         <IconDownload
           style="position: absolute; right: 8px; font-size: 12px; top: 10px; color: #3370ff;"
-          @click="() => method.DownLoadIconClick(nodeData)"
+          @click="() => DownLoadIconClick(nodeData)"
         />
       </template>
         </a-tree>
@@ -45,6 +38,7 @@ import { ref, computed } from 'vue';
 import FileUpload from './FileUpload.vue';
 import { client } from '@/client';
 import { IconDownload } from '@arco-design/web-vue/es/icon';
+import { Modal } from '@arco-design/web-vue';
 export default {
     props : {
         username:{
@@ -55,12 +49,11 @@ export default {
     components: {
       FileUpload,
     },
-    setup(props,context) {
+    setup(props) {
     const treeData = ref([]);
     const getProjectNameHeader  = computed(() =>{
         return `<项目名>   用户:${props.username}`;
     })
-
     return {
       getProjectNameHeader,
       treeData,
@@ -94,7 +87,6 @@ export default {
           });
         }
       },
-      method:{
         async GetTreeData(){
             const response = await client.callApi('GetFileList', {});
             client.logger.info('client.callApi返回的数据', response);
@@ -107,40 +99,62 @@ export default {
                 client.logger.error('获取文件列表失败', response);
             }
         },
+        DownLoadIconClick(nodeData){
+            client.logger.info('DownLoadIconClick',nodeData);
+        },
+      }
+    },
+    methods: {
         async onSelect(selectedKeys, data){
             client.logger.info('onSelect',selectedKeys, data);
-            // 调用接口返回该文件的内容/文件路径？
-            // 如果是txt文件，通知tabs新建一个tab，显示文件内容
+            // 调用接口返回该文件的内容
             const selectedKey = data.node.key;
             const selectedTitle = data.node.title;
             // 根据selectedTitle的文件名后缀判断文件类型
             let parts = selectedTitle.split(".");
             let extension = parts.pop();
-                // 将被选中文件节点的title作为参数去请求接口
-                let ret = await client.callApi('SelectFile', {selectedTitle: selectedTitle});
-                if (ret.isSucc) {
-                    // 成功
-                    client.logger.info('成功获取文件内容', ret);
-                        let txtData = ret.res.content;
-                        // 将 selectedTitle 和 txtData 传给 tabs 组件
-                        client.logger.info('开始传递文件内容', selectedTitle, txtData);
-                        context.emit('file-selected', selectedTitle, txtData);
-                    }
-                 else {
-                    // 处理错误
-                    client.logger.error('获取文件内容失败', ret.res);
-                
+            // 判断文件类型是文本文件格式, 就调用接口获取文件内容
+            if (extension === 'txt' || extension === 'md' || extension === 'json' || extension === 'js' || extension === 'html' || extension === 'css' || extension === 'py' || extension === 'java' || extension === 'c' || extension === 'cpp' || extension === 'h' || extension === 'hpp' || extension === 'cs' || extension === 'go' || extension === 'php' || extension === 'sql' || extension === 'sh' || extension === 'bat' || extension === 'xml' || extension === 'yaml' || extension === 'yml' || extension === 'ini' || extension === 'conf' || extension === 'cfg' || extension === 'log' || extension === 'properties' || extension === 'gradle') {
+                0
+            }
+            else {
+                // 如果不是文本文件格式, 就提示用户不支持该文件类型
+                client.logger.info('不支持该文件类型', selectedTitle);
+                // 弹出提示框
+                Modal.error({
+                    title: '不支持该文件类型',
+                    content: '请选择文本文件格式，否则会出现乱码',
+                });
+            }
+            // 处理文件名->文件路径
+            const GetFilePath =(data)=>{
+                // 递归获取文件路径
+                let filepath = '';
+                let parent = data.node;
+                while (parent) {
+                    filepath = parent.title + '/' + filepath;
+                    parent = parent.parent;
+                }
+                // 去掉最后一个'/'
+                filepath = filepath.substring(0, filepath.length - 1);
+                return filepath;
+            };
+            let filePath = GetFilePath(data);
+            client.logger.info('文件路径', filePath);
+            // 将被选中文件节点的title作为参数去请求接口
+            let ret = await client.callApi('SelectFile', {selectedTitle: selectedTitle, filePath: filePath});
+            if (ret.isSucc) {
+                client.logger.info('成功获取文件内容', ret);
+                    let txtData = ret.res.content;
+                    // 将 selectedTitle 和 txtData 传给 tabs 组件
+                    client.logger.info('开始传递文件内容', selectedTitle, txtData);
+                    this.$emit('file-selected', selectedTitle, txtData);
+                }
+                else {
+                // 处理错误
+                client.logger.error('获取文件内容失败', ret.res);   
             }
         },
-        DownLoadIconClick(nodeData){
-            client.logger.info('DownLoadIconClick',nodeData);
-
-
-        }
     }
-
-      }
-    },
-    
   }
 </script>
