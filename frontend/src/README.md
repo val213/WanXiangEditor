@@ -39,20 +39,41 @@ export default {
   }
 ```
 最后在template里用上，否则会报错。
-## Components
-### BasicEditor
-### Menu
-### StatusBar
-### Tabs
-### Tree
-### SideMenu 
-左侧功能栏，实现右侧组件随选中的功能动态切换，在SideMenu.vue文件中添加a-menu-item，并在app.vue中添加组件即可实现动态切换。
+## Components 
+### Notepad 编辑器
+### Menu 顶部菜单栏
+### StatusBar 底部状态栏
+### Tabs 标签页
+### SideMenu 左侧功能栏
+实现右侧组件随选中的功能动态切换，在SideMenu.vue文件中添加a-menu-item，并在app.vue中添加组件即可实现动态切换。
 ```html
-<a-menu mode="vertical" :default-selected-keys="['Editor']" @menu-item-click="changeComponent">
-        <a-menu-item key="资源管理器">资源管理器</a-menu-item>
-        <a-menu-item key="Editor">Editor</a-menu-item>
-        <a-menu-item key="PDF">PDF</a-menu-item>
-        <a-menu-item key="新功能">新功能</a-menu-item>
-        //继续添加功能
-</a-menu>
+<template>
+  <!--新功能的前端扩展在这里进,在a-menu-item下添加新的item。-->
+    <div class="menu">
+      <a-menu mode="vertical" :default-selected-keys="['Explorer']" @menu-item-click="changeComponent">
+        <a-menu-item key="Explorer"><icon-home :size="25"/></a-menu-item>
+        <a-menu-item key="Search"><icon-find-replace :size="25"/></a-menu-item>
+        <a-menu-item key="PDFLoader"><icon-file-pdf :size="25"/></a-menu-item>
+      </a-menu>
+    </div>
+</template>
 ```
+### HeadPortrait 头像/用户模块
+### explorer
+#### 打开的文件列表
+- todo：展示用户已经打开的文件的列表，点击文件名可以切换到对应的文件。
+
+#### 项目名
+- 显示登录状态，未登录或者用户名
+- 刷新按钮触发GetFileList接口调用，获取服务端的文件列表（默认uploads目录下），暂未做用户级别的隔离，接口响应中的树状对象列表更新到Tree的data中。
+
+### Search 搜索功能
+- 搜索框，输入关键字，点击搜索按钮，触发搜索功能，搜索结果展示在下方的列表中。
+- todo：点击搜索结果，可以打开对应的文件。
+- todo：搜索范围为服务端的文件列表，暂未做用户级别的隔离。
+
+### FileUpload 文件上传 与 PDFUploader PDF文件上传
+客户端的文件上传功能，支持上传各种格式的文件到服务端的uploads目录(`backend/uploads`)下。PDFUploader是FileUpload的特例，做了类型限制，只支持PDF文件的上传。
+
+
+

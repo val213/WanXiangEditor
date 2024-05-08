@@ -1,21 +1,32 @@
 <!-- Explorer.vue -->
 <template>
 <a-space direction="vertical" fill>
-  <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
+  <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide @change="method.GetTreeData">
     <a-collapse-item header="打开的编辑器" :key="1">
-      <div></div>
     </a-collapse-item>
     <a-collapse-item :header="getProjectNameHeader" key="2">
-      <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide>
+        <!-- <template #extra>
+            <a-button @click="method.GetTreeData">
+            <template #icon>
+                <icon-refresh />
+            </template>
+            </a-button>
+        </template>  -->
         <a-tree
-          class="tree-demo"
           draggable = true
           blockNode = true
-          :data= "treeData"
+          :data="treeData"
           :show-line="true"
           @drop="onDrop"
+          @select="method.onSelect"
+        >
+        <template #extra="nodeData">
+        <IconDownload
+          style="position: absolute; right: 8px; font-size: 12px; top: 10px; color: #3370ff;"
+          @click="() => method.DownLoadIconClick(nodeData)"
         />
-      </a-collapse>
+      </template>
+        </a-tree>
     </a-collapse-item>
     <!--<a-collapse-item header="OUTLINE" :key="3">
       <div></div>
@@ -30,21 +41,22 @@
 </template>
 
 <script>
-import { ref, computed, props } from 'vue';
+import { ref, computed } from 'vue';
 import FileUpload from './FileUpload.vue';
-import { Space } from '@arco-design/web-vue';
-export default { 
+import { client } from '@/client';
+import { IconDownload } from '@arco-design/web-vue/es/icon';
+export default {
+    props : {
+        username:{
+            type:String,
+            required:true
+        },
+    },
     components: {
       FileUpload,
     },
-    props:{
-        username:{
-            type:String,
-            required:true,
-    },
-  setup(props) {
-    
-    const treeData = ref(defaultTreeData);
+    setup(props,context) {
+    const treeData = ref([]);
     const getProjectNameHeader  = computed(() =>{
         return `<项目名>   用户:${props.username}`;
     })
@@ -81,62 +93,54 @@ export default {
             arr.splice(dropPosition < 0 ? index : index + 1, 0, dragNode);
           });
         }
-      }
-      }
-    },
-
-  },
-
-}
-
-
-  const defaultTreeData = [
-    {
-      title: 'Trunk 0-0',
-      key: '0-0',
-      children: [
-        {
-          title: 'Leaf 0-0-1',
-          key: '0-0-1',
-        },
-        {
-          title: 'Branch 0-0-2',
-          key: '0-0-2',
-          disableCheckbox: true,
-          children: [
-            {
-              draggable: false,
-              title: 'Leaf 0-0-2-1 (Drag disabled)',
-              key: '0-0-2-1'
+      },
+      method:{
+        async GetTreeData(){
+            const response = await client.callApi('GetFileList', {});
+            client.logger.info('client.callApi返回的数据', response);
+            if (response.isSucc) {
+                treeData.value = response.res.fileList;
+                client.logger.info('成功赋值了treeData.value', treeData);
+                client.logger.info('treeData.value',treeData.value);
+            } else {
+                // 处理错误
+                client.logger.error('获取文件列表失败', response);
             }
-          ]
         },
-      ],
+        async onSelect(selectedKeys, data){
+            client.logger.info('onSelect',selectedKeys, data);
+            // 调用接口返回该文件的内容/文件路径？
+            // 如果是txt文件，通知tabs新建一个tab，显示文件内容
+            const selectedKey = data.node.key;
+            const selectedTitle = data.node.title;
+            // 根据selectedTitle的文件名后缀判断文件类型
+            let parts = selectedTitle.split(".");
+            let extension = parts.pop();
+                // 将被选中文件节点的title作为参数去请求接口
+                let ret = await client.callApi('SelectFile', {selectedTitle: selectedTitle});
+                if (ret.isSucc) {
+                    // 成功
+                    client.logger.info('成功获取文件内容', ret);
+                        let txtData = ret.res.content;
+                        // 将 selectedTitle 和 txtData 传给 tabs 组件
+                        client.logger.info('开始传递文件内容', selectedTitle, txtData);
+                        context.emit('file-selected', selectedTitle, txtData);
+                    }
+                 else {
+                    // 处理错误
+                    client.logger.error('获取文件内容失败', ret.res);
+                
+            }
+        },
+        DownLoadIconClick(nodeData){
+            client.logger.info('DownLoadIconClick',nodeData);
+
+
+        }
+    }
+
+      }
     },
-    {
-      title: 'Trunk 0-1',
-      key: '0-1',
-      children: [
-        {
-          title: 'Branch 0-1-1',
-          key: '0-1-1',
-          checkable: false,
-          children: [
-            {
-              title: 'Leaf 0-1-1-1',
-              key: '0-1-1-1',
-            },
-            {
-              title: 'Leaf 0-1-1-2',
-              key: '0-1-1-2',
-            },
-          ]
-        },
-        {
-          title: 'Leaf 0-1-2',
-          key: '0-1-2',
-        },
-      ],
-    },
-  ]
+    
+  }
 </script>
