@@ -122,8 +122,8 @@ export default {
                 client.logger.info('不支持该文件类型', selectedTitle);
                 // 弹出提示框
                 Modal.error({
-                    title: '不支持该文件类型',
-                    content: '请选择文本文件格式，否则会出现乱码',
+                    title: '不支持该文件类型,请选择文本格式文件~',
+                    content: '该文件不会显示在文本编辑器中，因为它要么是二进制文件，要么使用不受支持的文本编码。',
                 });
             }
             // 处理文件名->文件路径
