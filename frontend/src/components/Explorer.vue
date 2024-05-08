@@ -30,26 +30,20 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import { ref, computed } from 'vue';
-export default {
-    props : {
-        username:{
-            type:String,
-            required:true
-        },
-    },
-    setup(props) {
-=======
-import { ref } from 'vue';
+import { ref, computed, props } from 'vue';
 import FileUpload from './FileUpload.vue';
 import { Space } from '@arco-design/web-vue';
 export default { 
     components: {
       FileUpload,
     },
-  setup() {
->>>>>>> b9982341b596dd31d45cc15ebec956d39b18b8f0
+    props:{
+        username:{
+            type:String,
+            required:true,
+    },
+  setup(props) {
+    
     const treeData = ref(defaultTreeData);
     const getProjectNameHeader  = computed(() =>{
         return `<项目名>   用户:${props.username}`;
@@ -91,7 +85,10 @@ export default {
       }
     },
 
-  }
+  },
+
+}
+
 
   const defaultTreeData = [
     {

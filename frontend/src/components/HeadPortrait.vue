@@ -195,6 +195,7 @@ export default {
 
     // 处理用户退出登录的事件
     const handleLogout = async () => {
+        Modal.
       // 调用登出api
       let ret = await client.callApi('user/Logout', {
       });
