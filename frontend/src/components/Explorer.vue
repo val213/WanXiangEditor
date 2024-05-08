@@ -116,23 +116,20 @@ export default {
             // 根据selectedTitle的文件名后缀判断文件类型
             let parts = selectedTitle.split(".");
             let extension = parts.pop();
-            if (extension == "txt"){
-                // 请求返回txt文件数据
                 // 将被选中文件节点的title作为参数去请求接口
                 let ret = await client.callApi('SelectFile', {selectedTitle: selectedTitle});
                 if (ret.isSucc) {
                     // 成功
                     client.logger.info('成功获取文件内容', ret);
-                    if (ret.res.fileType == ".txt"){
                         let txtData = ret.res.content;
                         // 将 selectedTitle 和 txtData 传给 tabs 组件
                         client.logger.info('开始传递文件内容', selectedTitle, txtData);
                         context.emit('file-selected', selectedTitle, txtData);
                     }
-                } else {
+                 else {
                     // 处理错误
                     client.logger.error('获取文件内容失败', ret.res);
-                }
+                
             }
         },
         DownLoadIconClick(nodeData){
