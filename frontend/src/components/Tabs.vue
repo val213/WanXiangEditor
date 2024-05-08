@@ -25,17 +25,22 @@ export default {
             },
         ]);
 
-        const handleAdd = (filename) => {
+        const handleAdd = (filename, content) => {
             if (filename != '') {
                 count++;
                 data.value = data.value.concat({
                     key: `${count}`,
                     title: filename,
                 })
+                // 如果传递了content，就存储到sessionStorage中
+                if (content != '') {
+                    sessionStorage.setItem(`${count}`, content);
+                }
                 // 通知父组件标签页要换了
                 context.emit('tab-add', `${count}`);
                 // 通知父组件换标题
                 context.emit('updateTitle', filename);
+      
             } else {
                 count++;
                 data.value = data.value.concat({

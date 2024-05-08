@@ -13,7 +13,7 @@
                 </a-layout-sider>
                 <a-layout-sider :resize-directions="['right']" :style="{ maxWidth: '80%', textAlign: 'center' }">
                     <KeepAlive>
-                        <component :is="CurrentComponentSider" :tabKey="tabKey"   :username="currentUsername" ></component>
+                        <component :is="CurrentComponentSider" :tabKey="tabKey"   :username="currentUsername" @file-selected="handleFileSelected"></component>
                     </KeepAlive>
                 </a-layout-sider>
                 <a-layout-content>
@@ -243,6 +243,7 @@ export default {
       console.log(key);
       if (key == 'Explorer') {
         this.CurrentComponentSider = key;
+
       } else if (key == 'Search') {
         this.CurrentComponentSider = key;
       } else if (key == 'PDFLoader') {
@@ -251,6 +252,11 @@ export default {
       else {
         this.CurrentComponentContent = key;
       }
+    },
+    handleFileSelected(title, content) {  
+        client.logger.info('File title and content:', title, content);
+        this.$refs.tabsRef.handleAdd(title,content);
+
     },
   },
 };
