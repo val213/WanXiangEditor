@@ -7,7 +7,9 @@ import { ReqDelUser, ResDelUser } from './database/PtlDelUser';
 import { ReqGetUser, ResGetUser } from './database/PtlGetUser';
 import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
+import { ReqDownLoad, ResDownLoad } from './PtlDownLoad';
 import { ReqGetFileList, ResGetFileList } from './PtlGetFileList';
+import { ReqSelectFile, ResSelectFile } from './PtlSelectFile';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
 import { ReqUpload, ResUpload } from './PtlUpload';
@@ -49,9 +51,17 @@ export interface ServiceType {
             req: ReqClear,
             res: ResClear
         },
+        "DownLoad": {
+            req: ReqDownLoad,
+            res: ResDownLoad
+        },
         "GetFileList": {
             req: ReqGetFileList,
             res: ResGetFileList
+        },
+        "SelectFile": {
+            req: ReqSelectFile,
+            res: ResSelectFile
         },
         "SetCookie": {
             req: ReqSetCookie,
@@ -80,10 +90,10 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
+    "version": 13,
     "services": [
         {
-            "id": 0,
+            "id": 5,
             "name": "action/AdminAction",
             "type": "api",
             "conf": {
@@ -94,7 +104,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 1,
+            "id": 6,
             "name": "action/GuestAction",
             "type": "api",
             "conf": {
@@ -105,7 +115,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 2,
+            "id": 7,
             "name": "action/NormalAction",
             "type": "api",
             "conf": {
@@ -116,64 +126,76 @@ export const serviceProto: ServiceProto<ServiceType> = {
             }
         },
         {
-            "id": 3,
+            "id": 11,
             "name": "database/AddUser",
             "type": "api"
         },
         {
-            "id": 4,
+            "id": 12,
             "name": "database/DelUser",
             "type": "api"
         },
         {
-            "id": 5,
+            "id": 13,
             "name": "database/GetUser",
             "type": "api"
         },
         {
-            "id": 6,
+            "id": 14,
             "name": "database/UpdateUser",
             "type": "api"
         },
         {
-            "id": 7,
+            "id": 2,
             "name": "Clear",
             "type": "api"
         },
         {
-            "id": 8,
+            "id": 17,
+            "name": "DownLoad",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 16,
             "name": "GetFileList",
             "type": "api",
             "conf": {}
         },
         {
-            "id": 9,
+            "id": 18,
+            "name": "SelectFile",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 3,
             "name": "SetCookie",
             "type": "api"
         },
         {
-            "id": 10,
+            "id": 4,
             "name": "SetSession",
             "type": "api"
         },
         {
-            "id": 11,
+            "id": 15,
             "name": "Upload",
             "type": "api"
         },
         {
-            "id": 12,
+            "id": 10,
             "name": "user/Expire",
             "type": "msg"
         },
         {
-            "id": 13,
+            "id": 8,
             "name": "user/Login",
             "type": "api",
             "conf": {}
         },
         {
-            "id": 14,
+            "id": 9,
             "name": "user/Logout",
             "type": "api",
             "conf": {}
@@ -196,7 +218,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 0,
+                    "id": 1,
                     "name": "__ssoToken",
                     "type": {
                         "type": "String"
@@ -230,7 +252,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 0,
+                    "id": 1,
                     "name": "__ssoToken",
                     "type": {
                         "type": "String"
@@ -360,7 +382,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 4,
+                    "id": 5,
                     "name": "create",
                     "type": {
                         "type": "Interface",
@@ -383,7 +405,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 5,
+                    "id": 6,
                     "name": "update",
                     "type": {
                         "type": "Interface",
@@ -484,7 +506,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 1,
+                                "id": 2,
                                 "type": {
                                     "type": "Partial",
                                     "target": {
@@ -530,6 +552,30 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ]
         },
         "PtlClear/ResClear": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ]
+        },
+        "PtlDownLoad/ReqDownLoad": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "PtlDownLoad/ResDownLoad": {
             "type": "Interface",
             "extends": [
                 {
@@ -683,6 +729,65 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
+        "PtlSelectFile/ReqSelectFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 1,
+                    "name": "selectedTitle",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "PtlSelectFile/ResSelectFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "fileType",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 1,
+                    "name": "content",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 2,
+                    "name": "path",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                }
+            ]
+        },
         "PtlSetCookie/ReqSetCookie": {
             "type": "Interface",
             "extends": [
@@ -788,21 +893,21 @@ export const serviceProto: ServiceProto<ServiceType> = {
             ],
             "properties": [
                 {
-                    "id": 0,
+                    "id": 2,
                     "name": "uid",
                     "type": {
                         "type": "Number"
                     }
                 },
                 {
-                    "id": 1,
+                    "id": 0,
                     "name": "username",
                     "type": {
                         "type": "String"
                     }
                 },
                 {
-                    "id": 2,
+                    "id": 1,
                     "name": "password",
                     "type": {
                         "type": "String"

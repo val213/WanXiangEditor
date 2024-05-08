@@ -2,7 +2,7 @@ import * as uuid from "uuid";
 import { CurrentUser } from "../shared/models/CurrentUser";
 
 // 86400000 * 7 一星期
-const SSO_VALID_TIME = 10* 1000;
+const SSO_VALID_TIME = 86400000 * 7;
 
 export class UserUtil {
     static isTokenExpired(token: string) {
@@ -17,25 +17,25 @@ export class UserUtil {
         password: string,
         roles: string[]
     }[] = [
-        {
-            uid: 1,
-            username: 'Normal',
-            password: '123456',
-            roles: ['Normal']
-        },
-        {
-            uid: 2,
-            username: 'Admin',
-            password: '123456',
-            roles: ['Admin']
-        }
-    ];
+            {
+                uid: 1,
+                username: 'Normal',
+                password: '123456',
+                roles: ['Normal']
+            },
+            {
+                uid: 2,
+                username: 'Admin',
+                password: '123456',
+                roles: ['Admin']
+            }
+        ];
 
     // sso token的信息, 这个ssoTokenInfo应该是个Hash映射
     // uid：用户的唯一标识符
     // expiredTime：过期时间
     static ssoTokenInfo: {
-        [token: string]: { uid: number ,expiredTime: number, }
+        [token: string]: { uid: number, expiredTime: number, }
     } = {};
 
     // 生成一个sso token
@@ -60,7 +60,7 @@ export class UserUtil {
     // 解析一个sso token
     static async parseSSO(ssoToken: string): Promise<CurrentUser | undefined> {
         let info = this.ssoTokenInfo[ssoToken];
-        
+
         // sso token不存在或已经过期了
         if (!info || info.expiredTime < Date.now()) {
             return undefined;
