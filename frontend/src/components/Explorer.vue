@@ -52,7 +52,7 @@ export default {
     setup(props) {
     const treeData = ref([]);
     const getProjectNameHeader  = computed(() =>{
-        return `<项目名>   用户:${props.username}`;
+        return `      ${props.username}`;    //此处可以添加多人协作的用户名
     })
     const DownLoadIconClick = async (data) => {
         // 在这里处理下载事件

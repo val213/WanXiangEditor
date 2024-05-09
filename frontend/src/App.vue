@@ -96,6 +96,7 @@ export default {
         const sharedTitle = ref('首页'); // 共享数据-标题
         const createSharedFile = ref(false);
         const joinSharedFile = ref(false);
+
         const form = reactive({
             filename: '',
             cooperativeCode: ''
@@ -258,6 +259,10 @@ export default {
         this.$refs.tabsRef.handleAdd(title,content);
 
     },
+    handleLoginSuccess(username){
+        this.currentUsername = username;
+        console.log("currentUsername是" + this.currentUsername);
+    }
   },
 };
 </script>
