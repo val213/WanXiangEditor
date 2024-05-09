@@ -193,7 +193,7 @@ export default {
                 let txtData = ret.res.content;
                 // 将 selectedTitle 和 txtData 传给 tabs 组件
                 client.logger.info('开始传递文件内容', selectedTitle, txtData);
-                context.emit('file-selected', selectedTitle, txtData, extension);
+                this.$emit('file-selected', selectedTitle, txtData, extension);
               }
               else {
                 // 处理错误
