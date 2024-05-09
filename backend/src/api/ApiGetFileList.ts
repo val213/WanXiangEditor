@@ -48,11 +48,16 @@ export interface TreeNodeData {
      * @en Child node
      * */
     children?: TreeNodeData[];
+    /**
+     * @zh 父节点
+     * @en Parent node
+     * */
+    parent?: TreeNodeData;
   }
 
 function buildTreeData(directoryPath: string, parentKey: string = ''): TreeNodeData[] {
     const treeData: TreeNodeData[] = [];
-    const files = fs.readdirSync(directoryPath);
+    const files = fs.readdirSync(directoryPath);// uploads文件夹下的所有文件
 
     files.forEach((file, index) => {
         const fullPath = path.join(directoryPath, file);
@@ -68,9 +73,17 @@ function buildTreeData(directoryPath: string, parentKey: string = ''): TreeNodeD
             checkable: false,
             draggable: true,
             isLeaf: !stat.isDirectory(),
+            parent:  {title: directoryPath, key: parentKey}
             // 其他属性...
         };
-
+        // 根据父节点的key,指向父节点的引用
+        if (parentKey) {
+            console.log('parentKey', parentKey);
+            const parent = treeData.find(v => v.key === parentKey);
+            if (parent) {
+                node.parent = parent;
+            }
+        }
         if (stat.isDirectory()) {
             node.children = buildTreeData(fullPath, key);
         }
