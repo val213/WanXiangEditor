@@ -90,7 +90,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 17,
+    "version": 19,
     "services": [
         {
             "id": 5,
@@ -785,6 +785,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 {
                     "id": 3,
                     "name": "filePath",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                },
+                {
+                    "id": 4,
+                    "name": "fileType",
                     "type": {
                         "type": "String"
                     },
