@@ -13,21 +13,32 @@
 </template>
 
 <script>
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 
 export default {
     props: {
         nowTabKey: String,
         title: String,
+        content: String,
     },
     data() {
         return {
-            content: '', // 文本内容
+            //content: '', // 文本内容
             lineIndex: 1, // 行数
             cursorLinePosition: 1, //光标所在行数
             isCursorAtLineStart: true, // 光标是否在行首
             isCursorAtLineEnd: true, // 光标是否在行尾
         };
+    },
+
+    setup(props) {
+        const content = ref(props.content);
+        watch(() => props.content, (newContent) => {
+            content.value = newContent;
+        });
+        return {
+            content
+        }
     },
     methods: {
         // 处理光标
