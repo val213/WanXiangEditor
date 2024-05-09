@@ -1,14 +1,17 @@
 <template>
     <div id="vue-pdf-viewer">
         <div id="pdf-viewer">
-            <vuePdfEmbed :source="pdfState.pdfSource" :page="pdfState.pageNum" textLayer />
+            <vuePdfEmbed 
+            :source="pdfState.pdfSource" 
+            :page="pdfState.pageNum"
+            />
         </div>
     </div>
 </template>
 
 <script>
     import VuePdfEmbed from 'vue-pdf-embed';
-    import { reactive, watchEffect } from 'vue';
+    import { reactive } from 'vue';
     export default {
         components: {
             VuePdfEmbed
@@ -36,12 +39,12 @@
 
 <style>
 #vue-pdf-view {
-    position: absolute;
+    position: fixed;
     left: 50%;
     transform: translateX(-50%) scale(1.0);
-    width: 70%;
-    height: 100%;
-    text-align: center;
+    width: fit-content;
+    height: max-content;
+    text-align: start;
 
     /* 内容溢出显示滚动条 */
     overflow: scroll;

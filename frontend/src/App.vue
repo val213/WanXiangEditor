@@ -49,7 +49,7 @@
                         </a-modal>
                     </a-dropdown>
                     <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey"
-                        :title="sharedTitle" ref="childComponentRef">
+                        :title="sharedTitle" :content="content" ref="childComponentRef">
                     </Notepad>
                     <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource">
                     </PDFViewer>
@@ -228,8 +228,8 @@ export default {
 
             // 加载当前标签的内容
             //this.componentChange("Notepad");
-            this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
-            this.notepadContent = this.$refs.childComponentRef.content;
+            this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+            this.notepadContent = this.content;
         },
         changeKey(key) {
             this.lastTabKey = this.nowTabKey;
@@ -248,9 +248,10 @@ export default {
             if (type == "Notepad") {
                 this.componentChange(type);
                 // 加载当前标签的内容
-                //console.log(sessionStorage.getItem(this.nowTabKey));
-                this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
-                this.notepadContent = this.$refs.childComponentRef.content;
+                console.log(sessionStorage.getItem(this.nowTabKey));
+                this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+                this.notepadContent = this.content;
+                console.log(this.notepadContent);
             } else if (type == "PDFViewer") {
                 this.componentChange(type);
                 // 切换pdf的base64
