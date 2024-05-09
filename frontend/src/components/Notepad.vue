@@ -14,7 +14,6 @@
 
 <script>
 import { watch } from 'vue';
-import YjsBinding from './YjsBinding'
 export default {
     props: {
         nowTabKey: String,
