@@ -1,7 +1,7 @@
 <template>
     <!-- 未登录的头像 -->
     <a-avatar shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' }"
-        @click="handleClick" v-if="!isLogin">
+       @click="handleClick" v-if="!isLogin" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
         未登录
         <template #trigger-icon>
             <icon-user size="15" :stroke-width='7' style="color: lightblue" />
@@ -46,8 +46,35 @@
             </a-form-item>
         </a-form>
     </a-modal>
-</template>
 
+<!-- , transform:'translateX(-50%)'} -->
+    <!-- @before-ok="showPersonInfo" @click="handleClick"    #f0f0f0' -->
+    <!-- 个人信息框 -->
+    <!-- :style="{position:absolute, top:100, left:0, right:0, border:1px solid #ddd}" -->
+    <a-modal v-model:visible="showPersonInfo" title="个人信息" class="person-info" :style="{height:'320px', width:'320px',  backgroundColor: 'lightblue', padding: '20px', position:'absolute', transform:'translateX(10%)'}" >
+        <div v-if="isLogin">
+            用户名：{{ username }}
+            个人简介：{{  }}
+        </div>
+            <div v-else>
+            未登录
+        </div>
+    </a-modal>
+    <!-- <div @mouseenter="handleMouseEnter">
+            <div v-if="isLogin">
+            用户名：{{ username }}
+            个人简介：
+        </div>
+            <div v-else>
+            未登录
+        </div>
+    </div> -->
+
+    <!-- <div>
+        <p @mouseover="showTip=true" @mouseleave="showTip=false">鼠标悬浮在这里</p>
+        <div v-show="showTip" class="tooltip">这是一个悬浮框</div>
+    </div> -->
+</template>
 
 <script>
 import { client } from '@/client';
@@ -55,7 +82,7 @@ import { Modal } from '@arco-design/web-vue';
 import { reactive, ref } from 'vue';
 
 export default {
-    setup(context) {
+    setup(props,context) {
         // 点击登录后弹出登录框
         const modalVisible = ref(false);
         // 输入框的数据
@@ -128,12 +155,12 @@ export default {
                 title: '登录成功',
                 content: '欢迎回来',
             });
+            context.emit('login-success', username.value);
 
             // 延迟3秒后关闭登录框
             window.setTimeout(() => {
                 done();
             }, 3000);
-            context.emit('login-success', username.value);
         };
 
         // 处理用户退出登录的事件
@@ -196,6 +223,16 @@ export default {
             }, 3000);
         }
 
+        // 处理展示个人信息事件 用户id 用户名 头像 简介 ...
+
+        const showPersonInfo = ref(false);
+        const handleMouseEnter= async() =>{
+            showPersonInfo.value = true;
+        }
+        const handleMouseLeave = async() =>{
+            showPersonInfo.value = false;
+        }
+
         return {
             modalVisible,
             form,
@@ -210,7 +247,23 @@ export default {
             handleLogout,
             handleRegister,
             handleRegisterBeforeOk,
+            showPersonInfo,
+            handleMouseEnter,
+            handleMouseLeave,
         };
     },
 };
 </script>
+
+<style>
+.person-info {
+  position: absolute;
+  top: 100%; /* 头像组件的正下方 */
+  right:50%;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* 确保个人信息覆盖在其他元素之上 */
+}
+</style>

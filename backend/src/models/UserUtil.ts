@@ -2,7 +2,7 @@ import * as uuid from "uuid";
 import { CurrentUser } from "../shared/models/CurrentUser";
 
 // 86400000 * 7 一星期
-const SSO_VALID_TIME = 86400000 * 7;
+const SSO_VALID_TIME = 10 * 1000;
 
 export class UserUtil {
     static isTokenExpired(token: string) {
