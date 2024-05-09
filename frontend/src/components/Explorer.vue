@@ -155,6 +155,7 @@ export default {
             // 调用接口返回该文件的内容
             const selectedKey = data.node.key;
             const selectedTitle = data.node.title;
+            console.log(selectedTitle);
             // 根据selectedTitle的文件名后缀判断文件类型
             let parts = selectedTitle.split(".");
             let extension = parts.pop();
@@ -187,7 +188,7 @@ export default {
             let filePath = GetFilePath(data);
             client.logger.info('文件路径', filePath);
             // 将被选中文件节点的title作为参数去请求接口
-            let ret = await client.callApi('SelectFile', {selectedTitle: selectedTitle, filePath: filePath});
+            let ret = await client.callApi('SelectFile', {selectedTitle: selectedTitle, filePath: filePath, fileType: extension});
             if (ret.isSucc) {
                 client.logger.info('成功获取文件内容', ret);
                     let txtData = ret.res.content;

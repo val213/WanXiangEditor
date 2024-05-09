@@ -4,7 +4,7 @@
 
 import { Collection, Db, MongoClient, OptionalId } from "mongodb";
 import { Logger } from "tsrpc";
-import { BackConfig } from "./BackConfig";
+//import { BackConfig } from "./BackConfig";
 import { DbEditor } from "../shared/collectionType/DbEditor";
 import { DbUser } from "../shared/collectionType/DbUser";
 
