@@ -256,7 +256,8 @@ export default {
                 this.componentChange(type);
                 // 切换pdf的base64
                 //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
-                this.pdfSource = sessionStorage.getItem(this.nowTabKey) ?? '';
+                let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
+                this.pdfSource = source;
             }
 
       
@@ -277,10 +278,14 @@ export default {
         this.CurrentComponentContent = key;
       }
     },
-    handleFileSelected(title, content) {  
+    handleFileSelected(title, content, type) {  
         client.logger.info('File title and content:', title, content);
-        this.$refs.tabsRef.handleAdd(title,content);
-
+        console.log(type);
+        if(type == 'pdf') {
+            this.$refs.tabsRef.handleAdd(title,content,"PDFViewer");
+        } else {
+            this.$refs.tabsRef.handleAdd(title,content,"Notepad");
+        }
     },
     pdfView(fileName, pdfBase64) {
         //添加一个新的tab来展示pdf
