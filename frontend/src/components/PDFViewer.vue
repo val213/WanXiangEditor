@@ -28,6 +28,7 @@
                 pdfNum: 1,
                 pdfPages: 1,
             });
+            //console.log("2222222"+props.pdfSource);
             return {
                 pdfState,
             }

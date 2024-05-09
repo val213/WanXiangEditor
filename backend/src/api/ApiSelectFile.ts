@@ -20,9 +20,11 @@ export default async function (call: ApiCall<ReqSelectFile, ResSelectFile>) {
             call.succ({ content: fileContent ,fileType: path.extname(filePath)});
         }else if(fileType == "pdf") {
             console.log("按base64编码");
-            let fileContent = fs.readFileSync(filePath, 'base64');
+            console.log(filePath);
+            let fileContent = fs.readFileSync(filePath);
+            let base64FileContent = fileContent.toString('base64');
             // 返回文件内容
-            call.succ({ content: fileContent ,fileType: path.extname(filePath)});
+            call.succ({ content: base64FileContent ,fileType: path.extname(filePath)});
         }
     } catch (err) {
         // 如果读取文件失败，返回错误信息
