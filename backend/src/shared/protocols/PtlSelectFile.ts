@@ -2,6 +2,7 @@ import { BaseRequest, BaseResponse, BaseConf } from "./base";
 
 export interface ReqSelectFile extends BaseRequest {
     selectedTitle: string;
+    filePath?: string;
 }
 
 export interface ResSelectFile extends BaseResponse {
