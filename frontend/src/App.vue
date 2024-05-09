@@ -287,6 +287,7 @@ export default {
         console.log("pdfView start");
         this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer");
         //this.$refs.PDFViewer.changePdfUrl(pdfBase64);
+    },
     handleLoginSuccess(username){
         this.currentUsername = username;
         console.log("currentUsername是" + this.currentUsername);

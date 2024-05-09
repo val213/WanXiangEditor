@@ -6,6 +6,7 @@
           />
           <a-tree 
           :data="treeData"
+          blockNode = true
           @select="onSelect"
           >
             <template #title="nodeData">

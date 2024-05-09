@@ -4,7 +4,7 @@
 
 import { Collection, Db, MongoClient, OptionalId } from "mongodb";
 import { Logger } from "tsrpc";
-//import { BackConfig } from "./BackConfig";
+import { BackConfig } from "./BackConfig";
 import { DbEditor } from "../shared/collectionType/DbEditor";
 import { DbUser } from "../shared/collectionType/DbUser";
 
@@ -13,11 +13,11 @@ export class Global {
 
     // 初始化数据库
     static async init(logger?: Logger) {
-        logger?.log("开始连接数据库...");
-        const client = await new MongoClient(BackConfig.mongoDb).connect();
-        logger?.log("数据库连接成功");
-        // 获取数据库实例 数据库名字: BasicInfo
-        this.db = client.db("BasicInfo");
+        // logger?.log("开始连接数据库...");
+        // const client = await new MongoClient(BackConfig.mongoDb).connect();
+        // logger?.log("数据库连接成功");
+        // // 获取数据库实例 数据库名字: BasicInfo
+        // this.db = client.db("BasicInfo");
     }
 
     // 自行实现一个.cllection方法
