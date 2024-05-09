@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { client } from '@/client';
 import { ref } from 'vue';
 
 let count = 1;
@@ -52,16 +53,35 @@ export default {
         editing:false,
       },
     ]);
-    const handleAdd = () => {
-      count++;
-      data.value = data.value.concat({
-        key: `${count}`,
-        title: `Undifined` + count,
-        editing:false,
-      })
-
-      // 通知父组件标签页要换了
-      context.emit('tab-click', `${count}`);
+    const handleAdd = (filename, content) => {
+        // 如果传入了filename，而且是srting格式
+        if (filename != ''&& typeof filename == 'string') {
+            client.logger.info(filename);
+            count++;
+            data.value = data.value.concat({
+                key: `${count}`,
+                title: filename,
+            })
+            // 如果传递了content，就存储到sessionStorage中
+            if (content != undefined && content!=''&& typeof content == 'string') {
+                sessionStorage.setItem(`${count}`, content);
+                // 通知父组件标签页要换了
+                context.emit('tab-add', `${count}`);
+                // 通知父组件换标题
+                context.emit('updateTitle', filename);
+            }    
+        } 
+        else if(content == undefined){
+            count++;
+            data.value = data.value.concat({
+                key: `${count}`,
+                title: `Undifined` + count,
+                editing:false,
+            })
+            sessionStorage.setItem(`${count}`, 'Undifined' + count);
+            // 通知父组件标签页要换了
+            context.emit('tab-click', `${count}`);
+        }
     };
     const handleDelete = (key) => {
       // 删除键为key的项
