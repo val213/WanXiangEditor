@@ -22,7 +22,7 @@ export default {
     },
     data() {
         return {
-            //content: '', // 文本内容
+            content: '', // 文本内容
             lineIndex: 1, // 行数
             cursorLinePosition: 1, //光标所在行数
             isCursorAtLineStart: true, // 光标是否在行首
