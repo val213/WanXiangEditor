@@ -14,7 +14,7 @@
 
 <script>
 import { watch } from 'vue';
-
+import YjsBinding from './YjsBinding'
 export default {
     props: {
         nowTabKey: String,
@@ -30,6 +30,37 @@ export default {
         };
     },
     methods: {
+        getContent() {
+        // 返回编辑器的内容
+            return this.content;
+        },
+        setContent(content) {
+        // 设置编辑器的内容
+            this.content = content;
+        },
+        getSelection() {
+        // 返回编辑器的当前选择范围
+            const textarea = this.$refs.textarea;
+            return {
+                start: textarea.selectionStart,
+                end: textarea.selectionEnd
+            };
+        },
+        setSelection(selection) {
+            // 设置编辑器的选择范围
+            const textarea = this.$refs.textarea;
+            textarea.setSelectionRange(selection.start, selection.end);
+        },
+        onContentChange(callback) {
+            // 注册一个回调函数，当编辑器的内容发生更改时，这个回调函数会被调用
+            watch(() => this.content, callback);
+        },
+        onSelectionChange(callback) {
+            // 注册一个回调函数，当编辑器的选择范围发生更改时，这个回调函数会被调用
+            this.$refs.textarea.addEventListener('select', () => {
+                callback(this.getSelection());
+            });
+        },
         // 处理光标
         handleCursor() {
             // 更新行数
