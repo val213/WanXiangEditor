@@ -13,7 +13,7 @@ export default async function (call: ApiCall<ReqSelectFile, ResSelectFile>) {
     try {
         // 读取文件内容(判断是文本文件还是二进制文件)
         console.log("type: "+fileType)
-        if(fileType == "txt") {
+        if(fileType == "txt" || fileType == 'txt' || fileType == 'md' || fileType == 'json' || fileType == 'js' || fileType == 'html' || fileType == 'css' || fileType == 'py' || fileType == 'java' || fileType == 'c' || fileType == 'cpp' || fileType == 'h' || fileType == 'hpp' || fileType == 'cs' || fileType == 'go' || fileType == 'php' || fileType == 'sql' || fileType == 'sh' || fileType == 'bat' || fileType == 'xml' || fileType == 'yaml' || fileType == 'yml' || fileType == 'ini' || fileType == 'conf' || fileType == 'cfg' || fileType == 'log' || fileType == 'properties' || fileType == 'gradle' ||fileType =='json') {
             console.log("按string编码");
             let fileContent = fs.readFileSync(filePath, 'utf8');    
             // 返回文件内容
