@@ -83,17 +83,18 @@
             }
 
             const onSelect = async (selectedKeys, data) => {
-            client.logger.info('onSelect',selectedKeys, data);
+              client.logger.info('onSelect',selectedKeys, data);
             // 调用接口返回该文件的内容
             const selectedKey = data.node.key;
             const selectedTitle = data.node.title;
+            console.log(selectedTitle);
             // 根据selectedTitle的文件名后缀判断文件类型
             let parts = selectedTitle.split(".");
             let extension = parts.pop();
             // 判断文件类型是文本文件格式, 就调用接口获取文件内容
-            if (extension === 'txt' || extension === 'md' || extension === 'json' || extension === 'js' || extension === 'html' || extension === 'css' || extension === 'py' || extension === 'java' || extension === 'c' || extension === 'cpp' || extension === 'h' || extension === 'hpp' || extension === 'cs' || extension === 'go' || extension === 'php' || extension === 'sql' || extension === 'sh' || extension === 'bat' || extension === 'xml' || extension === 'yaml' || extension === 'yml' || extension === 'ini' || extension === 'conf' || extension === 'cfg' || extension === 'log' || extension === 'properties' || extension === 'gradle' || extension === 'pdf') {
+            if (extension === 'txt' || extension === 'md' || extension === 'json' || extension === 'js' || extension === 'html' || extension === 'css' || extension === 'py' || extension === 'java' || extension === 'c' || extension === 'cpp' || extension === 'h' || extension === 'hpp' || extension === 'cs' || extension === 'go' || extension === 'php' || extension === 'sql' || extension === 'sh' || extension === 'bat' || extension === 'xml' || extension === 'yaml' || extension === 'yml' || extension === 'ini' || extension === 'conf' || extension === 'cfg' || extension === 'log' || extension === 'properties' || extension === 'gradle' ||extension ==='json') {
                 0
-            } 
+            }
             else {
                 // 如果不是文本文件格式, 就提示用户不支持该文件类型
                 client.logger.info('不支持该文件类型', selectedTitle);
@@ -125,7 +126,7 @@
                     let txtData = ret.res.content;
                     // 将 selectedTitle 和 txtData 传给 tabs 组件
                     client.logger.info('开始传递文件内容', selectedTitle, txtData);
-                    context.emit('file-selected', selectedTitle, txtData, extension);
+                    this.$emit('file-selected', selectedTitle, txtData);
                 }
                 else {
                 // 处理错误
