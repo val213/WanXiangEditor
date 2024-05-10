@@ -15,6 +15,10 @@ export async function ApiGetUser(call: ApiCall<ReqGetUser, ResGetUser>) {
         return;
     }
 
+    if (!op.introduction) {
+        op.introduction = '请输入您的简介';
+    }
+
     call.succ({
         user: {
             ...op,

@@ -95,7 +95,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 20,
+    "version": 19,
     "services": [
         {
             "id": 5,
@@ -441,37 +441,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "type": {
                                     "type": "Date"
                                 }
-                            },
-                            {
-                                "id": 2,
-                                "name": "username",
-                                "type": {
-                                    "type": "String"
-                                },
-                                "optional": true
-                            },
-                            {
-                                "id": 3,
-                                "name": "introduction",
-                                "type": {
-                                    "type": "Union",
-                                    "members": [
-                                        {
-                                            "id": 0,
-                                            "type": {
-                                                "type": "String"
-                                            }
-                                        },
-                                        {
-                                            "id": 1,
-                                            "type": {
-                                                "type": "Literal",
-                                                "literal": null
-                                            }
-                                        }
-                                    ]
-                                },
-                                "optional": true
                             }
                         ]
                     },
@@ -539,19 +508,40 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 0,
                     "name": "update",
                     "type": {
-                        "type": "Partial",
-                        "target": {
-                            "target": {
-                                "type": "Reference",
-                                "target": "../collectionType/DbUser/DbUser"
+                        "type": "Intersection",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "target": {
+                                        "type": "Reference",
+                                        "target": "../collectionType/DbUser/DbUser"
+                                    },
+                                    "keys": [
+                                        "_id"
+                                    ],
+                                    "type": "Pick"
+                                }
                             },
-                            "keys": [
-                                "username",
-                                "password",
-                                "introduction"
-                            ],
-                            "type": "Pick"
-                        }
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Partial",
+                                    "target": {
+                                        "target": {
+                                            "type": "Reference",
+                                            "target": "../collectionType/DbUser/DbUser"
+                                        },
+                                        "keys": [
+                                            "username",
+                                            "password",
+                                            "introduction"
+                                        ],
+                                        "type": "Pick"
+                                    }
+                                }
+                            }
+                        ]
                     }
                 }
             ]
