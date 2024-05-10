@@ -2,7 +2,21 @@
 <template>
   <a-space direction="vertical" fill>
     <a-collapse :default-active-key="['']" :bordered="false" destroy-on-hide @change="GetTreeData">
-      <a-collapse-item header="打开的编辑器" :key="1">
+      <a-collapse-item header="打开的编辑器" :key="1" >
+        <a-tree
+          :data="openedFiles"
+          @select="handleFileSelect"
+          @click="navigateToFile(file)"
+          >
+        </a-tree>
+
+        <a-tab
+            v-for="(file, index) in openedFiles"
+            :key="index"
+            @click="navigateToFile(file)"
+>
+        {{ file.title }}
+        </a-tab>
       </a-collapse-item>
       <a-collapse-item :header="getProjectNameHeader" key="2">
           <a-tree
@@ -46,6 +60,26 @@
               required:true
           },
       },
+      data() {//存储打开的文件
+        return {
+          openedFileContent: '', // 存储选中文件的内容
+          openedFiles: [], // 存储打开文件的列表
+        };
+      },
+      watch:{
+        //监听openedFiles改变
+        openedFiles:{
+          deep:true,
+          handler(newOpenedFiles){
+               // 处理openedFiles的数据变化
+            this.openedFiles=newOpenedFiles.map(file=>({
+              title:file.title,
+              key:file.path,
+            }));
+          }
+        },
+      },
+
       components: {
         FileUpload,
       },
@@ -171,6 +205,10 @@
                   // 处理错误
                   client.logger.error('获取文件列表失败', response);
               }
+              const fileInfo={
+                  title:selectedTitle,
+                };
+                this.openedFiles.push(fileInfo);
           },
         }
       },
@@ -178,6 +216,7 @@
           async onSelect(selectedKeys, data){
             client.logger.info('onSelect', selectedKeys, data);
                 // 调用接口返回该文件的内容
+                const selecatedNode=data.node;
                 const selectedKey = data.node.key;
                 const selectedTitle = data.node.title;
                 // 根据selectedTitle的文件名后缀判断文件类型
@@ -224,7 +263,16 @@
                   // 处理错误
                   client.logger.error('获取文件内容失败', ret.res);
                 }
-          },
+
+                const fileInfo=await client.callApi('SelectFile', { selectedTitle: selectedTitle, filePath: filePath, fileType: extension });
+                const newFileInfo = {
+                  title: selectedTitle,
+                  path:filePath
+                };
+                this.openedFiles.push(newFileInfo);
+                
+            }
+
       }
     }
   </script>
