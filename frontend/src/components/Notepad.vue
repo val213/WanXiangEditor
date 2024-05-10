@@ -10,8 +10,7 @@
                 </textarea>
         </div>
         <div class="notepad">
-        <!-- ... -->
-        <button @click="saveContent">保存</button>
+        <a-button @click="saveContent">保存</a-button>
     </div>
     </div>
 </template>
@@ -103,14 +102,14 @@ export default {
             // console.log("光标是否在行尾：", isAtLineEnd);*/
         },
         // 处理键盘按下事件
-        /*handleKeyDown() {
-            // 判断按下的键是否为回车键
-            // if (event.keyCode == 13) {
-            // }
-            // 判断按下的键是否为退格键
-            // else if (event.keyCode == 8) {
-            // }
-        },*/
+        handleKeyDown() {
+            //判断按下的键是否'ctrl+s'，是则保存
+            if (event.ctrlKey && event.key === 's') {
+                this.saveContent();
+                event.preventDefault();
+            }
+
+        },
         // 处理输入事件
         handleInput() {
             // 将当前数据存入sessionStorage
