@@ -9,11 +9,16 @@
             <textarea v-model="content" @keydown="handleKeyDown" @input="handleInput" @click="handleClick">
                 </textarea>
         </div>
+        <div class="notepad">
+        <!-- ... -->
+        <button @click="saveContent">保存</button>
+    </div>
     </div>
 </template>
 
 <script>
 import { ref, watch } from 'vue';
+import Swal from 'sweetalert2';
 export default {
     props: {
         nowTabKey: String,
@@ -112,6 +117,81 @@ export default {
         // 处理点击事件
         // handleClick() {
         // }
+
+        // 保存内容
+        // 用多步骤弹出框，先让用户选择确定是否保存当前所在的文件，用户确定保存后再继续选择保存到服务器或者保存本地副本，但这两种选择都需要调用各自的函数
+        async saveContent() {
+            const { value } = await Swal.fire({
+            title: '请选择保存方式',
+            input: 'radio',
+            inputOptions: {
+                'server': '保存到服务器',
+                'local': '保存本地副本',
+                'cancel': '取消',
+            },
+            inputValidator: (value) => {
+                if (!value) {
+                    return '你需要选择一个选项！'
+                }
+            }
+        });
+
+        if (value === 'server') {
+            this.saveToServer(this.content);
+        } else if (value === 'local') {
+            this.saveToLocal(this.content);
+        } else if (value === 'cancel') {
+            // 用户选择了取消
+            console.log('User cancelled');
+        }
+    },
+        // 保存到本地
+        saveToLocal(content, title) {
+            const downloadFile = async (content, type, title)=> {
+                let blob = new Blob([content], {type: type});
+                let url = URL.createObjectURL(blob);
+                let link = document.createElement('a');
+                link.download = title;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+                client.logger.info('成功下载文件');
+                Modal.success({
+                title: '下载文件成功',
+                content: '文件已经下载到本地。',
+                });
+            };
+            const handleFileDownload = async (content, title)=> {
+                // 首先判断文件的类型
+                let parts = title.split(".");
+                let extension = parts.pop();
+                const textExtensions = ['txt', 'md', 'json', 'js', 'html', 'css', 'py', 'java', 'c', 'cpp', 'h', 'hpp', 'cs', 'go', 'php', 'sql', 'sh', 'bat', 'xml', 'yaml', 'yml', 'ini', 'conf', 'cfg', 'log', 'properties', 'gradle', 'pdf'];
+                const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+                const archiveExtensions = ['zip', 'rar', '7z', 'tar', 'gz', 'bz2', 'xz'];
+
+                if (textExtensions.includes(extension)) {
+                    downloadFile(content, 'text/plain;charset=utf-8', title);
+                } else if (imageExtensions.includes(extension)) {
+                    downloadFile(content, 'image/jpeg', title);
+                } else if (extension === 'pdf') {
+                    downloadFile(content, 'application/pdf', title);
+                } else if (archiveExtensions.includes(extension)) {
+                    downloadFile(content, 'application/zip', title);
+                } else {
+                    client.logger.info('不支持该文件类型', title);
+                    Modal.error({
+                    title: '不支持该文件类型,请选择文本格式文件~',
+                    content: '暂时不支持该文件类型的下载，因为它要么是二进制文件，要么使用不受支持的文本编码。',
+                    });
+                }
+            };
+            handleFileDownload(content, title);
+        },
+        // 保存到服务器
+        async saveToServer(content) {
+            let ret = await client.callApi('SaveFile', { content: content });
+
+        },
     },
     mounted() {
         watch(() => this.content, this.handleCursor);

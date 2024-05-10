@@ -77,20 +77,8 @@ export default {
         if (ret.isSucc) {
             client.logger.info('成功获取文件', ret);
             // 在本地新建一个文件,将content写入,实现下载
-            let blob = new Blob([ret.res.content], {type: 'text/plain;charset=utf-8'});
-            let url = URL.createObjectURL(blob);
-            let link = document.createElement('a');
-            link.download = 'filename.txt';
-            link.href = url;
-            link.click();
-            URL.revokeObjectURL(url);
-            // 文件写入成功
-            client.logger.info('成功下载文件', ret);
-            Modal.success({
-                title: '下载文件成功',
-                content: '文件已经下载到本地。',
-            });
-        }
+            handleFileDownload(ret.res.content, data.title);
+          }
         else {
             // 处理错误
             client.logger.error('下载文件失败', ret.res);
@@ -99,8 +87,45 @@ export default {
                 content: '请检查网络连接是否正常，或者联系管理员。',
             });
         }
+    };
+    const downloadFile = async (content, type, title)=> {
+              let blob = new Blob([content], {type: type});
+              let url = URL.createObjectURL(blob);
+              let link = document.createElement('a');
+              link.download = title;
+              link.href = url;
+              link.click();
+              URL.revokeObjectURL(url);
+              client.logger.info('成功下载文件');
+              Modal.success({
+                title: '下载文件成功',
+                content: '文件已经下载到本地。',
+              });
+        };
+      const handleFileDownload = async (content, title)=> {
+          // 首先判断文件的类型
+          let parts = title.split(".");
+          let extension = parts.pop();
+          const textExtensions = ['txt', 'md', 'json', 'js', 'html', 'css', 'py', 'java', 'c', 'cpp', 'h', 'hpp', 'cs', 'go', 'php', 'sql', 'sh', 'bat', 'xml', 'yaml', 'yml', 'ini', 'conf', 'cfg', 'log', 'properties', 'gradle', 'pdf'];
+          const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+          const archiveExtensions = ['zip', 'rar', '7z', 'tar', 'gz', 'bz2', 'xz'];
 
-    }
+          if (textExtensions.includes(extension)) {
+            downloadFile(content, 'text/plain;charset=utf-8', title);
+          } else if (imageExtensions.includes(extension)) {
+            downloadFile(content, 'image/jpeg', title);
+          } else if (extension === 'pdf') {
+            downloadFile(content, 'application/pdf', title);
+          } else if (archiveExtensions.includes(extension)) {
+            downloadFile(content, 'application/zip', title);
+          } else {
+            client.logger.info('不支持该文件类型', title);
+            Modal.error({
+              title: '不支持该文件类型,请选择文本格式文件~',
+              content: '暂时不支持该文件类型的下载，因为它要么是二进制文件，要么使用不受支持的文本编码。',
+            });
+          }
+        };
     return {
       getProjectNameHeader,
       DownLoadIconClick,
