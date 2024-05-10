@@ -19,8 +19,6 @@ export interface DbUser {
     update?: {
         uid: string,
         time: Date,
-        username?: string,
-        introduction?: string | null,
     }
 }
 

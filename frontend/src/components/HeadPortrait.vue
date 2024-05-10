@@ -28,12 +28,22 @@
         </template>
     </a-modal>
     <!-- 登录成功后的头像 -->
-    <a-avatar shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' }"
-        trigger-type='mask' v-if="isLogin" @click="handleMouseEnter">     
-        {{ username }}
-        <template #trigger-icon>
+    
+    <a-popover position="bottom" title="个人信息" :style="{ width: '400px', height: '600px'}">
+        <a-avatar shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' }"
+            trigger-type='mask' v-if="isLogin" @click="handleMouseEnter">     
+            {{ username }}
+            <template #trigger-icon>
+            </template>
+        </a-avatar>
+        <template #content>
+            <div>用户名: {{ username }}</div>
+            <div>uid: {{ }}</div>
+            <div>个人简介: {{ introduction }}</div>
+            <a-button type="primary" @click='handleChangeInfo'>修改个人信息</a-button>
+            <a-button @click="handleReadyLogout">退出登录</a-button>
         </template>
-    </a-avatar>
+    </a-popover>
     <!-- 处理是否确认退出 -->
     <a-modal v-model:visible="readyLogout" 
              :closable="false"
@@ -64,30 +74,6 @@
         </a-form>
     </a-modal>
 
-<!-- , transform:'translateX(-50%)'} -->
-    <!-- @before-ok="showPersonInfo" @click="handleClick"    #f0f0f0' -->
-    <!-- 个人信息框 -->
-    <!-- :style="{position:absolute, top:100, left:0, right:0, border:1px solid #ddd}" -->
-
-    <!-- 个人信息显示框 -->
-    <a-modal v-model:visible="showPersonInfo" :mask='false' :footer='true' title="个人信息" class="person-info" :style="{height:'500px', width:'2600px'}" :centered="true">
-        <template #footer>
-            <a-button type="primary" @click='handleChangeInfo' >修改个人信息</a-button>
-            <a-button @click="handleReadyLogout">退出登录</a-button>
-         </template>
-        <!-- <div v-if="isLogin">
-            用户名：{{ username }}
-            个人简介：{{  }}
-        </div>
-            <div v-else>
-            未登录
-        </div> -->
-        <div>用户名：{{ username }}</div>
-        <div>uid:{{  }}</div>
-        <div>个人简介：{{ introduction }}</div>
-
-    </a-modal>
-
     <!-- 个人信息修改框 -->
     <a-modal v-model:visible="changeInfo" title="请修改您的个人信息" footer="true">
         <a-space direction="vertical" align="end">
@@ -104,7 +90,6 @@
             <a-button type="primary" @click="handleConfirmModify">确认修改</a-button>
             <a-button @click="handleCancelModify">取消修改</a-button>
         </template>
-
     </a-modal>
 
     <!-- <div @mouseenter="handleMouseEnter">
@@ -152,6 +137,9 @@ export default {
         // 初始化登录状态
         isLogin.value = !!localStorage.getItem('SSO_TOKEN');
         username.value = localStorage.getItem('USERNAME');
+        if (username.value != 'null') {
+            context.emit('login-success', username.value);
+       }
 
         // 处理点击头像的事件
         const handleClick = () => {
@@ -164,13 +152,12 @@ export default {
             // 查找是否存在该用户
             let retGetUser = await client.callApi('database/GetUser', {
                 username: form.username,
-                // introduction:'',
             });
 
             console.log("retGetUser: ", retGetUser);
             // 用户不存在
-            if (!retGetUser) {
-                Modal.errro({
+            if (!retGetUser.res.user) {
+                Modal.error({
                     title: '用户名不存在',
                     content: '请检查用户名是否正确',
                 });
@@ -190,25 +177,22 @@ export default {
 
             // 调用登录api
             let ret = await client.callApi('user/Login', {
-                // uid: retGetUser.res.user.uid,
+                uid: retGetUser.res.user.uid,
                 username: retGetUser.res.user.username,
                 password: retGetUser.res.user.password,
+                introduction: retGetUser.res.user.introduction,
             });
             // 登录成功，切换头像状态
             isLogin.value = true;
             username.value = form.username;
+            modalVisible.value = false;
             // uid.value = ret.res.user.uid;
             formRef.value.resetFields();
+            context.emit('login-success', username.value);
             Modal.success({
                 title: '登录成功',
                 content: '欢迎回来',
             });
-            context.emit('login-success', username.value);
-
-            // 延迟3秒后关闭登录框
-            window.setTimeout(() => {
-                done();
-            }, 3000);
         };
 
         // 处理取消登录
@@ -312,18 +296,24 @@ export default {
         }
         // 处理修改个人信息
         const infomation = reactive({
-            updateUsername: username,  //初始名字
-            newIntroduction: introduction,
+            updateUsername: username.value,  //初始名字
+            newIntroduction: introduction.value,
         });
-        const updateData = {
-            tomodifyusername:username,
-            update:{
-                username:infomation.updateUsername,
-                introduction:infomation.newIntroduction
-            }
-        }
         const handleConfirmModify = async() =>{
-            let ret2 = await client.callApi('database/UpdateUser', updateData);
+            let ret1 = await client.callApi('database/GetUser', {
+                username: username.value,
+            });
+            if (!ret1) {
+                console.log("获取用户信息失败");
+            }
+
+            let ret2 = await client.callApi('database/UpdateUser', { 
+                update: {
+                    _id: ret1.res.user._id,
+                    username: infomation.updateUsername,
+                    introduction: infomation.newIntroduction,
+                }
+            });
             console.log("information"+infomation.newIntroduction);
             if (!ret2) {
                 console.log("修改信息失败");
@@ -332,8 +322,8 @@ export default {
                 title: '修改成功',
             })
             context.emit('login-success', username.value);
-            changeInfo.value = false;  //退出修改信息框
-            showPersonInfo.value = false;  //顺便退出个人信息框
+            changeInfo.value = false;  // 退出修改信息框
+            showPersonInfo.value = false;  // 顺便退出个人信息框
         }
 
         return {
@@ -363,10 +353,7 @@ export default {
             infomation,
             // uid,
             handleCancelModify,
-            updateData,
             handleCancelLogin,
-
-
         };
     },
 };

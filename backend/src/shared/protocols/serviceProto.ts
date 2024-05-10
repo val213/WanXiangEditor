@@ -9,6 +9,7 @@ import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
 import { ReqDownLoad, ResDownLoad } from './PtlDownLoad';
 import { ReqGetFileList, ResGetFileList } from './PtlGetFileList';
+import { ReqSaveFile, ResSaveFile } from './PtlSaveFile';
 import { ReqSelectFile, ResSelectFile } from './PtlSelectFile';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
@@ -59,6 +60,10 @@ export interface ServiceType {
             req: ReqGetFileList,
             res: ResGetFileList
         },
+        "SaveFile": {
+            req: ReqSaveFile,
+            res: ResSaveFile
+        },
         "SelectFile": {
             req: ReqSelectFile,
             res: ResSelectFile
@@ -90,7 +95,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 18,
+    "version": 19,
     "services": [
         {
             "id": 5,
@@ -159,6 +164,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 16,
             "name": "GetFileList",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 19,
+            "name": "SaveFile",
             "type": "api",
             "conf": {}
         },
@@ -430,37 +441,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "type": {
                                     "type": "Date"
                                 }
-                            },
-                            {
-                                "id": 2,
-                                "name": "username",
-                                "type": {
-                                    "type": "String"
-                                },
-                                "optional": true
-                            },
-                            {
-                                "id": 3,
-                                "name": "introduction",
-                                "type": {
-                                    "type": "Union",
-                                    "members": [
-                                        {
-                                            "id": 0,
-                                            "type": {
-                                                "type": "String"
-                                            }
-                                        },
-                                        {
-                                            "id": 1,
-                                            "type": {
-                                                "type": "Literal",
-                                                "literal": null
-                                            }
-                                        }
-                                    ]
-                                },
-                                "optional": true
                             }
                         ]
                     },
@@ -528,19 +508,40 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 0,
                     "name": "update",
                     "type": {
-                        "type": "Partial",
-                        "target": {
-                            "target": {
-                                "type": "Reference",
-                                "target": "../collectionType/DbUser/DbUser"
+                        "type": "Intersection",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "target": {
+                                        "type": "Reference",
+                                        "target": "../collectionType/DbUser/DbUser"
+                                    },
+                                    "keys": [
+                                        "_id"
+                                    ],
+                                    "type": "Pick"
+                                }
                             },
-                            "keys": [
-                                "username",
-                                "password",
-                                "introduction"
-                            ],
-                            "type": "Pick"
-                        }
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Partial",
+                                    "target": {
+                                        "target": {
+                                            "type": "Reference",
+                                            "target": "../collectionType/DbUser/DbUser"
+                                        },
+                                        "keys": [
+                                            "username",
+                                            "password",
+                                            "introduction"
+                                        ],
+                                        "type": "Pick"
+                                    }
+                                }
+                            }
+                        ]
                     }
                 }
             ]
@@ -778,6 +779,62 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "PtlGetFileList/TreeNodeData"
                     },
                     "optional": true
+                }
+            ]
+        },
+        "PtlSaveFile/ReqSaveFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "content",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "title",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "filepath",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "PtlSaveFile/ResSaveFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "filePath",
+                    "type": {
+                        "type": "String"
+                    }
                 }
             ]
         },
