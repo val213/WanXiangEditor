@@ -108,6 +108,9 @@ export default {
         // 初始化登录状态
         isLogin.value = !!localStorage.getItem('SSO_TOKEN');
         username.value = localStorage.getItem('USERNAME');
+        if (username.value != 'null') {
+            context.emit('login-success', username.value);
+       }
 
         // 处理点击头像的事件
         const handleClick = () => {

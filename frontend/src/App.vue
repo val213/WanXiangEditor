@@ -22,28 +22,28 @@
                         <Tabs ref="tabsRef" :nowTabKey="nowTabKey" @tab-click="changeKey" @tab-add="changeKey"
                             @tab-del="changeToLastKey" @updateTitle="updataSharedTitle" />
                         <template #content>
-                            <a-doption>创建多人协作文件(txt)</a-doption>
+                            <a-doption>创建多人协作文件</a-doption>
                             <a-doption>加入多人协作文件</a-doption>
                         </template>
-                        <a-modal v-model:visible="createSharedFile" title="创建多人协作文件" @cancel="handleCreatedFileCancel"
+                        <a-modal v-model:visible="createSharedFile" title="创建多人协作文件" @cancel="handleCreatedCancel"
                             @before-ok="handleCreatedFileBeforeOk">
-                            <a-form :model="form" size="large" :scroll-to-first-error="true">
-                                <a-form-item field="filename" label="文件名" :required="true">
+                            <a-form ref="formRef" :model="form" size="large" :scroll-to-first-error="true">
+                                <a-form-item field="filename" label="文件名" :rules="[{ required: true, message: '请先输入文件名'}]" >
                                     <a-input v-model="form.filename" />
                                 </a-form-item>
-                                <a-form-item field="cooperativeCode" label="在线协作码" :required="true">
+                                <a-form-item field="cooperativeCode" label="在线协作码" :rules="[{ required: true, message: '请先输入在线协作码'}]">
                                     <a-input v-model="form.cooperativeCode" />
                                 </a-form-item>
                             </a-form>
                         </a-modal>
                         <a-modal v-model:visible="joinSharedFile" title="加入多人协作文件" @cancel="handleJoinCancel"
                             @before-ok="handleJoinBeforeOk">
-                            <a-form :model="form" size="large" :scroll-to-first-error="true">
-                                <a-form-item field="username" label="用户名" :required="true">
-                                    <a-input v-model="joinSharedFileForm.username" />
+                            <a-form ref="joinFileFromref" :model="joinSharedFileForm" size="large" :scroll-to-first-error="true">
+                                <a-form-item field="username" label="用户名" :rules="[{required:true,message:'请先输入用户名'}]">
+                                    <a-input v-model="joinSharedFileForm.username" placeholder="请输入用户名……"/>
                                 </a-form-item>
-                                <a-form-item field="cooperativeCode" label="在线协作码" :required="true">
-                                    <a-input v-model="joinSharedFileForm.cooperativeCode" />
+                                <a-form-item field="cooperativeCode" label="在线协作码" :rules="[{required:true,message:'请先输入在线协作码'}]">
+                                    <a-input v-model="joinSharedFileForm.cooperativeCode" placeholder="请输入在线协作码……"/>
                                 </a-form-item>
                             </a-form>
                         </a-modal>
@@ -53,6 +53,8 @@
                     </Notepad>
                     <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource">
                     </PDFViewer>
+                    <CodeMirror v-if="CurrentComponentContent === 'CodeMirror'" ref="codemirrorRef" :nowTabKey="nowTabKey" :currentUsername="currentUsername">
+                    </CodeMirror>
                 </a-layout-content>
             </a-layout>
             <a-layout-footer>
@@ -77,7 +79,7 @@ import PDFLoader from './components/PDFLoader.vue';
 import PDFViewer from './components/PDFViewer.vue';
 import { client } from './client';
 import { ref, reactive } from 'vue';
-
+import  CodeMirror from './components/CodeMirror.vue';
 export default {
     name: 'App',
     components: {
@@ -93,10 +95,14 @@ export default {
         FileUpload,
         PDFLoader,
         PDFViewer,
+        CodeMirror,
     },
     setup() {
         const tabsRef = ref(null);
         const PDFViewerRef = ref(null);
+        const codemirrorRef = ref(null);
+        const formRef = ref(null);
+        const joinFileFromref = ref(null);
         const sharedTitle = ref('首页'); // 共享数据-标题
         const createSharedFile = ref(false);
         const joinSharedFile = ref(false);
@@ -111,11 +117,11 @@ export default {
         });
 
         const handleSelect = (key) => {
-            if (key == '创建多人协作文件(txt)') {
-                console.log("创建多人协作文件(txt)");
+            if (key == '创建多人协作文件') {
+                // console.log("创建多人协作文件");
                 createSharedFile.value = true;
             } else if (key == '加入多人协作文件') {
-                console.log("加入多人协作文件");
+                // console.log("加入多人协作文件");
                 joinSharedFile.value = true;
             }
         };
@@ -131,10 +137,10 @@ export default {
 
             // 创建成功
             if (tabsRef.value) {
-                tabsRef.value.handleAdd(form.filename + '.txt');
+                tabsRef.value.handleAdd(form.filename, '', "CodeMirror", form.cooperativeCode);
                 createSharedFile.value = false;
-                form.filename = '';
-                form.cooperativeCode = '';
+                formRef.value.resetFields();
+                formRef.value.clearValidate();
                 done()
                 return;
             }
@@ -146,13 +152,24 @@ export default {
 
         const handleCreatedCancel = () => {
             createSharedFile.value = false;
-            form.filename = '';
-            form.cooperativeCode = '';
+            formRef.value.resetFields();
+            formRef.value.clearValidate();
         }
 
         // 处理加入多人协作文件的确认事件
         const handleJoinBeforeOk = (done) => {
             // console.log(form)
+
+            // 加入成功
+            if (tabsRef.value) {
+                tabsRef.value.handleAdd('拥有者: ' + joinSharedFileForm.username, '',"CodeMirror", joinSharedFileForm.cooperativeCode, joinSharedFileForm.username);
+                createSharedFile.value = false;
+                joinFileFromref.value.resetFields();
+                joinFileFromref.value.clearValidate();
+                done()
+                return;
+            }
+
             window.setTimeout(() => {
                 done(false)
             }, 3000)
@@ -160,13 +177,16 @@ export default {
 
         const handleJoinCancel = () => {
             createSharedFile.value = false;
-            form.filename = '';
-            form.cooperativeCode = '';
+            joinFileFromref.value.resetFields();
+            joinFileFromref.value.clearValidate();
         }
 
         return {
             tabsRef,
             PDFViewerRef,
+            codemirrorRef,
+            formRef,
+            joinFileFromref,
             sharedTitle,
             createSharedFile,
             joinSharedFile,
@@ -238,7 +258,7 @@ export default {
 
             //获取type
             let type = sessionStorage.getItem(this.nowTabKey+'type');
-            console.log(type);
+            console.log("当前标签页类型：", type);
 
             // 更新标题
             this.sharedTitle = this.$refs.tabsRef.data.find(item => item.key == key).title;
@@ -248,15 +268,17 @@ export default {
             if (type == "Notepad") {
                 this.componentChange(type);
                 // 加载当前标签的内容
-                console.log(sessionStorage.getItem(this.nowTabKey));
+                // console.log(sessionStorage.getItem(this.nowTabKey));
                 this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
                 this.notepadContent = this.content;
-                console.log(this.notepadContent);
+                // console.log(this.notepadContent);
             } else if (type == "PDFViewer") {
                 this.componentChange(type);
                 // 切换pdf的base64
                 //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
                 this.pdfSource = sessionStorage.getItem(this.nowTabKey) ?? '';
+            } else if (type == "CodeMirror") {
+                this.componentChange(type);
             }
 
       
@@ -290,7 +312,7 @@ export default {
     },
     handleLoginSuccess(username){
         this.currentUsername = username;
-        console.log("currentUsername是" + this.currentUsername);
+        console.log("当前用户是" + this.currentUsername);
     }
   },
 };
