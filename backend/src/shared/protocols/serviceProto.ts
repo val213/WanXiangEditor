@@ -90,7 +90,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 18,
+    "version": 19,
     "services": [
         {
             "id": 5,
@@ -382,6 +382,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
+                    "id": 7,
+                    "name": "introduction",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
                     "id": 5,
                     "name": "create",
                     "type": {
@@ -506,7 +513,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             },
                             {
-                                "id": 2,
+                                "id": 1,
                                 "type": {
                                     "type": "Partial",
                                     "target": {
@@ -516,7 +523,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                         },
                                         "keys": [
                                             "username",
-                                            "password"
+                                            "password",
+                                            "introduction"
                                         ],
                                         "type": "Pick"
                                     }
@@ -962,6 +970,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "String"
                     }
+                },
+                {
+                    "id": 3,
+                    "name": "introduction",
+                    "type": {
+                        "type": "String"
+                    }
                 }
             ]
         },
@@ -1020,6 +1035,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                             "type": "String"
                         }
                     }
+                },
+                {
+                    "id": 3,
+                    "name": "introduction",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
                 }
             ]
         },

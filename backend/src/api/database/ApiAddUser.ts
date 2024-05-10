@@ -10,6 +10,7 @@ export async function ApiAddUser(call: ApiCall<ReqAddUser, ResAddUser>) {
     let op = await Global.collection('User').insertOne({
         ...call.req.newUser,
         uid: generateUid(),
+        introduction: '请在此输入您的简介',
         create: {
             uid: 'xxx',
             time: new Date()

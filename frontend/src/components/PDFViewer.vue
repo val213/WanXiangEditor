@@ -4,6 +4,7 @@
             <vuePdfEmbed 
             :source="pdfState.pdfSource" 
             :page="pdfState.pageNum"
+            :key="refresh"
             />
         </div>
     </div>
@@ -11,29 +12,42 @@
 
 <script>
     import VuePdfEmbed from 'vue-pdf-embed';
-    import { reactive } from 'vue';
+    import { nextTick, reactive, ref, watch } from 'vue';
     export default {
         components: {
             VuePdfEmbed
         },
-        props: {
-            pdfSource: {
-                type: String,
-                require: true
-            }
-        },
+        props: ['pdfSource', 'changeFlag'],
+        // props: {
+        //     pdfSource: {
+        //         type: String,
+        //         require: true
+        //     },
+        //     changeFlag: 0
+        // },
         setup(props) {
+            const refresh = ref(0);
+            watch(()=>props.changeFlag,()=>{
+                //console.log("fresh");
+                nextTick(update);
+            })
+            function update(){
+                //console.log(pdfState.pdfSource)
+                pdfState.pdfSource = props.pdfSource
+                refresh.value++;
+            }
             const pdfState = reactive({
                 pdfSource: props.pdfSource,
                 pdfNum: 1,
                 pdfPages: 1,
             });
+            //console.log("2222222"+props.pdfSource);
             return {
+                refresh,
                 pdfState,
             }
         },
     }
-    
 
 </script>
 

@@ -51,7 +51,7 @@
                     <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey"
                         :title="sharedTitle" :content="content" ref="childComponentRef">
                     </Notepad>
-                    <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource">
+                    <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource" :changeFlag="changeFlag">
                     </PDFViewer>
                     <CodeMirror v-if="CurrentComponentContent === 'CodeMirror'" ref="codemirrorRef" :nowTabKey="nowTabKey" :currentUsername="currentUsername">
                     </CodeMirror>
@@ -210,6 +210,7 @@ export default {
             notepadContent: '', // notepad的内容
             currentUsername: '未登录',  //用户名，传给子组件Explorer
             client: client,
+            changeFlag: 0
         };
     },
     mounted() {
@@ -276,7 +277,12 @@ export default {
                 this.componentChange(type);
                 // 切换pdf的base64
                 //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
-                this.pdfSource = sessionStorage.getItem(this.nowTabKey) ?? '';
+                //TOOD::后端和本地预览的source格式不一样导致冲突
+                let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
+                this.changeFlag = Date.now();
+                this.pdfSource = source;
+                
+                //this.pdfSource = source;
             } else if (type == "CodeMirror") {
                 this.componentChange(type);
             }
@@ -299,10 +305,14 @@ export default {
         this.CurrentComponentContent = key;
       }
     },
-    handleFileSelected(title, content) {  
+    handleFileSelected(title, content, type) {  
         client.logger.info('File title and content:', title, content);
-        this.$refs.tabsRef.handleAdd(title,content);
-
+        console.log(type);
+        if(type == 'pdf') {
+            this.$refs.tabsRef.handleAdd(title,content,"PDFViewer");
+        } else {
+            this.$refs.tabsRef.handleAdd(title,content,"Notepad");
+        }
     },
     pdfView(fileName, pdfBase64) {
         //添加一个新的tab来展示pdf

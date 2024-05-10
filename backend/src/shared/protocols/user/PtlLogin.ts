@@ -1,3 +1,4 @@
+import { ServerMonitoringMode } from 'mongodb';
 import { CurrentUser } from '../../models/CurrentUser';
 import { BaseConf, BaseRequest, BaseResponse } from '../base';
 
@@ -9,7 +10,8 @@ import { BaseConf, BaseRequest, BaseResponse } from '../base';
 export interface ReqLogin extends BaseRequest {
     uid: number,
     username: string,
-    password: string
+    password: string,
+    introduction: string, 
 }
 
 /**

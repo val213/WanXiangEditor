@@ -16,5 +16,7 @@ declare module 'tsrpc' {
     export interface BaseConnection {
         // 自定义的新字段
         userId: number;
+        needLogin?: boolean,
+        needRoles?: string[]
     }
 }

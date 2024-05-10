@@ -5,6 +5,7 @@
     action="/"
     @before-upload="beforeUpload"
     @before-remove="beforeRemove"
+    @change="onChange"
     :auto-upload="true"
     :file-list="fileList"
     ref="uploadRef"
@@ -39,12 +40,15 @@
     beforeRemove(file){
       return new Promise((resolve, reject) => {
         Modal.confirm({
-          title: 'on-before-remove',
-          content: `确认删除 ${file.name}`,
+          title: '删除上传列表中的文件',
+          content: `确认把${file.name}从上传列表中移除吗？`,
           onOk: () => resolve(true),
           onCancel: () => reject('cancel'),
         });
       });
+    },
+    onChange(newFileList){
+      this.fileList = newFileList;
     },
     startUpload() {
         this.fileList.forEach(file => {
@@ -56,7 +60,7 @@
     async customRequest(file) {
         client.logger.info('customRequest', this.file);
       if (!this.file) {
-        this.$message.error('Please select a file');
+        this.$message.error('请先选择文件！');
         return;
       }
 
@@ -69,22 +73,45 @@
 
       if (!ret.isSucc) {
         this.$message.error(ret.err.message);
-        client.logger.error('Upload fail', ret.err);
+        client.logger.error('上传失败！', ret.err);
         file.status='error';
         return;
       }
       file.status = 'done';
       client.logger.info('Upload successfully', ret.isSucc);
-      this.$message.success('Upload successfully!');
+      this.$message.success('上传成功！');
     },
     loadFile(file) {
-      return new Promise(rs => {
+      return new Promise((resolve, reject) => {
         let reader = new FileReader();
         reader.onload = e => {
-          rs(new Uint8Array(e.target.result));
+          if (file.type === 'application/json') {
+            try {
+              let data = JSON.parse(e.target.result);
+              let jsonString = JSON.stringify(data);
+              let jsonUint8Array = new TextEncoder().encode(jsonString);
+              resolve(jsonUint8Array);
+            } catch (error) {
+              reject(error);
+            }
+          } else {
+            resolve(new Uint8Array(e.target.result));
+          }
+        };
+        reader.onerror = error => {
+          Modal.error({
+            title: '文件读取错误',
+            content: '您似乎没有该文件的读取权限，请检查文件是否存在或者是否有读取权限。',
+          });
+          console.error('Error reading file:', error);
+          reject(error);
+        };
+        if (file.type === 'application/json') {
+          reader.readAsText(file);
+        } else {
+          reader.readAsArrayBuffer(file);
         }
-        reader.readAsArrayBuffer(file);
-      })
+      });
     },
     removeFile(file) {
     const index = this.fileList.indexOf(file);

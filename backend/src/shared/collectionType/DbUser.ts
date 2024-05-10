@@ -8,6 +8,7 @@ export interface DbUser {
     uid: number;
     username: string;
     password: string;
+    introduction: string;
     // roles: string[];
 
     create: {

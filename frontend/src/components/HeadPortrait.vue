@@ -1,15 +1,16 @@
-<template>
+<template class="noneshadow">
     <!-- 未登录的头像 -->
-    <a-avatar shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' }"
-       @click="handleClick" v-if="!isLogin" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+    <a-avatar class='head' shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' } "
+       @click="handleClick" v-if="!isLogin" >   
         未登录
         <template #trigger-icon>
             <icon-user size="15" :stroke-width='7' style="color: lightblue" />
         </template>
     </a-avatar>
     <!-- 登录框 -->
+    <!-- @before-ok="handleBeforeOk" -->
     <a-modal v-model:visible="modalVisible" title="登录" @cancel="formRef && formRef.resetFields()"
-        @before-ok="handleBeforeOk" draggable>
+         footer='true' draggable>
         <a-space direction="vertical" align="end">
             <a-form ref="formRef" :model="form">
                 <a-form-item field="username" label="用户名">
@@ -19,18 +20,44 @@
                     <a-input-password v-model="form.password" :style="{ width: '320px' }" allow-clear />
                 </a-form-item>
             </a-form>
-            <a-button type="primary" status="success" @click="handleRegister">
-                注册
-            </a-button>
         </a-space>
+        <template #footer>
+            <a-button type="primary" status="success" @click="handleRegister">注册 </a-button>
+            <a-button type='primary' @click="handleBeforeOk">登录</a-button>
+            <a-button @click='handleCancelLogin'>取消</a-button>
+        </template>
     </a-modal>
     <!-- 登录成功后的头像 -->
-    <a-avatar shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' }"
-        trigger-type='mask' v-if="isLogin" @click="handleLogout">
-        {{ username }}
-        <template #trigger-icon>
+    
+    <a-popover position="bottom" title="个人信息" :style="{ width: '400px', height: '600px'}">
+        <a-avatar shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' }"
+            trigger-type='mask' v-if="isLogin" @click="handleMouseEnter">     
+            {{ username }}
+            <template #trigger-icon>
+            </template>
+        </a-avatar>
+        <template #content>
+            <div>用户名: {{ username }}</div>
+            <div>uid: {{ }}</div>
+            <div>个人简介: {{ introduction }}</div>
+            <a-button type="primary" @click='handleChangeInfo'>修改个人信息</a-button>
+            <a-button @click="handleReadyLogout">退出登录</a-button>
         </template>
-    </a-avatar>
+    </a-popover>
+    <!-- 处理是否确认退出 -->
+    <a-modal v-model:visible="readyLogout" 
+             :closable="false"
+             :footer="true"
+             :style="{ display: 'flex', justifyContent: 'center', alignItems: 'center' }"
+        >
+         <div style="text-align: center;">
+            您确定要退出吗？
+         </div>
+         <template #footer>
+            <a-button @click="handleCancelQuit">取消</a-button>
+            <a-button type="primary" @click="handleLogout">确定</a-button>
+         </template>
+    </a-modal>
     <!-- 注册框 -->
     <a-modal v-model:visible="registerVisible" title="注册" @cancel="formRegisterRef && formRegisterRef.resetFields()"
         @before-ok="handleRegisterBeforeOk" draggable>
@@ -47,19 +74,24 @@
         </a-form>
     </a-modal>
 
-<!-- , transform:'translateX(-50%)'} -->
-    <!-- @before-ok="showPersonInfo" @click="handleClick"    #f0f0f0' -->
-    <!-- 个人信息框 -->
-    <!-- :style="{position:absolute, top:100, left:0, right:0, border:1px solid #ddd}" -->
-    <a-modal v-model:visible="showPersonInfo" title="个人信息" class="person-info" :style="{height:'320px', width:'320px',  backgroundColor: 'lightblue', padding: '20px', position:'absolute', transform:'translateX(10%)'}" >
-        <div v-if="isLogin">
-            用户名：{{ username }}
-            个人简介：{{  }}
-        </div>
-            <div v-else>
-            未登录
-        </div>
+    <!-- 个人信息修改框 -->
+    <a-modal v-model:visible="changeInfo" title="请修改您的个人信息" footer="true">
+        <a-space direction="vertical" align="end">
+            <a-form ref="formRef" :model="form">
+                <a-form-item field="username" label="用户名">
+                    <a-input v-model="infomation.updateUsername" :style="{ width: '320px' }" allow-clear />
+                </a-form-item>
+                <a-form-item field="introduction" label="简介">
+                    <a-textarea v-model="infomation.newIntroduction" :style="{ width: '320px' }" allow-clear />
+                </a-form-item>
+            </a-form>
+        </a-space>
+        <template #footer>
+            <a-button type="primary" @click="handleConfirmModify">确认修改</a-button>
+            <a-button @click="handleCancelModify">取消修改</a-button>
+        </template>
     </a-modal>
+
     <!-- <div @mouseenter="handleMouseEnter">
             <div v-if="isLogin">
             用户名：{{ username }}
@@ -68,11 +100,6 @@
             <div v-else>
             未登录
         </div>
-    </div> -->
-
-    <!-- <div>
-        <p @mouseover="showTip=true" @mouseleave="showTip=false">鼠标悬浮在这里</p>
-        <div v-show="showTip" class="tooltip">这是一个悬浮框</div>
     </div> -->
 </template>
 
@@ -83,6 +110,8 @@ import { reactive, ref } from 'vue';
 
 export default {
     setup(props,context) {
+        // const uid = ref('');
+
         // 点击登录后弹出登录框
         const modalVisible = ref(false);
         // 输入框的数据
@@ -123,7 +152,9 @@ export default {
             // 查找是否存在该用户
             let retGetUser = await client.callApi('database/GetUser', {
                 username: form.username,
+                // introduction:'',
             });
+
             console.log("retGetUser: ", retGetUser);
             // 用户不存在
             if (!retGetUser) {
@@ -143,28 +174,32 @@ export default {
                 done(false);
                 return;
             }
+            introduction.value = retGetUser.res.user.introduction;
 
             // 调用登录api
             let ret = await client.callApi('user/Login', {
                 uid: retGetUser.res.user.uid,
                 username: retGetUser.res.user.username,
                 password: retGetUser.res.user.password,
+                introduction: retGetUser.res.user.introduction,
             });
             // 登录成功，切换头像状态
             isLogin.value = true;
             username.value = form.username;
+            modalVisible.value = false;
+            // uid.value = ret.res.user.uid;
             formRef.value.resetFields();
+            context.emit('login-success', username.value);
             Modal.success({
                 title: '登录成功',
                 content: '欢迎回来',
             });
-            context.emit('login-success', username.value);
-
-            // 延迟3秒后关闭登录框
-            window.setTimeout(() => {
-                done();
-            }, 3000);
         };
+
+        // 处理取消登录
+        const handleCancelLogin = () =>{
+            modalVisible.value = false;
+        }
 
         // 处理用户退出登录的事件
         const handleLogout = async () => {
@@ -188,6 +223,9 @@ export default {
                 title: '登出成功',
                 content: '期待您的下次使用',
             });
+            showPersonInfo.value = false;
+            changeInfo.value = false;
+            readyLogout.value = false;
             context.emit('login-success', '未登录');
         };
 
@@ -227,13 +265,66 @@ export default {
         }
 
         // 处理展示个人信息事件 用户id 用户名 头像 简介 ...
+        // 可添加修改密码选项，暂未实现
 
         const showPersonInfo = ref(false);
+        const introduction = ref('此处可添加您的个人简介');
+        const changeInfo = ref(false);
         const handleMouseEnter= async() =>{
             showPersonInfo.value = true;
         }
         const handleMouseLeave = async() =>{
             showPersonInfo.value = false;
+        }
+
+        // 处理准备退出
+        const readyLogout = ref(false);
+        const handleReadyLogout = async() =>{
+            readyLogout.value = true;
+        }
+        // 处理取消退出
+        const handleCancelQuit = async() =>{
+            readyLogout.value = false;
+        }
+        // 处理确认修改个人信息
+        const handleChangeInfo = async() =>{
+            changeInfo.value = true;
+        }
+        // 处理取消修改个人信息
+        const handleCancelModify = async() =>{
+            changeInfo.value = false;   //退出修改个人信息框
+            showPersonInfo.value = false;  //顺便退出个人信息框
+        }
+        // 处理修改个人信息
+        const infomation = reactive({
+            updateUsername: username.value,  //初始名字
+            newIntroduction: introduction.value,
+        });
+        const handleConfirmModify = async() =>{
+            let ret1 = await client.callApi('database/GetUser', {
+                username: username.value,
+            });
+            if (!ret1) {
+                console.log("获取用户信息失败");
+            }
+
+            let ret2 = await client.callApi('database/UpdateUser', { 
+                update: {
+                    _id: ret1.res.user._id,
+                    username: infomation.updateUsername,
+                    introduction: infomation.newIntroduction,
+                }
+            });
+            console.log("information"+infomation.newIntroduction);
+            if (!ret2) {
+                console.log("修改信息失败");
+            }
+            Modal.success({
+                title: '修改成功',
+            })
+            context.emit('login-success', username.value);
+            changeInfo.value = false;  // 退出修改信息框
+            showPersonInfo.value = false;  // 顺便退出个人信息框
         }
 
         return {
@@ -253,6 +344,17 @@ export default {
             showPersonInfo,
             handleMouseEnter,
             handleMouseLeave,
+            readyLogout,
+            handleReadyLogout,
+            handleCancelQuit,
+            introduction,
+            changeInfo,
+            handleChangeInfo,
+            handleConfirmModify,
+            infomation,
+            // uid,
+            handleCancelModify,
+            handleCancelLogin,
         };
     },
 };
@@ -260,13 +362,34 @@ export default {
 
 <style>
 .person-info {
-  position: absolute;
-  top: 100%; /* 头像组件的正下方 */
-  right:50%;
+  position:absolute;
+  right:10%;
   background-color: white;
-  border: 1px solid #ddd;
-  padding: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* 确保个人信息覆盖在其他元素之上 */
+  border: 1px solid white;
+  box-shadow:none;
+  z-index: 500; 
+  margin-top: 100px;
 }
 </style>
+
+<style  scoped>
+template{
+    background-color: white;
+    box-shadow: none;
+}
+</style>
+
+<!-- .person-info .ant-modal-mask{
+    position:absolute;
+    /* top:50%;
+    left:50%; */
+    height:100%;
+    width: 100%;
+    /* margin-top: 100px; */
+}
+.person-info .ant-modal-body{
+    width:1000px;
+}
+.person-info .ant-modal-content {
+  border-radius: 10px; /* 设置圆角 */
+} -->
