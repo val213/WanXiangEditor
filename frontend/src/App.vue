@@ -261,7 +261,6 @@ export default {
     },
     handleLoginSuccess(username){
         this.currentUsername = username;
-        console.log("currentUsername是" + this.currentUsername);
     }
   },
 };
