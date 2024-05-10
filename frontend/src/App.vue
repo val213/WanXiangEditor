@@ -13,7 +13,8 @@
                 </a-layout-sider>
                 <a-layout-sider :resize-directions="['right']" :style="{ maxWidth: '80%', textAlign: 'center' }">
                     <KeepAlive>
-                        <component :is="CurrentComponentSider" :tabKey="tabKey"   :username="currentUsername" @file-selected="handleFileSelected"></component>
+                        <component :is="CurrentComponentSider" :tabKey="tabKey" :username="currentUsername"
+                            @file-selected="handleFileSelected" @pdfView="pdfView"></component>
                     </KeepAlive>
                 </a-layout-sider>
                 <a-layout-content>
@@ -27,7 +28,7 @@
                         <a-modal v-model:visible="createSharedFile" title="创建多人协作文件" @cancel="handleCreatedFileCancel"
                             @before-ok="handleCreatedFileBeforeOk">
                             <a-form :model="form" size="large" :scroll-to-first-error="true">
-                                <a-form-item field="filename" label="文件名" :required="true" >
+                                <a-form-item field="filename" label="文件名" :required="true">
                                     <a-input v-model="form.filename" />
                                 </a-form-item>
                                 <a-form-item field="cooperativeCode" label="在线协作码" :required="true">
@@ -38,7 +39,7 @@
                         <a-modal v-model:visible="joinSharedFile" title="加入多人协作文件" @cancel="handleJoinCancel"
                             @before-ok="handleJoinBeforeOk">
                             <a-form :model="form" size="large" :scroll-to-first-error="true">
-                                <a-form-item field="username" label="用户名" :required="true" >
+                                <a-form-item field="username" label="用户名" :required="true">
                                     <a-input v-model="joinSharedFileForm.username" />
                                 </a-form-item>
                                 <a-form-item field="cooperativeCode" label="在线协作码" :required="true">
@@ -47,11 +48,11 @@
                             </a-form>
                         </a-modal>
                     </a-dropdown>
-                    <KeepAlive>
-                        <component :is="CurrentComponentContent" :nowTabKey="nowTabKey" :title="sharedTitle"
-                            ref="childComponentRef">
-                        </component>
-                    </KeepAlive>
+                    <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey"
+                        :title="sharedTitle" :content="content" ref="childComponentRef">
+                    </Notepad>
+                    <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource">
+                    </PDFViewer>
                 </a-layout-content>
             </a-layout>
             <a-layout-footer>
@@ -73,6 +74,7 @@ import HeadPortrait from './components/HeadPortrait.vue';
 import Notepad from './components/Notepad.vue';
 import FileUpload from './components/FileUpload.vue';
 import PDFLoader from './components/PDFLoader.vue';
+import PDFViewer from './components/PDFViewer.vue';
 import { client } from './client';
 import { ref, reactive } from 'vue';
 
@@ -90,9 +92,11 @@ export default {
         Notepad, // 记事本组件
         FileUpload,
         PDFLoader,
+        PDFViewer,
     },
     setup() {
         const tabsRef = ref(null);
+        const PDFViewerRef = ref(null);
         const sharedTitle = ref('首页'); // 共享数据-标题
         const createSharedFile = ref(false);
         const joinSharedFile = ref(false);
@@ -162,6 +166,7 @@ export default {
 
         return {
             tabsRef,
+            PDFViewerRef,
             sharedTitle,
             createSharedFile,
             joinSharedFile,
@@ -222,21 +227,40 @@ export default {
             this.lastTabKey = '1';
 
             // 加载当前标签的内容
-            this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
-            this.notepadContent = this.$refs.childComponentRef.content;
+            //this.componentChange("Notepad");
+            this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+            this.notepadContent = this.content;
         },
         changeKey(key) {
             this.lastTabKey = this.nowTabKey;
             this.nowTabKey = key;
             // console.log(this.tabKey);
 
+            //获取type
+            let type = sessionStorage.getItem(this.nowTabKey+'type');
+            console.log(type);
+
             // 更新标题
             this.sharedTitle = this.$refs.tabsRef.data.find(item => item.key == key).title;
             // console.log("标题：", this.sharedTitle);
 
-      // 加载当前标签的内容
-      this.$refs.childComponentRef.content = sessionStorage.getItem(this.nowTabKey) ?? '';
-      this.notepadContent = this.$refs.childComponentRef.content;
+            //根据不同的type来切换不同的组件
+            if (type == "Notepad") {
+                this.componentChange(type);
+                // 加载当前标签的内容
+                console.log(sessionStorage.getItem(this.nowTabKey));
+                this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+                this.notepadContent = this.content;
+                console.log(this.notepadContent);
+            } else if (type == "PDFViewer") {
+                this.componentChange(type);
+                // 切换pdf的base64
+                //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
+                let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
+                this.pdfSource = source;
+            }
+
+      
     },
     // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
     // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
@@ -254,10 +278,20 @@ export default {
         this.CurrentComponentContent = key;
       }
     },
-    handleFileSelected(title, content) {  
+    handleFileSelected(title, content, type) {  
         client.logger.info('File title and content:', title, content);
-        this.$refs.tabsRef.handleAdd(title,content);
-
+        console.log(type);
+        if(type == 'pdf') {
+            this.$refs.tabsRef.handleAdd(title,content,"PDFViewer");
+        } else {
+            this.$refs.tabsRef.handleAdd(title,content,"Notepad");
+        }
+    },
+    pdfView(fileName, pdfBase64) {
+        //添加一个新的tab来展示pdf
+        console.log("pdfView start");
+        this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer");
+        //this.$refs.PDFViewer.changePdfUrl(pdfBase64);
     },
     handleLoginSuccess(username){
         this.currentUsername = username;
