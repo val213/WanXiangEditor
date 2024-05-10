@@ -51,7 +51,7 @@
                     <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey"
                         :title="sharedTitle" :content="content" ref="childComponentRef">
                     </Notepad>
-                    <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource">
+                    <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource" :changeFlag="changeFlag">
                     </PDFViewer>
                 </a-layout-content>
             </a-layout>
@@ -190,6 +190,7 @@ export default {
             notepadContent: '', // notepad的内容
             currentUsername: '未登录',  //用户名，传给子组件Explorer
             client: client,
+            changeFlag: 0
         };
     },
     mounted() {
@@ -256,8 +257,12 @@ export default {
                 this.componentChange(type);
                 // 切换pdf的base64
                 //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
+                //TOOD::后端和本地预览的source格式不一样导致冲突
                 let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
+                this.changeFlag = Date.now();
                 this.pdfSource = source;
+                
+                //this.pdfSource = source;
             }
 
       
