@@ -83,6 +83,7 @@
             }
 
             const onSelect = async (selectedKeys, data) => {
+              
               client.logger.info('onSelect', selectedKeys, data);
               // 调用接口返回该文件的内容
               const selectedKey = data.node.key;

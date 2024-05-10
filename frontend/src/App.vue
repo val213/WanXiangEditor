@@ -256,8 +256,11 @@ export default {
                 this.componentChange(type);
                 // 切换pdf的base64
                 //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
+                //TOOD::后端和本地预览的source格式不一样导致冲突
                 let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
                 this.pdfSource = source;
+                
+                //this.pdfSource = source;
             }
 
       

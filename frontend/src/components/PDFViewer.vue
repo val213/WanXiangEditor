@@ -11,7 +11,7 @@
 
 <script>
     import VuePdfEmbed from 'vue-pdf-embed';
-    import { reactive } from 'vue';
+    import { reactive, watch } from 'vue';
     export default {
         components: {
             VuePdfEmbed
@@ -27,6 +27,10 @@
                 pdfSource: props.pdfSource,
                 pdfNum: 1,
                 pdfPages: 1,
+            });
+            watch(() => props.pdfSource, (newVal) => {
+                console.log("pdffresh");
+                pdfState.pdfSource = newVal;
             });
             //console.log("2222222"+props.pdfSource);
             return {
