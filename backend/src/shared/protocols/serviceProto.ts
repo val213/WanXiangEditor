@@ -382,6 +382,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
+                    "id": 7,
+                    "name": "introduction",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
                     "id": 5,
                     "name": "create",
                     "type": {
@@ -423,6 +430,37 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 "type": {
                                     "type": "Date"
                                 }
+                            },
+                            {
+                                "id": 2,
+                                "name": "username",
+                                "type": {
+                                    "type": "String"
+                                },
+                                "optional": true
+                            },
+                            {
+                                "id": 3,
+                                "name": "introduction",
+                                "type": {
+                                    "type": "Union",
+                                    "members": [
+                                        {
+                                            "id": 0,
+                                            "type": {
+                                                "type": "String"
+                                            }
+                                        },
+                                        {
+                                            "id": 1,
+                                            "type": {
+                                                "type": "Literal",
+                                                "literal": null
+                                            }
+                                        }
+                                    ]
+                                },
+                                "optional": true
                             }
                         ]
                     },
@@ -490,39 +528,19 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 0,
                     "name": "update",
                     "type": {
-                        "type": "Intersection",
-                        "members": [
-                            {
-                                "id": 0,
-                                "type": {
-                                    "target": {
-                                        "type": "Reference",
-                                        "target": "../collectionType/DbUser/DbUser"
-                                    },
-                                    "keys": [
-                                        "_id"
-                                    ],
-                                    "type": "Pick"
-                                }
+                        "type": "Partial",
+                        "target": {
+                            "target": {
+                                "type": "Reference",
+                                "target": "../collectionType/DbUser/DbUser"
                             },
-                            {
-                                "id": 2,
-                                "type": {
-                                    "type": "Partial",
-                                    "target": {
-                                        "target": {
-                                            "type": "Reference",
-                                            "target": "../collectionType/DbUser/DbUser"
-                                        },
-                                        "keys": [
-                                            "username",
-                                            "password"
-                                        ],
-                                        "type": "Pick"
-                                    }
-                                }
-                            }
-                        ]
+                            "keys": [
+                                "username",
+                                "password",
+                                "introduction"
+                            ],
+                            "type": "Pick"
+                        }
                     }
                 }
             ]
@@ -962,6 +980,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "String"
                     }
+                },
+                {
+                    "id": 3,
+                    "name": "introduction",
+                    "type": {
+                        "type": "String"
+                    }
                 }
             ]
         },
@@ -1020,6 +1045,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                             "type": "String"
                         }
                     }
+                },
+                {
+                    "id": 3,
+                    "name": "introduction",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
                 }
             ]
         },

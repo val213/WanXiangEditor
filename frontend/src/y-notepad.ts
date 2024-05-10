@@ -1,14 +1,16 @@
-// YjsBinding.js
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
+import * as error from 'lib0/error'
+import { createMutex } from 'lib0/mutex'
+import { Awareness } from 'y-protocols/awareness' // eslint-disable-line
 
-export default class YjsBinding {
+export class NotepadBinding {
     notepad: any;
     doc: Y.Doc;
     ytext: Y.Text;
     provider: WebsocketProvider | null;
 
-    constructor(notepad: any, doc: Y.Doc = new Y.Doc(), provider: WebsocketProvider | null = null) {
+    constructor(notepad: any, doc: Y.Doc, provider: WebsocketProvider | null = null) {
         this.notepad = notepad;
         this.doc = doc;
         this.ytext = this.doc.getText('shared');
@@ -26,7 +28,9 @@ export default class YjsBinding {
         });
 
         this.notepad.onSelectionChange(() => {
-            // Handle selection change
+            if (this.provider) {
+                this.provider.awareness.setLocalStateField('selection', this.notepad.selection);
+            }
         });
     }
     destroy() {

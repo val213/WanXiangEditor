@@ -9,7 +9,8 @@ import { BaseConf, BaseRequest, BaseResponse } from '../base';
 export interface ReqLogin extends BaseRequest {
     uid: number,
     username: string,
-    password: string
+    password: string,
+    introduction: string,
 }
 
 /**

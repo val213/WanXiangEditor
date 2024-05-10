@@ -8,6 +8,7 @@ export interface DbUser {
     uid: number;
     username: string;
     password: string;
+    introduction: string;
     // roles: string[];
 
     create: {
@@ -18,6 +19,8 @@ export interface DbUser {
     update?: {
         uid: string,
         time: Date,
+        username?: string,
+        introduction?: string | null,
     }
 }
 

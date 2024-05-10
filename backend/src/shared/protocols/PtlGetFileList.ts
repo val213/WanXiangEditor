@@ -65,5 +65,5 @@ export interface ResGetFileList extends BaseResponse {
 }
 
 export const conf: BaseConf = {
-    
+    // needLogin: true,
 }

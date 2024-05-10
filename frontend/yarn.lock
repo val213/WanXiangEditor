@@ -4314,6 +4314,11 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+sweetalert2@^11.10.8, sweetalert2@11.x:
+  version "11.10.8"
+  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.10.8.tgz"
+  integrity sha512-oAkYROBfXBY+4sVbQEIcN+ZxAx69lsmz5WEBwdEpyS4m59vOBNlRU5/fJpAI1MVfiDwFZiGwVzB/KBpOyfLNtg==
+
 table@^5.2.3:
   version "5.4.6"
   resolved "https://registry.npmjs.org/table/-/table-5.4.6.tgz"
@@ -4689,7 +4694,14 @@ vue-pdf-embed@^2.0.3:
   dependencies:
     pdfjs-dist "^3.11.174"
 
-vue@^3.0.5, vue@^3.1.0, vue@^3.2.25, vue@^3.3.0, vue@^3.4.22, vue@3.4.22:
+vue-sweetalert2@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.npmjs.org/vue-sweetalert2/-/vue-sweetalert2-5.0.5.tgz"
+  integrity sha512-Q7+TjQxNwGruT2jfPaSKMz18HHWs81r4umEwlrrtOf/QL5Iwl1T+tUaNkcvKB7Rf9rYftubt7NnOMjfDMnDH3A==
+  dependencies:
+    sweetalert2 "11.x"
+
+vue@*, vue@^3.0.5, vue@^3.1.0, vue@^3.2.25, vue@^3.3.0, vue@^3.4.22, vue@3.4.22:
   version "3.4.22"
   resolved "https://registry.npmjs.org/vue/-/vue-3.4.22.tgz"
   integrity sha512-CIx7NiP+n5WHBCG/fDNaUPP4qbQ5CIa8XIHZE3HpfS/rb2vmSIsp74BxsZyrrGKF0vHW3GoToqP3l0hzrMTecw==
