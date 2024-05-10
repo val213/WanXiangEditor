@@ -62,7 +62,7 @@ export default {
                 user = localStorage.getItem('USERNAME');
             }
 
-            // client.logger.info(filename);
+            // client.logger.info('文件名：',filename);
             count++;
             data.value = data.value.concat({
                 key: `${count}`,
@@ -87,14 +87,16 @@ export default {
             context.emit('updateTitle', filename);
         } 
         else if(content == undefined){
+            client.logger.info('新建空白文件，注意传入的filename是点击事件：',filename);
             count++;
             data.value = data.value.concat({
                 key: `${count}`,
-                title: `Undifined` + count,
-                editing:false,
+                // 默认新建txt文件
+                title: `Undifined` + count+ '.txt',
+                editing: false,
                 type: "Notepad"
             })
-            sessionStorage.setItem(`${count}`, 'Undifined' + count);
+            sessionStorage.setItem(`${count}`, '请输入内容' + count);
             //添加类型用来切换tab时识别tab所属的组件
             sessionStorage.setItem(`${count}`+'type', "Notepad");
             // 通知父组件标签页要换了

@@ -152,13 +152,12 @@ export default {
             // 查找是否存在该用户
             let retGetUser = await client.callApi('database/GetUser', {
                 username: form.username,
-                // introduction:'',
             });
 
             console.log("retGetUser: ", retGetUser);
             // 用户不存在
-            if (!retGetUser) {
-                Modal.errro({
+            if (!retGetUser.res.user) {
+                Modal.error({
                     title: '用户名不存在',
                     content: '请检查用户名是否正确',
                 });

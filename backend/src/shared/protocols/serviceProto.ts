@@ -9,6 +9,7 @@ import { ReqUpdateUser, ResUpdateUser } from './database/PtlUpdateUser';
 import { ReqClear, ResClear } from './PtlClear';
 import { ReqDownLoad, ResDownLoad } from './PtlDownLoad';
 import { ReqGetFileList, ResGetFileList } from './PtlGetFileList';
+import { ReqSaveFile, ResSaveFile } from './PtlSaveFile';
 import { ReqSelectFile, ResSelectFile } from './PtlSelectFile';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
@@ -58,6 +59,10 @@ export interface ServiceType {
         "GetFileList": {
             req: ReqGetFileList,
             res: ResGetFileList
+        },
+        "SaveFile": {
+            req: ReqSaveFile,
+            res: ResSaveFile
         },
         "SelectFile": {
             req: ReqSelectFile,
@@ -159,6 +164,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 16,
             "name": "GetFileList",
+            "type": "api",
+            "conf": {}
+        },
+        {
+            "id": 19,
+            "name": "SaveFile",
             "type": "api",
             "conf": {}
         },
@@ -768,6 +779,62 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "target": "PtlGetFileList/TreeNodeData"
                     },
                     "optional": true
+                }
+            ]
+        },
+        "PtlSaveFile/ReqSaveFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "content",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "title",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "filepath",
+                    "type": {
+                        "type": "String"
+                    }
+                }
+            ]
+        },
+        "PtlSaveFile/ResSaveFile": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "filePath",
+                    "type": {
+                        "type": "String"
+                    }
                 }
             ]
         },
