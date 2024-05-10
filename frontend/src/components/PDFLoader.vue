@@ -67,7 +67,7 @@ export default {
                 reader.readAsDataURL(file);
                 reader.onload = () => {
                     let pdfBase64 = reader.result;
-                    this.$emit('pdfView', file.name, pdfBase64);
+                    this.$emit('pdfView', file.name, pdfBase64, '1');
                 }
                 // //获取后端pdf文件的base64流
                 // this.getFileType(file.name);

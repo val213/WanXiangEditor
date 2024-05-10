@@ -295,10 +295,10 @@ export default {
             this.$refs.tabsRef.handleAdd(title,content,"Notepad");
         }
     },
-    pdfView(fileName, pdfBase64) {
+    pdfView(fileName, pdfBase64, isPdfFromUploader) {
         //添加一个新的tab来展示pdf
         console.log("pdfView start");
-        this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer");
+        this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer", isPdfFromUploader);
         //this.$refs.PDFViewer.changePdfUrl(pdfBase64);
     },
     handleLoginSuccess(username){
