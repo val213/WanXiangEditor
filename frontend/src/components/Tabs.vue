@@ -54,7 +54,7 @@ export default {
         type: 'Notepad'
       },
     ]);
-    const handleAdd = (filename, content, type ="Notepad", isPdfFromUploader = '0') => {
+    const handleAdd = (filename, content, type ="Notepad") => {
         // 如果传入了filename，而且是srting格式
         if (filename != ''&& typeof filename == 'string') {
             client.logger.info(filename);
@@ -70,7 +70,7 @@ export default {
                 //添加类型用来切换tab时识别tab所属的组件
                 sessionStorage.setItem(`${count}`+'type', type);
                 // 通知父组件标签页要换了
-                context.emit('tab-add', `${count}`, isPdfFromUploader);
+                context.emit('tab-add', `${count}`);
                 // 通知父组件换标题
                 context.emit('updateTitle', filename);
             }    

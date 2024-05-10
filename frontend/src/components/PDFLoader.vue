@@ -62,13 +62,13 @@ export default {
                 this.fileList.push({ name: file.name, status: 'ready', uid: file.uid });
                 this.file = file; // 在这里获取到文件对象，并保存在data属性中
                 //上传前开始预览pdf
-                console.log("尝试预览");
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => {
-                    let pdfBase64 = reader.result;
-                    this.$emit('pdfView', file.name, pdfBase64, '1');
-                }
+                // console.log("尝试预览");
+                // const reader = new FileReader();
+                // reader.readAsDataURL(file);
+                // reader.onload = () => {
+                //     let pdfBase64 = reader.result;
+                //     this.$emit('pdfView', file.name, pdfBase64, '1');
+                // }
                 // //获取后端pdf文件的base64流
                 // this.getFileType(file.name);
                 // console.log(this.getFileType(file.name));

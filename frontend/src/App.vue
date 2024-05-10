@@ -231,7 +231,7 @@ export default {
             this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
             this.notepadContent = this.content;
         },
-        changeKey(key, isPdfFromUploader) {
+        changeKey(key) {
             this.lastTabKey = this.nowTabKey;
             this.nowTabKey = key;
             // console.log(this.tabKey);
@@ -257,13 +257,8 @@ export default {
                 // 切换pdf的base64
                 //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
                 //TOOD::后端和本地预览的source格式不一样导致冲突
-                if(isPdfFromUploader == '0') {
-                    let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
-                    this.pdfSource = source;
-                } else {
-                    let source = sessionStorage.getItem(this.nowTabKey) ?? ''
-                    this.pdfSource = source;
-                }
+                let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
+                this.pdfSource = source;
                 
                 //this.pdfSource = source;
             }
@@ -295,10 +290,10 @@ export default {
             this.$refs.tabsRef.handleAdd(title,content,"Notepad");
         }
     },
-    pdfView(fileName, pdfBase64, isPdfFromUploader) {
+    pdfView(fileName, pdfBase64) {
         //添加一个新的tab来展示pdf
         console.log("pdfView start");
-        this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer", isPdfFromUploader);
+        this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer");
         //this.$refs.PDFViewer.changePdfUrl(pdfBase64);
     },
     handleLoginSuccess(username){
