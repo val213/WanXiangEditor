@@ -231,7 +231,7 @@ export default {
             this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
             this.notepadContent = this.content;
         },
-        changeKey(key) {
+        changeKey(key, isPdfFromUploader) {
             this.lastTabKey = this.nowTabKey;
             this.nowTabKey = key;
             // console.log(this.tabKey);
@@ -256,8 +256,16 @@ export default {
                 this.componentChange(type);
                 // 切换pdf的base64
                 //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
-                let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
-                this.pdfSource = source;
+                //TOOD::后端和本地预览的source格式不一样导致冲突
+                if(isPdfFromUploader == '0') {
+                    let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
+                    this.pdfSource = source;
+                } else {
+                    let source = sessionStorage.getItem(this.nowTabKey) ?? ''
+                    this.pdfSource = source;
+                }
+                
+                //this.pdfSource = source;
             }
 
       
