@@ -19,6 +19,8 @@
 <script>
 import { ref, watch } from 'vue';
 import Swal from 'sweetalert2';
+import { client } from '@/client';
+import { Modal } from '@arco-design/web-vue';
 export default {
     props: {
         nowTabKey: String,
@@ -137,9 +139,9 @@ export default {
         });
 
         if (value === 'server') {
-            this.saveToServer(this.content);
+            this.saveToServer(this.content, this.title);
         } else if (value === 'local') {
-            this.saveToLocal(this.content);
+            this.saveToLocal(this.content, this.title);
         } else if (value === 'cancel') {
             // 用户选择了取消
             console.log('User cancelled');
@@ -188,9 +190,67 @@ export default {
             handleFileDownload(content, title);
         },
         // 保存到服务器
-        async saveToServer(content) {
-            let ret = await client.callApi('SaveFile', { content: content });
-
+        async saveToServer(content,title) {
+            // 询问是否指定保存路径(如果路径不同即为保存为新文件，不指定则默认保存为原路径)
+            let filepath;
+            const { value } = await Swal.fire({
+            title: '是否指定保存路径？',
+            input: 'radio',
+            inputOptions: {
+                'Yes': '在新路径下保存为副本',
+                'No': '保存到原路径',
+                'root': '保存到根目录',
+                'cancel': '取消',
+            },
+            inputValidator: (value) => {
+                if (!value) {
+                    return '你需要选择一个选项！'
+                }
+            }
+        });
+        if (value === 'Yes') {
+                // 询问新路径
+                const { value: newPath } = await Swal.fire({
+                    title: '请输入新路径',
+                    input: 'text',
+                    inputPlaceholder: '请输入新路径（以"uploads/"开头,以"/"结尾）',
+                    showCancelButton: true,
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return '你需要输入一个路径！'
+                        }
+                    }
+                });
+                filepath = newPath + title;
+            } else if (value === 'No') {
+                // 保存到原路径
+                client.logger.info('保存到原路径这一功能还在开发中');
+                Modal.info({
+                    title: '功能开发中',
+                    content: '保存到原路径这一功能还在开发中，敬请期待。',
+                });
+                return;
+            } else if (value === 'root') {
+                // 保存到根目录
+                filepath = 'uploads/' + title;
+            } else if (value === 'cancel') {
+                // 用户选择了取消
+                console.log('User cancelled');
+                return(done);
+            }
+                
+            let ret = await client.callApi('SaveFile', { content: content, title: title, filepath: filepath});
+            if (ret.isSucc) {
+                Modal.success({
+                    title: '保存成功',
+                    content: '更改已经同步到服务器。',
+                });
+            } else {
+                Modal.error({
+                    title: '保存失败',
+                    content: '更改保存失败，请稍后再试。',
+                });
+            }
         },
     },
     mounted() {
