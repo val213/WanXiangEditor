@@ -51,9 +51,10 @@ export default {
         key: '1', // 键值从1开始，规定好，在主组件中tabKey也是1开始
         title: '首页',
         editing:false,
+        type: 'Notepad'
       },
     ]);
-    const handleAdd = (filename, content) => {
+    const handleAdd = (filename, content, type ="Notepad") => {
         // 如果传入了filename，而且是srting格式
         if (filename != ''&& typeof filename == 'string') {
             client.logger.info(filename);
@@ -61,10 +62,13 @@ export default {
             data.value = data.value.concat({
                 key: `${count}`,
                 title: filename,
+                type: type
             })
             // 如果传递了content，就存储到sessionStorage中
             if (content != undefined && content!=''&& typeof content == 'string') {
                 sessionStorage.setItem(`${count}`, content);
+                //添加类型用来切换tab时识别tab所属的组件
+                sessionStorage.setItem(`${count}`+'type', type);
                 // 通知父组件标签页要换了
                 context.emit('tab-add', `${count}`);
                 // 通知父组件换标题
@@ -77,10 +81,13 @@ export default {
                 key: `${count}`,
                 title: `Undifined` + count,
                 editing:false,
+                type: "Notepad"
             })
             sessionStorage.setItem(`${count}`, 'Undifined' + count);
+            //添加类型用来切换tab时识别tab所属的组件
+            sessionStorage.setItem(`${count}`+'type', "Notepad");
             // 通知父组件标签页要换了
-            context.emit('tab-click', `${count}`);
+            context.emit('tab-click', `${count}`, "Notepad");
         }
     };
     const handleDelete = (key) => {

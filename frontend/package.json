@@ -13,8 +13,13 @@
     "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.6.8",
     "core-js": "^3.36.1",
+    "sweetalert2": "^11.10.8",
     "tsrpc-browser": "^3.4.14",
-    "vue": "^3.4.22"
+    "vue": "^3.4.22",
+    "vue-pdf-embed": "^2.0.3",
+    "vue-sweetalert2": "^5.0.5",
+    "y-websocket": "^2.0.2",
+    "yjs": "^13.6.15"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.55.1",
