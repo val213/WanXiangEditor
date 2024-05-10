@@ -8,7 +8,7 @@ import { ResLogin } from "./shared/protocols/user/PtlLogin";
  */
 export const client = new WsClient(serviceProto, {
     // 这里要换成自己的ip地址
-    server: 'ws://192.168.17.131:3000',
+    server: 'ws://127.0.0.1:3000',
     logger: console,
     json: true,
 });

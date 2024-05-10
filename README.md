@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="SiYuan" src="favicon.png">
+<img alt="WangXiangEditor" src="WangXiang Editor_transparent.png">
 <br>
 万象编辑
 <br><br>
