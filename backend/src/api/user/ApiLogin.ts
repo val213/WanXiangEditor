@@ -8,7 +8,8 @@ export async function ApiLogin(call: ApiCall<ReqLogin, ResLogin>) {
     let user: CurrentUser = {
         uid: call.req.uid,
         username: call.req.username,
-        roles: []
+        roles: [],
+        introduction: call.req.introduction,
     };
     call.conn.userId = user.uid;
     call.succ({

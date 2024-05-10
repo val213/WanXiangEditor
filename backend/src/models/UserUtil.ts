@@ -2,7 +2,7 @@ import * as uuid from "uuid";
 import { CurrentUser } from "../shared/models/CurrentUser";
 
 // 86400000 * 7 一星期
-const SSO_VALID_TIME = 10 * 1000;
+const SSO_VALID_TIME = 1000 * 1000;
 
 export class UserUtil {
     static isTokenExpired(token: string) {
@@ -15,19 +15,22 @@ export class UserUtil {
         uid: number,
         username: string,
         password: string,
-        roles: string[]
+        roles: string[],
+        introduction: string,
     }[] = [
             {
                 uid: 1,
                 username: 'Normal',
                 password: '123456',
-                roles: ['Normal']
+                roles: ['Normal'],
+                introduction: '我是普通用户',
             },
             {
                 uid: 2,
                 username: 'Admin',
                 password: '123456',
-                roles: ['Admin']
+                roles: ['Admin'],
+                introduction: '我是管理员',
             }
         ];
 
@@ -80,6 +83,7 @@ export class UserUtil {
             uid: user.uid,
             username: user.username,
             roles: user.roles,
+            introduction: user.introduction,
         }
     }
 }
