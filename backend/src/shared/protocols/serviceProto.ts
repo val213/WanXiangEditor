@@ -95,7 +95,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 19,
+    "version": 21,
     "services": [
         {
             "id": 5,
@@ -350,12 +350,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
                             "target": "../collectionType/DbUser/DbUser"
                         },
                         "keys": [
-                            "_id",
-                            "uid",
-                            "create",
-                            "update"
+                            "username",
+                            "password"
                         ],
-                        "type": "Omit"
+                        "type": "Pick"
                     }
                 }
             ]
@@ -858,7 +856,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 2,
+                    "id": 3,
                     "name": "filePath",
                     "type": {
                         "type": "String"
