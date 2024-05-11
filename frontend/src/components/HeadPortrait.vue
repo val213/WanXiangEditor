@@ -263,6 +263,9 @@ export default {
             if (!ret) {
                 console.log("注册失败");
             }
+            Modal.success({
+                title:'注册成功,请重新回到登录界面',
+            });
 
             // 延迟3秒后关闭登录框
             window.setTimeout(() => {
@@ -388,6 +391,14 @@ export default {
 template{
     background-color: white;
     box-shadow: none;
+}
+</style>
+
+<style>
+.modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 
