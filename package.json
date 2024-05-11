@@ -1,0 +1,24 @@
+{
+  "name": "wanxiangeditor",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r <img alt=\"WangXiangEditor\" src=\"frontend/public/WangXiang Editor_transparent.png\">\r <br>\r 万象世界，一编尽览！\r <br><br>\r </p>",
+  "main": "vetur.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Colinrush1/WanXiangEditor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Colinrush1/WanXiangEditor/issues"
+  },
+  "homepage": "https://github.com/Colinrush1/WanXiangEditor#readme",
+  "dependencies": {
+    "ws": "^8.17.0",
+    "y-websocket": "^2.0.3"
+  }
+}
