@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="WangXiangEditor" src="WangXiang Editor_transparent.png">
+<img alt="WangXiangEditor" src="frontend/public/WangXiang Editor_transparent.png">
 <br>
 万象世界，一编即览
 <br><br>
@@ -51,8 +51,13 @@
 
     万象编辑器采用**Browser/Server**架构，支持客户端与远程服务端进行文件的上传和下载。
      -->
-<!-- //TODO:提供架构图片 -->
 
+
+### 前端架构
+<img alt="WangXiangEditor" src="frontend/public/万象前端架构.png">
+
+### 后端架构
+<img alt="WangXiangEditor" src="frontend/public/万象后端架构.png">
 
 ## 🏆 里程碑
 * 项目启动，完成项目的初步架构设计
