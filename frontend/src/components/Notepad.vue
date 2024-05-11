@@ -253,6 +253,7 @@ export default {
         },
     },
     mounted() {
+        // 监听content的变化
         watch(() => this.content, this.handleCursor);
     }
 };

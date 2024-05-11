@@ -12,6 +12,7 @@
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.6.8",
+    "codemirror": "^5.65.16",
     "core-js": "^3.36.1",
     "sweetalert2": "^11.10.8",
     "tsrpc-browser": "^3.4.14",

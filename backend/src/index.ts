@@ -38,9 +38,9 @@ async function main() {
     server.logger.log('Timer started');
     setInterval(() => {
         for (let token in UserUtil.ssoTokenInfo) {
-            server.logger.log(UserUtil.ssoTokenInfo);
+            // server.logger.log(UserUtil.ssoTokenInfo);
             
-            server.logger.log(`Token ${token} 还有 ${UserUtil.ssoTokenInfo[token].expiredTime - Date.now()} ms 过期`);
+            // server.logger.log(`Token ${token} 还有 ${UserUtil.ssoTokenInfo[token].expiredTime - Date.now()} ms 过期`);
             if (UserUtil.isTokenExpired(token)) {
                 let conn = server.connections.find(v=>v.userId === UserUtil.ssoTokenInfo[token].uid);
                 if(conn){
