@@ -79,10 +79,13 @@
         <a-space direction="vertical" align="end">
             <a-form ref="formRef" :model="form">
                 <a-form-item field="username" label="用户名">
-                    <a-input v-model="infomation.updateUsername" :style="{ width: '320px' }" allow-clear />
+                    <a-input v-model="information.updateUsername" :style="{ width: '320px' }" allow-clear />
+                </a-form-item>
+                <a-form-item field="password" label="密码">
+                    <a-textarea v-model="information.newpassword" :style="{ width: '320px' }" allow-clear />
                 </a-form-item>
                 <a-form-item field="introduction" label="简介">
-                    <a-textarea v-model="infomation.newIntroduction" :style="{ width: '320px' }" allow-clear />
+                    <a-textarea v-model="information.newIntroduction" :style="{ width: '320px' }" allow-clear />
                 </a-form-item>
             </a-form>
         </a-space>
@@ -111,6 +114,7 @@ import { reactive, ref } from 'vue';
 export default {
     setup(props,context) {
         // const uid = ref('');
+        const db_id = ref('');
 
         // 点击登录后弹出登录框
         const modalVisible = ref(false);
@@ -124,6 +128,8 @@ export default {
         const isLogin = ref(false);
         // 用户名
         const username = ref('');
+        // 密码
+        // const password = ref('');
 
         // 是否显示注册框
         const registerVisible = ref(false);
@@ -174,7 +180,8 @@ export default {
                 return;
             }
             introduction.value = retGetUser.res.user.introduction;
-
+            db_id.value = retGetUser.res.user._id;
+            // password = retGetUser.res.user.password;
             // 调用登录api
             let ret = await client.callApi('user/Login', {
                 uid: retGetUser.res.user.uid,
@@ -256,6 +263,9 @@ export default {
             if (!ret) {
                 console.log("注册失败");
             }
+            Modal.success({
+                title:'注册成功,请重新回到登录界面',
+            });
 
             // 延迟3秒后关闭登录框
             window.setTimeout(() => {
@@ -295,26 +305,28 @@ export default {
             showPersonInfo.value = false;  //顺便退出个人信息框
         }
         // 处理修改个人信息
-        const infomation = reactive({
-            updateUsername: username.value,  //初始名字
-            newIntroduction: introduction.value,
+        const information = reactive({
+            updateUsername: username,  //初始名字
+            newpassword: form.password, //初始密码
+            newIntroduction: introduction,  //初始简介
         });
         const handleConfirmModify = async() =>{
-            let ret1 = await client.callApi('database/GetUser', {
-                username: username.value,
-            });
-            if (!ret1) {
-                console.log("获取用户信息失败");
-            }
+            // let ret1 = await client.callApi('database/GetUser', {
+            //     username: username.value,
+            // });
+            // if (!ret1) {
+            //     console.log("获取用户信息失败");
+            // }
 
             let ret2 = await client.callApi('database/UpdateUser', { 
                 update: {
-                    _id: ret1.res.user._id,
-                    username: infomation.updateUsername,
-                    introduction: infomation.newIntroduction,
+                    _id: db_id.value,
+                    username: information.updateUsername,
+                    password: information.newpassword,
+                    introduction: information.newIntroduction,
                 }
             });
-            console.log("information"+infomation.newIntroduction);
+            console.log("information"+information.newIntroduction);
             if (!ret2) {
                 console.log("修改信息失败");
             }
@@ -324,6 +336,8 @@ export default {
             context.emit('login-success', username.value);
             changeInfo.value = false;  // 退出修改信息框
             showPersonInfo.value = false;  // 顺便退出个人信息框
+            username.value = information.updateUsername;
+            introduction.value = information.newIntroduction;
         }
 
         return {
@@ -350,10 +364,12 @@ export default {
             changeInfo,
             handleChangeInfo,
             handleConfirmModify,
-            infomation,
+            information: information,
             // uid,
             handleCancelModify,
             handleCancelLogin,
+            db_id,
+            // password,
         };
     },
 };
@@ -375,6 +391,14 @@ export default {
 template{
     background-color: white;
     box-shadow: none;
+}
+</style>
+
+<style>
+.modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 

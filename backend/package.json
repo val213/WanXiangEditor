@@ -23,7 +23,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "mongodb": "^6.5.0",
+    "mongodb": "^6.6.1",
     "tsrpc": "^3.4.14"
   }
 }
