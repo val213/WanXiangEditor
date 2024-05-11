@@ -1,7 +1,7 @@
 import { DbUser } from "../../collectionType/DbUser";
 
 export interface ReqAddUser {
-    newUser: Omit<DbUser, '_id' | 'uid' | 'create' | 'update'>;
+    newUser: Pick<DbUser, 'username' | 'password'>;
 }
 
 export interface ResAddUser {
