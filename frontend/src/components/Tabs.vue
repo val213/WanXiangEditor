@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { client } from '@/client';
+import { onMounted, ref } from 'vue';
 
 let count = 1;
 
@@ -51,10 +52,14 @@ export default {
         title: '首页',
         editing:false,
         owner: '', // 表示此标签页的拥有者，在没有在线模式下，此标签页的拥有者就是本机登录的用户
-        type: 'Notepad', // 标签页的类型
+        type: 'HomePage', // 标签页的类型
         cooperateCode: '', // 可选：表示标签的在线协作码
       },
     ]);
+    // 添加类型用来切换tab时识别tab所属的组件
+    const setHomePageType =() => {
+        sessionStorage.setItem('1type', 'HomePage');
+    };
     const handleAdd = (filename, content, type ="Notepad", cooperateCode = '', user = '') => {
         // 如果传入了filename，而且是srting格式
         if (filename != ''&& typeof filename == 'string') {
@@ -125,12 +130,17 @@ export default {
       data.value[index].title = newValue;
     };
 
+    onMounted(() => {
+      setHomePageType();
+    })
+
     return {
       data,
       handleAdd,
       handleDelete,
       makeEditable,
       removeEditable,
+      setHomePageType,
     }
   },
 }

@@ -48,6 +48,7 @@
                             </a-form>
                         </a-modal>
                     </a-dropdown>
+                    <HomePage v-if="CurrentComponentContent==='HomePage'"></HomePage>
                     <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey"
                         :title="sharedTitle" :content="content" ref="childComponentRef">
                     </Notepad>
@@ -80,6 +81,7 @@ import PDFViewer from './components/PDFViewer.vue';
 import { client } from './client';
 import { ref, reactive } from 'vue';
 import  CodeMirror from './components/CodeMirror.vue';
+import HomePage from './components/HomePage.vue'
 export default {
     name: 'App',
     components: {
@@ -96,6 +98,7 @@ export default {
         PDFLoader,
         PDFViewer,
         CodeMirror,
+        HomePage,
     },
     setup() {
         const tabsRef = ref(null);
@@ -203,7 +206,7 @@ export default {
     data() {
         return {
             // 主组件的数据
-            CurrentComponentContent: 'Notepad',
+            CurrentComponentContent: 'HomePage',
             CurrentComponentSider: 'Explorer',
             lastTabKey: '1',
             nowTabKey: '1',
@@ -249,8 +252,10 @@ export default {
 
             // 加载当前标签的内容
             //this.componentChange("Notepad");
-            this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
-            this.notepadContent = this.content;
+            // this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+            // this.notepadContent = this.content;
+            console.log(this.nowTabKey);
+            this.changeKey(this.nowTabKey);
         },
         changeKey(key) {
             this.lastTabKey = this.nowTabKey;
@@ -284,6 +289,8 @@ export default {
                 
                 //this.pdfSource = source;
             } else if (type == "CodeMirror") {
+                this.componentChange(type);
+            } else if (type == "HomePage") {
                 this.componentChange(type);
             }
 
