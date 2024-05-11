@@ -1,7 +1,7 @@
 <p align="center">
 <img alt="WangXiangEditor" src="frontend/public/WangXiang Editor_transparent.png">
 <br>
-万象世界，一编即览
+万象世界，一编尽览！
 <br><br>
 </p>
 
@@ -124,9 +124,12 @@ npm run build
 ## 鸣谢
 万象Editor的诞生离不开众多的开源项目和贡献者，请参考项目源代码 `package.json` 和项目首页。
 
+## 团队分工情况
+我们的分工方案是让每个同学都是全栈工程师。为了提高小型团队短期内的开发效率，我们没有选择明确地划分前端开发、后端开发、测试等岗位，而是通过功能和需求划分模块，在项目开发过程中，将需求的发布为issue，结合个人的兴趣和能力进行任务分配或者认领，以便更好的推进项目的进度。具体的分工情况可以[本仓库的insight页面](https://github.com/val213/WanXiangEditor/pulse)查看commit和PR统计数据。
 ## 贡献者列表
 本项目的起点是准备参加华南理工大学软件学院光锥元软件设计大赛PC端的项目，几乎是我们第一次进行如此规模/形式/技术栈的开发,尚有不足,但今后将持续开发和维护，欢迎大家加入我们，一起为万象编辑器贡献代码。
 >欢迎加入我们，一起为万象Editor贡献代码。
+
 
 <a href="https://github.com/val213/WanXiangEdito/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=val213/WanXiangEditor" />
