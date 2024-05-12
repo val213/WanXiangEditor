@@ -8,10 +8,10 @@
                 </a-space>
             </a-layout-header>
             <a-layout>
-                <a-layout-sider :width="70">
+                <a-layout-sider :width=70>
                     <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange" />
                 </a-layout-sider>
-                <a-layout-sider :resize-directions="['right']" :style="{ maxWidth: '80%', textAlign: 'center' }">
+                <a-layout-sider :resize-directions="['right']" :width="widthsider" :style="{ maxWidth: '80%', textAlign: 'center' }">
                     <KeepAlive>
                         <component :is="CurrentComponentSider" :tabKey="tabKey" :username="currentUsername"
                             @file-selected="handleFileSelected" @pdfView="pdfView"></component>
@@ -48,6 +48,7 @@
                             </a-form>
                         </a-modal>
                     </a-dropdown>
+                    <HomePage v-if="CurrentComponentContent==='HomePage'"></HomePage>
                     <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey"
                         :title="sharedTitle" :content="content" ref="childComponentRef">
                     </Notepad>
@@ -80,6 +81,7 @@ import PDFViewer from './components/PDFViewer.vue';
 import { client } from './client';
 import { ref, reactive } from 'vue';
 import  CodeMirror from './components/CodeMirror.vue';
+import HomePage from './components/HomePage.vue'
 import { Modal } from '@arco-design/web-vue';
 export default {
     name: 'App',
@@ -97,6 +99,7 @@ export default {
         PDFLoader,
         PDFViewer,
         CodeMirror,
+        HomePage,
     },
     setup() {
         const tabsRef = ref(null);
@@ -107,6 +110,8 @@ export default {
         const sharedTitle = ref('首页'); // 共享数据-标题
         const createSharedFile = ref(false);
         const joinSharedFile = ref(false);
+        const widthsider = ref('70px');
+        const headPortrait = ref(null);
 
         const form = reactive({
             filename: '',
@@ -135,7 +140,16 @@ export default {
         // 处理创建多人协作文件的确认事件
         const handleCreatedFileBeforeOk = (done) => {
             // console.log(form)
-
+            //判断当前状态是不是未登录状态，如果是，提示未登录并且不允许创建
+            if(headPortrait.value.isLogin == false) {
+                console.log("未登录")
+                Modal.error({
+                  title: '还未登录无法创建多人在线协作文档',
+                  content: '请登录后再创建多人在线协作文档。',
+                });
+                handleCreatedCancel();
+                return
+            }
             // 创建成功
             if (tabsRef.value) {
                 tabsRef.value.handleAdd(form.filename, '', "CodeMirror", form.cooperativeCode);
@@ -160,7 +174,6 @@ export default {
         // 处理加入多人协作文件的确认事件
         const handleJoinBeforeOk = (done) => {
             // console.log(form)
-
             // 加入成功
             if (tabsRef.value) {
                 tabsRef.value.handleAdd('拥有者: ' + joinSharedFileForm.username, '',"CodeMirror", joinSharedFileForm.cooperativeCode, joinSharedFileForm.username);
@@ -193,6 +206,7 @@ export default {
             joinSharedFile,
             form,
             joinSharedFileForm,
+            headPortrait,
             handleSelect,
             updataSharedTitle,
             handleCreatedFileBeforeOk,
@@ -204,14 +218,15 @@ export default {
     data() {
         return {
             // 主组件的数据
-            CurrentComponentContent: 'Notepad',
+            CurrentComponentContent: 'HomePage',
             CurrentComponentSider: 'Explorer',
             lastTabKey: '1',
             nowTabKey: '1',
             notepadContent: '', // notepad的内容
             currentUsername: '未登录',  //用户名，传给子组件Explorer
             client: client,
-            changeFlag: 0
+            changeFlag: 0,
+            widthsider: '20%',
         };
     },
     mounted() {
@@ -250,8 +265,10 @@ export default {
 
             // 加载当前标签的内容
             //this.componentChange("Notepad");
-            this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
-            this.notepadContent = this.content;
+            // this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
+            // this.notepadContent = this.content;
+            console.log(this.nowTabKey);
+            this.changeKey(this.nowTabKey);
         },
         changeKey(key) {
             this.lastTabKey = this.nowTabKey;
@@ -286,21 +303,46 @@ export default {
                 //this.pdfSource = source;
             } else if (type == "CodeMirror") {
                 this.componentChange(type);
+            } else if (type == "HomePage") {
+                this.componentChange(type);
             }
 
       
     },
+    // 控制侧边栏的宽度的函数
+
+
     // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
     // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
     componentChange(key){
       console.log(key);
       if (key == 'Explorer') {
-        this.CurrentComponentSider = key;
-
+        // 如果当前组件已经是Explorer，则将宽度设置为0,key设置为空
+        if (this.CurrentComponentSider == 'Explorer') {
+            this.widthsider = 0;
+            this.CurrentComponentSider = '';
+        } else {
+          this.widthsider = '20%';
+          this.CurrentComponentSider = key;
+        }
       } else if (key == 'Search') {
-        this.CurrentComponentSider = key;
+        // 如果当前组件已经是Search，则将宽度设置为0,key设置为空
+        if (this.CurrentComponentSider == 'Search') {
+            this.widthsider = 0;
+            this.CurrentComponentSider = '';
+        } else {
+          this.widthsider = '20%';
+          this.CurrentComponentSider = key;
+        }
       } else if (key == 'PDFLoader') {
-        this.CurrentComponentSider = key;
+        // 如果当前组件已经是PDFLoader，则将宽度设置为0,key设置为空
+        if (this.CurrentComponentSider == 'PDFLoader') {
+            this.widthsider = 0;
+            this.CurrentComponentSider = '';
+        } else {
+          this.widthsider = '20%';
+          this.CurrentComponentSider = key;
+        }
       }
       else {
         this.CurrentComponentContent = key;

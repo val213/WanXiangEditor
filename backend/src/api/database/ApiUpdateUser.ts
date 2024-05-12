@@ -10,7 +10,7 @@ export async function ApiUpdateUser(call: ApiCall<ReqUpdateUser, ResUpdateUser>)
     let { _id, ...rest } = call.req.update;
 
     let op = await Global.collection('User').updateOne({
-        tomodifyusername: call.currentUser?.username
+        _id: _id
     }, {
         $set: {
             ...rest,
