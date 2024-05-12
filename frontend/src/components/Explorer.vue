@@ -9,13 +9,11 @@
           @click="navigateToFile(file)"
           >
         </a-tree>
-
         <a-tab
             v-for="(file, index) in openedFiles"
             :key="index"
             @click="navigateToFile(file)"
 >
-        {{ file.title }}
         </a-tab>
       </a-collapse-item>
       <a-collapse-item :header="getProjectNameHeader" key="2">

@@ -202,7 +202,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "api"
         },
         {
-            "id": 22,
+            "id": 20,
             "name": "SharedDoc/UpdateDoc",
             "type": "msg"
         },

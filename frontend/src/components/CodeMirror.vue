@@ -43,7 +43,7 @@ export default {
         // const awareness = new awarenessProtocol.Awareness(ydoc);
         const roomName = this.username + '-' + this.cooperativeCode;
         console.log("房间名：",  roomName);
-        const provider = new WebsocketProvider('ws://192.168.17.131:4000', roomName, ydoc);
+        const provider = new WebsocketProvider('ws://127.0.0.1:4000', roomName, ydoc);
         provider.connect();
         // 监听连接状态变化
         provider.on('status', (event) => {

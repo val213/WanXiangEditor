@@ -2,6 +2,18 @@
     <a-layout>
         <div id="app" style="display: flex; flex-direction: column; height: 100vh;" class="WorkBench">
             <a-layout-header>
+                <a-page-header
+                    :style="{ background: 'var(--color-bg-2)' }"
+                    title="万象Editor"
+                    :show-back="false"
+                >
+                <template #subtitle>
+                    <a-space>
+                        <span>WangXiang Editor v0.1.0</span>
+                        <a-tag color="red" size="small">Default</a-tag>
+                    </a-space>
+                </template>
+            </a-page-header>
                 <a-space :size="970" direction="horizontal" fill align="center">
                     <Menu />
                     <HeadPortrait ref="headPortrait" @login-success="handleLoginSuccess" />
@@ -17,7 +29,7 @@
                             @file-selected="handleFileSelected" @pdfView="pdfView"></component>
                     </KeepAlive>
                 </a-layout-sider>
-                <a-layout-content>
+                <a-layout-content class="content">
                     <a-dropdown trigger="contextMenu" alignPoint :style="{ display: 'block' }" @select="handleSelect">
                         <Tabs ref="tabsRef" :nowTabKey="nowTabKey" @tab-click="changeKey" @tab-add="changeKey"
                             @tab-del="changeToLastKey" @updateTitle="updataSharedTitle" />
@@ -56,11 +68,14 @@
                     </PDFViewer>
                     <CodeMirror v-if="CurrentComponentContent === 'CodeMirror'" ref="codemirrorRef" :nowTabKey="nowTabKey" :currentUsername="currentUsername">
                     </CodeMirror>
+
                 </a-layout-content>
             </a-layout>
+            <a-affix :offsetBottom="0">
             <a-layout-footer>
                 <Statusbar />
             </a-layout-footer>
+        </a-affix>
         </div>
     </a-layout>
 </template>
@@ -370,3 +385,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.content {
+    padding: 0 24px;
+    background: #f0f2f5;
+}
+</style>

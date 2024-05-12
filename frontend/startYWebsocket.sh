@@ -30,7 +30,7 @@ PORT=4000
 # fi
 
 # 设置环境变量
-export HOST=192.168.17.131
+export HOST=127.0.0.1
 export PORT
 
 # 启动 y-websocket
