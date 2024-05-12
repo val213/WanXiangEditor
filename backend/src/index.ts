@@ -1,5 +1,5 @@
 import * as path from "path";
-import { WsClient, WsConnection, WsServer } from "tsrpc";
+import { WsConnection, WsServer } from "tsrpc";
 import { serviceProto } from './shared/protocols/serviceProto';
 import { Global } from "./models/Global";
 import { parseCurrentUser } from "./models/parseCurrentUser";
@@ -9,8 +9,6 @@ import { error, time } from "console";
 // Create the Server
 export const server = new WsServer(serviceProto, {
     port: 3000,
-    // Remove this to use binary mode (remove from the client too)
-    json: true
 });
 
 // 初始化启动前的服务

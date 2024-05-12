@@ -1,9 +1,8 @@
 /**
- * ´æ´¢ÔÚÊı¾İ¿âµÄÓÃ»§ĞÅÏ¢
+ * å­˜å‚¨åœ¨æ•°æ®åº“çš„ç”¨æˆ·ä¿¡æ¯
  */
 import { ObjectId } from "mongodb";
 const crypto = require('crypto');
-
 export interface DbUser {
     _id: ObjectId;
     uid: number;
@@ -24,47 +23,42 @@ export interface DbUser {
 }
 
 /**
- * Éú³ÉËæ»úµÄuid
+ * ç”Ÿæˆéšæœºçš„uid
  */
+export function generateUid(): number {
+    return Math.floor(Math.random() * 1000000);
+}
 
-// Éú³Éµ±Ç°Ê±¼ä´ÁµÄSHA-256¹şÏ££¬¸ù¾İ×¢²áµÄÊ±¼äÉèÖÃUid
 function generateHash() {
     const timeStamp = new Date().getTime().toString();
     const hash = crypto.createHash('sha256').update(timeStamp).digest('hex');
     return hash;
   }
 
-// Uid·¶Î§£º0-9999
 function hashToUid(hash: string) {
-    // È¡¹şÏ£µÄÇ°5¸ö×Ö·û£¬²¢½«Æä´Ó16½øÖÆ×ª»»Îª10½øÖÆ
     const decimalValue = parseInt(hash.substring(0, 5), 16);
     return decimalValue % 1000;
   }
 
 
 
-  // ÑéÖ¤UIDµÄÎ¨Ò»ĞÔ¡£
 function isUidUnique(uid: string): boolean {
-    // ÕâÀïÓ¦¸ÃÁ¬½ÓÊı¾İ¿â²éÑ¯UIDÊÇ·ñÎ¨Ò»£¬ÕâÀïÔİÊ±Ê¹ÓÃSetÄ£Äâ
     //return !existingUids.has(uid);
     return true;
   }
   
-// Éú³ÉUID£¬Ê¹UID¹Ì¶¨ÎªËÄÎ»Êı×Ö
 function generateNumericUid() {
     let uid = hashToUid(generateHash()).toString();
   
-    // ²»×ãËÄÎ»µÄÇé¿öÏÂ²¹0
     while (uid.length < 4) {
       uid = '0' + uid;
     }
     return uid;
     while(!isUidUnique(uid)){
-      uid = (parseInt(uid) + 1).toString().padStart(4, '0');//Hash³åÍ»Ôòuid+1
+      uid = (parseInt(uid) + 1).toString().padStart(4, '0');//Hashï¿½ï¿½Í»ï¿½ï¿½uid+1
     }
-    //ÕâÀïÓ¦¸ÃÒªÁ¬½ÓÊı¾İ¿â£¬°ÑÉú³ÉµÄĞÂUid·ÅÈëÊı¾İ¿âÖĞ
-    
-    //ÕâÀïĞ´·ÅÈë´úÂë
+
   
     return uid;
-  }
+}
+  

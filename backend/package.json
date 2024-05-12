@@ -4,6 +4,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "start": "npm run dev",
     "dev": "tsrpc-cli dev",
     "build": "tsrpc-cli build",
     "doc": "tsrpc-cli doc",
@@ -23,7 +24,11 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "mongodb": "^6.6.1",
-    "tsrpc": "^3.4.14"
-  }
+    "mongodb": "^6.5.0",
+    "tsrpc": "^3.4.14",
+    "y-mongodb-provider": "^0.1.10",
+    "y-protocols": "^1.0.6",
+    "yjs": "^13.6.15"
+  },
+  "type": "commonjs"
 }
