@@ -82,6 +82,7 @@ import { client } from './client';
 import { ref, reactive } from 'vue';
 import  CodeMirror from './components/CodeMirror.vue';
 import HomePage from './components/HomePage.vue'
+import { Modal } from '@arco-design/web-vue';
 export default {
     name: 'App',
     components: {
@@ -110,6 +111,7 @@ export default {
         const createSharedFile = ref(false);
         const joinSharedFile = ref(false);
         const widthsider = ref('70px');
+        const headPortrait = ref(null);
 
         const form = reactive({
             filename: '',
@@ -138,7 +140,16 @@ export default {
         // 处理创建多人协作文件的确认事件
         const handleCreatedFileBeforeOk = (done) => {
             // console.log(form)
-
+            //判断当前状态是不是未登录状态，如果是，提示未登录并且不允许创建
+            if(headPortrait.value.isLogin == false) {
+                console.log("未登录")
+                Modal.error({
+                  title: '还未登录无法创建多人在线协作文档',
+                  content: '请登录后再创建多人在线协作文档。',
+                });
+                handleCreatedCancel();
+                return
+            }
             // 创建成功
             if (tabsRef.value) {
                 tabsRef.value.handleAdd(form.filename, '', "CodeMirror", form.cooperativeCode);
@@ -163,7 +174,6 @@ export default {
         // 处理加入多人协作文件的确认事件
         const handleJoinBeforeOk = (done) => {
             // console.log(form)
-
             // 加入成功
             if (tabsRef.value) {
                 tabsRef.value.handleAdd('拥有者: ' + joinSharedFileForm.username, '',"CodeMirror", joinSharedFileForm.cooperativeCode, joinSharedFileForm.username);
@@ -196,6 +206,7 @@ export default {
             joinSharedFile,
             form,
             joinSharedFileForm,
+            headPortrait,
             handleSelect,
             updataSharedTitle,
             handleCreatedFileBeforeOk,
