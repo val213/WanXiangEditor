@@ -10,8 +10,8 @@
                 </textarea>
         </div>
         <div class="notepad">
-        <a-button @click="saveContent">保存</a-button>
-    </div>
+            <a-button @click="saveContent">保存</a-button>
+        </div>
     </div>
 </template>
 
@@ -47,15 +47,15 @@ export default {
     },
     methods: {
         getContent() {
-        // 返回编辑器的内容
+            // 返回编辑器的内容
             return this.content;
         },
         setContent(content) {
-        // 设置编辑器的内容
+            // 设置编辑器的内容
             this.content = content;
         },
         getSelection() {
-        // 返回编辑器的当前选择范围
+            // 返回编辑器的当前选择范围
             const textarea = this.$refs.textarea;
             return {
                 start: textarea.selectionStart,
@@ -123,33 +123,33 @@ export default {
         // 用多步骤弹出框，先让用户选择确定是否保存当前所在的文件，用户确定保存后再继续选择保存到服务器或者保存本地副本，但这两种选择都需要调用各自的函数
         async saveContent() {
             const { value } = await Swal.fire({
-            title: '请选择保存方式',
-            input: 'radio',
-            inputOptions: {
-                'server': '保存到服务器',
-                'local': '保存本地副本',
-                'cancel': '取消',
-            },
-            inputValidator: (value) => {
-                if (!value) {
-                    return '你需要选择一个选项！'
+                title: '请选择保存方式',
+                input: 'radio',
+                inputOptions: {
+                    'server': '保存到服务器',
+                    'local': '保存本地副本',
+                    'cancel': '取消',
+                },
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '你需要选择一个选项！'
+                    }
                 }
-            }
-        });
+            });
 
-        if (value === 'server') {
-            this.saveToServer(this.content, this.title);
-        } else if (value === 'local') {
-            this.saveToLocal(this.content, this.title);
-        } else if (value === 'cancel') {
-            // 用户选择了取消
-            console.log('User cancelled');
-        }
-    },
+            if (value === 'server') {
+                this.saveToServer(this.content, this.title);
+            } else if (value === 'local') {
+                this.saveToLocal(this.content, this.title);
+            } else if (value === 'cancel') {
+                // 用户选择了取消
+                console.log('User cancelled');
+            }
+        },
         // 保存到本地
         saveToLocal(content, title) {
-            const downloadFile = async (content, type, title)=> {
-                let blob = new Blob([content], {type: type});
+            const downloadFile = async (content, type, title) => {
+                let blob = new Blob([content], { type: type });
                 let url = URL.createObjectURL(blob);
                 let link = document.createElement('a');
                 link.download = title;
@@ -158,11 +158,11 @@ export default {
                 URL.revokeObjectURL(url);
                 client.logger.info('成功下载文件');
                 Modal.success({
-                title: '下载文件成功',
-                content: '文件已经下载到本地。',
+                    title: '下载文件成功',
+                    content: '文件已经下载到本地。',
                 });
             };
-            const handleFileDownload = async (content, title)=> {
+            const handleFileDownload = async (content, title) => {
                 // 首先判断文件的类型
                 let parts = title.split(".");
                 let extension = parts.pop();
@@ -181,33 +181,33 @@ export default {
                 } else {
                     client.logger.info('不支持该文件类型', title);
                     Modal.error({
-                    title: '不支持该文件类型,请选择文本格式文件~',
-                    content: '暂时不支持该文件类型的下载，因为它要么是二进制文件，要么使用不受支持的文本编码。',
+                        title: '不支持该文件类型,请选择文本格式文件~',
+                        content: '暂时不支持该文件类型的下载，因为它要么是二进制文件，要么使用不受支持的文本编码。',
                     });
                 }
             };
             handleFileDownload(content, title);
         },
         // 保存到服务器
-        async saveToServer(content,title) {
+        async saveToServer(content, title) {
             // 询问是否指定保存路径(如果路径不同即为保存为新文件，不指定则默认保存为原路径)
             let filepath;
             const { value } = await Swal.fire({
-            title: '是否指定保存路径？',
-            input: 'radio',
-            inputOptions: {
-                'Yes': '在新路径下保存为副本',
-                'No': '保存到原路径',
-                'root': '保存到根目录',
-                'cancel': '取消',
-            },
-            inputValidator: (value) => {
-                if (!value) {
-                    return '你需要选择一个选项！'
+                title: '是否指定保存路径？',
+                input: 'radio',
+                inputOptions: {
+                    'Yes': '在新路径下保存为副本',
+                    'No': '保存到原路径',
+                    'root': '保存到根目录',
+                    'cancel': '取消',
+                },
+                inputValidator: (value) => {
+                    if (!value) {
+                        return '你需要选择一个选项！'
+                    }
                 }
-            }
-        });
-        if (value === 'Yes') {
+            });
+            if (value === 'Yes') {
                 // 询问新路径
                 const { value: newPath } = await Swal.fire({
                     title: '请输入新路径',
@@ -235,10 +235,10 @@ export default {
             } else if (value === 'cancel') {
                 // 用户选择了取消
                 console.log('User cancelled');
-                return(done);
+                return (done);
             }
-                
-            let ret = await client.callApi('SaveFile', { content: content, title: title, filepath: filepath});
+
+            let ret = await client.callApi('SaveFile', { content: content, title: title, filepath: filepath });
             if (ret.isSucc) {
                 Modal.success({
                     title: '保存成功',
@@ -301,5 +301,6 @@ textarea {
     outline: none;
     font-size: 14px;
     line-height: 20px;
+    overflow: auto;
 }
 </style>

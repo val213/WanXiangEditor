@@ -138,7 +138,7 @@ const closeConn = (doc, conn) => {
 
 
 // 用于获取具有给定名称的文档对象，无论是在内存还是磁盘上
-export const getYDoc = (docname, gc = true) =>  
+export const getYDoc = (docname, gc = true) =>
 	// 根据文档名称从docs中获取文档对象，如果不存在，则创建一个新的文档对象
 	map.setIfUndefined(docs, docname, () => {
 		const doc = new WSSharedDoc(docname);
@@ -211,18 +211,18 @@ export const setupWSConnection = (doc, conn) => {
 	// 	pongReceived = true;
 	// });
 
-    const encoder = encoding.createEncoder();
-    encoding.writeVarUint(encoder, messageSync);
-    // syncProtocol.writeSyncStep1(encoder, doc);
-    send(doc, conn, encoding.toUint8Array(encoder));
-    const awarenessStates = doc.awareness.getStates();
-    if (awarenessStates.size > 0) {
-        const encoder = encoding.createEncoder();
-        encoding.writeVarUint(encoder, messageAwareness);
-        encoding.writeVarUint8Array(
-            encoder,
-            awarenessProtocol.encodeAwarenessUpdate(doc.awareness, Array.from(awarenessStates.keys())),
-        );
-        send(doc, conn, encoding.toUint8Array(encoder));
-    }
+	const encoder = encoding.createEncoder();
+	encoding.writeVarUint(encoder, messageSync);
+	// syncProtocol.writeSyncStep1(encoder, doc);
+	send(doc, conn, encoding.toUint8Array(encoder));
+	const awarenessStates = doc.awareness.getStates();
+	if (awarenessStates.size > 0) {
+		const encoder = encoding.createEncoder();
+		encoding.writeVarUint(encoder, messageAwareness);
+		encoding.writeVarUint8Array(
+			encoder,
+			awarenessProtocol.encodeAwarenessUpdate(doc.awareness, Array.from(awarenessStates.keys())),
+		);
+		send(doc, conn, encoding.toUint8Array(encoder));
+	}
 }

@@ -54,7 +54,7 @@ export interface TreeNodeData {
      * @en Parent node
      * */
     parent?: TreeNodeData;
-  }
+}
 
 export interface ReqGetFileList extends BaseRequest {
     directory?: string;

@@ -11,7 +11,7 @@ export interface ReqLogin extends BaseRequest {
     uid: number,
     username: string,
     password: string,
-    introduction: string, 
+    introduction: string,
 }
 
 /**

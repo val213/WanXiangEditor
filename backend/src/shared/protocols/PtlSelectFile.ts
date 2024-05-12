@@ -14,5 +14,5 @@ export interface ResSelectFile extends BaseResponse {
 }
 
 export const conf: BaseConf = {
-    
+
 }

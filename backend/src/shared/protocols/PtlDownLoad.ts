@@ -10,5 +10,5 @@ export interface ResDownLoad extends BaseResponse {
 }
 
 export const conf: BaseConf = {
-    
+
 }
