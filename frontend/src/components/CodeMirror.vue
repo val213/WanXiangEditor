@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div ref="codemirrorRef"></div>
+        <div ref="codemirrorRef"></div>
     </div>
 </template>
 
@@ -16,7 +16,6 @@ import { client } from '@/client'
 import * as encoding from 'lib0/encoding';
 import * as decoding from 'lib0/decoding';
 import * as syncProtocol from 'y-protocols/sync.js';
-import * as awarenessProtocol from 'y-protocols/awareness.js';
 
 export default {
     props: {
@@ -42,8 +41,13 @@ export default {
         const ydoc = new Y.Doc();
         // const awareness = new awarenessProtocol.Awareness(ydoc);
         const roomName = this.username + '-' + this.cooperativeCode;
+<<<<<<< HEAD
         console.log("房间名：",  roomName);
         const provider = new WebsocketProvider('ws://127.0.0.1:4000', roomName, ydoc);
+=======
+        console.log("房间名：", roomName);
+        const provider = new WebsocketProvider('ws://192.168.17.131:4000', roomName, ydoc);
+>>>>>>> 2bc973836d5daa6985bf3f7d1e4d77f2fe8b2710
         provider.connect();
         // 监听连接状态变化
         provider.on('status', (event) => {
@@ -62,13 +66,13 @@ export default {
         // provider.disconnect();
         const yText = ydoc.getText('codemirror')
         const yUndoManager = new Y.UndoManager(yText, {
-        trackedOrigins: new Set([])
+            trackedOrigins: new Set([])
         })
 
         const editorContainer = this.$refs.codemirrorRef
         const editor = CodeMirror(editorContainer, {
-        mode: 'javascript',
-        lineNumbers: true
+            mode: 'javascript',
+            lineNumbers: true
         })
 
         // 设置当前客户端的用户名
@@ -95,7 +99,7 @@ export default {
     methods: {
         // 创建新的共享文档
         async createSharedDoc() {
-            
+
             // 两种消息类型
             const messageSync = 0; // 同步更新 
             const messageAwareness = 1; // 意识状态更新

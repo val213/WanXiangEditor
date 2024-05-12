@@ -11,5 +11,5 @@ export interface ResSaveFile extends BaseResponse {
 }
 
 export const conf: BaseConf = {
-    
+
 }

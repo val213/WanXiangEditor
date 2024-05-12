@@ -29,6 +29,5 @@ window.addEventListener('load', () => {
     // 将provider，ydoc，type，和notepadbinding这四个变量的值暴露到了全局范围，以便在其他地方使用
     // @ts-ignore
     window.example = { provider, ydoc, type, notepadbinding }
-    
-  })
-  
+
+})
