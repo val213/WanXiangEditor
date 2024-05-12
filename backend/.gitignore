@@ -1,5 +1,4 @@
 node_modules
-src/models/BackConfig.ts
 dist
 yarn.lock
 .DS_STORE
