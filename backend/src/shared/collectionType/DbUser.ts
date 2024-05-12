@@ -43,7 +43,7 @@ function hashToUid(hash: string) {
 
 
 
-  // 验证UID的唯一性
+  // 验证UID的唯一性。
 function isUidUnique(uid: string): boolean {
     // 这里应该连接数据库查询UID是否唯一，这里暂时使用Set模拟
     //return !existingUids.has(uid);
