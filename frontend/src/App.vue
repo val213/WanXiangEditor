@@ -11,7 +11,8 @@
                 <a-layout-sider :width=70>
                     <SideMenu :CurrentItem="CurrentComponent" @componentChange="componentChange" />
                 </a-layout-sider>
-                <a-layout-sider :resize-directions="['right']" :width="widthsider" :style="{ maxWidth: '80%', textAlign: 'center' }">
+                <a-layout-sider :resize-directions="['right']" :width="widthsider"
+                    :style="{ maxWidth: '80%', textAlign: 'center' }">
                     <KeepAlive>
                         <component :is="CurrentComponentSider" :tabKey="tabKey" :username="currentUsername"
                             @file-selected="handleFileSelected" @pdfView="pdfView"></component>
@@ -28,33 +29,39 @@
                         <a-modal v-model:visible="createSharedFile" title="创建多人协作文件" @cancel="handleCreatedCancel"
                             @before-ok="handleCreatedFileBeforeOk">
                             <a-form ref="formRef" :model="form" size="large" :scroll-to-first-error="true">
-                                <a-form-item field="filename" label="文件名" :rules="[{ required: true, message: '请先输入文件名'}]" >
+                                <a-form-item field="filename" label="文件名"
+                                    :rules="[{ required: true, message: '请先输入文件名' }]">
                                     <a-input v-model="form.filename" />
                                 </a-form-item>
-                                <a-form-item field="cooperativeCode" label="在线协作码" :rules="[{ required: true, message: '请先输入在线协作码'}]">
+                                <a-form-item field="cooperativeCode" label="在线协作码"
+                                    :rules="[{ required: true, message: '请先输入在线协作码' }]">
                                     <a-input v-model="form.cooperativeCode" />
                                 </a-form-item>
                             </a-form>
                         </a-modal>
                         <a-modal v-model:visible="joinSharedFile" title="加入多人协作文件" @cancel="handleJoinCancel"
                             @before-ok="handleJoinBeforeOk">
-                            <a-form ref="joinFileFromref" :model="joinSharedFileForm" size="large" :scroll-to-first-error="true">
-                                <a-form-item field="username" label="用户名" :rules="[{required:true,message:'请先输入用户名'}]">
-                                    <a-input v-model="joinSharedFileForm.username" placeholder="请输入用户名……"/>
+                            <a-form ref="joinFileFromref" :model="joinSharedFileForm" size="large"
+                                :scroll-to-first-error="true">
+                                <a-form-item field="username" label="用户名" :rules="[{ required: true, message: '请先输入用户名' }]">
+                                    <a-input v-model="joinSharedFileForm.username" placeholder="请输入用户名……" />
                                 </a-form-item>
-                                <a-form-item field="cooperativeCode" label="在线协作码" :rules="[{required:true,message:'请先输入在线协作码'}]">
-                                    <a-input v-model="joinSharedFileForm.cooperativeCode" placeholder="请输入在线协作码……"/>
+                                <a-form-item field="cooperativeCode" label="在线协作码"
+                                    :rules="[{ required: true, message: '请先输入在线协作码' }]">
+                                    <a-input v-model="joinSharedFileForm.cooperativeCode" placeholder="请输入在线协作码……" />
                                 </a-form-item>
                             </a-form>
                         </a-modal>
                     </a-dropdown>
-                    <HomePage v-if="CurrentComponentContent==='HomePage'"></HomePage>
-                    <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey"
-                        :title="sharedTitle" :content="content" ref="childComponentRef">
+                    <HomePage v-if="CurrentComponentContent === 'HomePage'"></HomePage>
+                    <Notepad v-if="CurrentComponentContent === 'Notepad'" :nowTabKey="nowTabKey" :title="sharedTitle"
+                        :content="content" ref="childComponentRef">
                     </Notepad>
-                    <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef"  :pdfSource="pdfSource" :changeFlag="changeFlag">
+                    <PDFViewer v-if="CurrentComponentContent === 'PDFViewer'" ref="pdfViewerRef" :pdfSource="pdfSource"
+                        :changeFlag="changeFlag">
                     </PDFViewer>
-                    <CodeMirror v-if="CurrentComponentContent === 'CodeMirror'" ref="codemirrorRef" :nowTabKey="nowTabKey" :currentUsername="currentUsername">
+                    <CodeMirror v-if="CurrentComponentContent === 'CodeMirror'" ref="codemirrorRef"
+                        :nowTabKey="nowTabKey" :currentUsername="currentUsername">
                     </CodeMirror>
                 </a-layout-content>
             </a-layout>
@@ -80,7 +87,7 @@ import PDFLoader from './components/PDFLoader.vue';
 import PDFViewer from './components/PDFViewer.vue';
 import { client } from './client';
 import { ref, reactive } from 'vue';
-import  CodeMirror from './components/CodeMirror.vue';
+import CodeMirror from './components/CodeMirror.vue';
 import HomePage from './components/HomePage.vue'
 import { Modal } from '@arco-design/web-vue';
 export default {
@@ -141,11 +148,11 @@ export default {
         const handleCreatedFileBeforeOk = (done) => {
             // console.log(form)
             //判断当前状态是不是未登录状态，如果是，提示未登录并且不允许创建
-            if(headPortrait.value.isLogin == false) {
+            if (headPortrait.value.isLogin == false) {
                 console.log("未登录")
                 Modal.error({
-                  title: '还未登录无法创建多人在线协作文档',
-                  content: '请登录后再创建多人在线协作文档。',
+                    title: '还未登录无法创建多人在线协作文档',
+                    content: '请登录后再创建多人在线协作文档。',
                 });
                 handleCreatedCancel();
                 return
@@ -176,7 +183,7 @@ export default {
             // console.log(form)
             // 加入成功
             if (tabsRef.value) {
-                tabsRef.value.handleAdd('拥有者: ' + joinSharedFileForm.username, '',"CodeMirror", joinSharedFileForm.cooperativeCode, joinSharedFileForm.username);
+                tabsRef.value.handleAdd('拥有者: ' + joinSharedFileForm.username, '', "CodeMirror", joinSharedFileForm.cooperativeCode, joinSharedFileForm.username);
                 createSharedFile.value = false;
                 joinFileFromref.value.resetFields();
                 joinFileFromref.value.clearValidate();
@@ -276,7 +283,7 @@ export default {
             // console.log(this.tabKey);
 
             //获取type
-            let type = sessionStorage.getItem(this.nowTabKey+'type');
+            let type = sessionStorage.getItem(this.nowTabKey + 'type');
             console.log("当前标签页类型：", type);
 
             // 更新标题
@@ -299,7 +306,7 @@ export default {
                 let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
                 this.changeFlag = Date.now();
                 this.pdfSource = source;
-                
+
                 //this.pdfSource = source;
             } else if (type == "CodeMirror") {
                 this.componentChange(type);
@@ -307,66 +314,66 @@ export default {
                 this.componentChange(type);
             }
 
-      
-    },
-    // 控制侧边栏的宽度的函数
+
+        },
+        // 控制侧边栏的宽度的函数
 
 
-    // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
-    // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
-    componentChange(key){
-      console.log(key);
-      if (key == 'Explorer') {
-        // 如果当前组件已经是Explorer，则将宽度设置为0,key设置为空
-        if (this.CurrentComponentSider == 'Explorer') {
-            this.widthsider = 0;
-            this.CurrentComponentSider = '';
-        } else {
-          this.widthsider = '20%';
-          this.CurrentComponentSider = key;
+        // 组件动态切换，将SideMenu组件中传递的组件名传入App组件的CurrentComponent中
+        // 对SideMenu传进来的key进行判断，如果是Explorer或者Search则切换Sider的组件，否则切换Content的组件
+        componentChange(key) {
+            console.log(key);
+            if (key == 'Explorer') {
+                // 如果当前组件已经是Explorer，则将宽度设置为0,key设置为空
+                if (this.CurrentComponentSider == 'Explorer') {
+                    this.widthsider = 0;
+                    this.CurrentComponentSider = '';
+                } else {
+                    this.widthsider = '20%';
+                    this.CurrentComponentSider = key;
+                }
+            } else if (key == 'Search') {
+                // 如果当前组件已经是Search，则将宽度设置为0,key设置为空
+                if (this.CurrentComponentSider == 'Search') {
+                    this.widthsider = 0;
+                    this.CurrentComponentSider = '';
+                } else {
+                    this.widthsider = '20%';
+                    this.CurrentComponentSider = key;
+                }
+            } else if (key == 'PDFLoader') {
+                // 如果当前组件已经是PDFLoader，则将宽度设置为0,key设置为空
+                if (this.CurrentComponentSider == 'PDFLoader') {
+                    this.widthsider = 0;
+                    this.CurrentComponentSider = '';
+                } else {
+                    this.widthsider = '20%';
+                    this.CurrentComponentSider = key;
+                }
+            }
+            else {
+                this.CurrentComponentContent = key;
+            }
+        },
+        handleFileSelected(title, content, type) {
+            client.logger.info('File title and content:', title, content);
+            console.log(type);
+            if (type == 'pdf') {
+                this.$refs.tabsRef.handleAdd(title, content, "PDFViewer");
+            } else {
+                this.$refs.tabsRef.handleAdd(title, content, "Notepad");
+            }
+        },
+        pdfView(fileName, pdfBase64) {
+            //添加一个新的tab来展示pdf
+            console.log("pdfView start");
+            this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer");
+            //this.$refs.PDFViewer.changePdfUrl(pdfBase64);
+        },
+        handleLoginSuccess(username) {
+            this.currentUsername = username;
+            console.log("当前用户是" + this.currentUsername);
         }
-      } else if (key == 'Search') {
-        // 如果当前组件已经是Search，则将宽度设置为0,key设置为空
-        if (this.CurrentComponentSider == 'Search') {
-            this.widthsider = 0;
-            this.CurrentComponentSider = '';
-        } else {
-          this.widthsider = '20%';
-          this.CurrentComponentSider = key;
-        }
-      } else if (key == 'PDFLoader') {
-        // 如果当前组件已经是PDFLoader，则将宽度设置为0,key设置为空
-        if (this.CurrentComponentSider == 'PDFLoader') {
-            this.widthsider = 0;
-            this.CurrentComponentSider = '';
-        } else {
-          this.widthsider = '20%';
-          this.CurrentComponentSider = key;
-        }
-      }
-      else {
-        this.CurrentComponentContent = key;
-      }
     },
-    handleFileSelected(title, content, type) {  
-        client.logger.info('File title and content:', title, content);
-        console.log(type);
-        if(type == 'pdf') {
-            this.$refs.tabsRef.handleAdd(title,content,"PDFViewer");
-        } else {
-            this.$refs.tabsRef.handleAdd(title,content,"Notepad");
-        }
-    },
-    pdfView(fileName, pdfBase64) {
-        //添加一个新的tab来展示pdf
-        console.log("pdfView start");
-        this.$refs.tabsRef.handleAdd(fileName, pdfBase64, "PDFViewer");
-        //this.$refs.PDFViewer.changePdfUrl(pdfBase64);
-    },
-    handleLoginSuccess(username){
-        this.currentUsername = username;
-        console.log("当前用户是" + this.currentUsername);
-    }
-  },
 };
 </script>

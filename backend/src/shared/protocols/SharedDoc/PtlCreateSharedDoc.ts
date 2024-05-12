@@ -1,9 +1,9 @@
 
-export interface ReqCreateSharedDoc  { 
+export interface ReqCreateSharedDoc {
     docName: string;
     gc?: boolean
 }
 
-export interface ResCreateSharedDoc  {
+export interface ResCreateSharedDoc {
 
 }

@@ -3,7 +3,7 @@
 import { BaseRequest, BaseResponse, BaseConf } from '../base'
 
 export interface ReqAdminAction extends BaseRequest {
-    
+
 }
 
 export interface ResAdminAction extends BaseResponse {

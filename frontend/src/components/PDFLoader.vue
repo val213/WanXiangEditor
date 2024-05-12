@@ -1,17 +1,8 @@
 <template>
-    <a-upload 
-    action="/"
-    @before-upload="beforeUpload"
-    @before-remove="beforeRemove"
-    :auto-upload="false"
-    :file-list="fileList"
-    ref="uploadRef"
-    :multiple="true"
-    :accept="application/pdf"
-    >
-      <template #upload-button>
-        <div
-          style="
+    <a-upload action="/" @before-upload="beforeUpload" @before-remove="beforeRemove" :auto-upload="false"
+        :file-list="fileList" ref="uploadRef" :multiple="true" :accept="application / pdf">
+        <template #upload-button>
+            <div style="
           background-color: var(--color-fill-2);
           color: var(--color-text-1);
           border: 1px dashed var(--color-fill-4);
@@ -19,18 +10,17 @@
           width: 380px;
           border-radius: 2;
           line-height: 158px;
-          text-align: center;"
-        >
-          <div>
-            拖拽PDF到此处 或者
-            <span style="color: #3370FF"> 点击上传PDF</span>
-          </div>
-        </div>
-      </template>
+          text-align: center;">
+                <div>
+                    拖拽PDF到此处 或者
+                    <span style="color: #3370FF"> 点击上传PDF</span>
+                </div>
+            </div>
+        </template>
     </a-upload>
     <a-button type="primary" class="upload-button" @click="startUpload"> 开始上传</a-button>
-  </template>
-  
+</template>
+
 <script>
 import { client } from '@/client';
 import { Modal } from '@arco-design/web-vue';
@@ -42,8 +32,8 @@ export default {
     },
     methods: {
         getPdfPath(fileName) {
-            console.log("uploads/"+fileName);
-            return "uploads/"+fileName;
+            console.log("uploads/" + fileName);
+            return "uploads/" + fileName;
         },
         getFileType(fileName) {
             //根据fileName的文件名后缀来判断文件类型
@@ -79,7 +69,7 @@ export default {
                 // let ret = await client.callApi('SelectFile', {selectedTitle: file.name, filePath: filePath, fileType: pdf});
                 // if(ret.isSucc) {
                 // }
-                
+
             }
             return false; // 阻止文件自动上传
         },

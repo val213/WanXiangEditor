@@ -1,4 +1,4 @@
-import {  WsClient } from "tsrpc-browser";
+import { WsClient } from "tsrpc-browser";
 import { serviceProto } from "./shared/protocols/serviceProto";
 import { ResLogin } from "./shared/protocols/user/PtlLogin";
 // import { WebsocketProvider } from "y-websocket";
@@ -18,7 +18,7 @@ export const client = new WsClient(serviceProto, {
 // 在发送请求前，如果本地存储中有SSO_TOKEN，则将其添加到请求头中
 client.flows.preCallApiFlow.push(v => {
     // 判断是否为登录请求，再执行分支中代码
-    if (v.apiName == 'user/Login') { 
+    if (v.apiName == 'user/Login') {
         const ssoToken = localStorage.getItem('SSO_TOKEN');
         if (ssoToken) {
             v.req.__ssoToken = ssoToken;
@@ -33,7 +33,7 @@ client.flows.preCallApiFlow.push(v => {
 // 则从本地存储中移除token，并且设置状态为false
 client.flows.postApiReturnFlow.push(v => {
     if (v.return.isSucc) {
-        if (v.apiName == 'user/Login') { 
+        if (v.apiName == 'user/Login') {
             const res = v.return.res as ResLogin;
             if (res.__ssoToken !== undefined) {
                 localStorage.setItem('SSO_TOKEN', res.__ssoToken);
