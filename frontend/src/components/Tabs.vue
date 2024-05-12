@@ -3,13 +3,13 @@
   <a-tabs type="card-gutter" :active-key="nowTabKey" :editable="true" @add="handleAdd" @delete="handleDelete"
     auto-switch show-add-button>
     <a-tab-pane v-for="(item, index) of data" :key="item.key" :title="item.title" :closable="index !== 0">
-      <div v-if="item.editing" @blur="removeEditable(index, $event)" contenteditable="true" ref="editableTitle"
+      <!-- <div v-if="item.editing" @blur="removeEditable(index, $event)" contenteditable="true" ref="editableTitle"
         class="editable-title">
         {{ item.title }}
       </div>
       <span v-else @dblclick="makeEditable(index)">
         {{ item.title }}
-      </span>
+      </span> -->
 
     </a-tab-pane>
   </a-tabs>

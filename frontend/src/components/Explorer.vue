@@ -5,17 +5,11 @@
       <a-collapse-item header="打开的编辑器" :key="1">
         <a-tree :data="openedFiles" @select="handleFileSelect" @click="navigateToFile(file)">
         </a-tree>
-<<<<<<< HEAD
         <a-tab
             v-for="(file, index) in openedFiles"
             :key="index"
             @click="navigateToFile(file)"
 >
-=======
-
-        <a-tab v-for="(file, index) in openedFiles" :key="index" @click="navigateToFile(file)">
-          {{ file.title }}
->>>>>>> 2bc973836d5daa6985bf3f7d1e4d77f2fe8b2710
         </a-tab>
       </a-collapse-item>
       <a-collapse-item :header="getProjectNameHeader" key="2">

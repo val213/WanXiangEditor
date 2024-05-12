@@ -41,13 +41,8 @@ export default {
         const ydoc = new Y.Doc();
         // const awareness = new awarenessProtocol.Awareness(ydoc);
         const roomName = this.username + '-' + this.cooperativeCode;
-<<<<<<< HEAD
         console.log("房间名：",  roomName);
         const provider = new WebsocketProvider('ws://127.0.0.1:4000', roomName, ydoc);
-=======
-        console.log("房间名：", roomName);
-        const provider = new WebsocketProvider('ws://192.168.17.131:4000', roomName, ydoc);
->>>>>>> 2bc973836d5daa6985bf3f7d1e4d77f2fe8b2710
         provider.connect();
         // 监听连接状态变化
         provider.on('status', (event) => {
