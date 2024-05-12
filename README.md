@@ -111,7 +111,7 @@ yarn install
 在本地部署或者开发本项目，需要分别启动服务端和客户端，分别进入backend和frontend目录，执行启动命令：
 ```bash
 cd WanXiangEditor/[frontend/backend]
-npm run dev
+npm start
 ```
 ## 部署
 > 前端项目经过一次脚手架的迁移，目前使用vite构建和打包。
