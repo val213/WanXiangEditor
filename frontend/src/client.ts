@@ -33,10 +33,12 @@ client.flows.preCallApiFlow.push(v => {
 // 则从本地存储中移除token，并且设置状态为false
 client.flows.postApiReturnFlow.push(v => {
     if (v.return.isSucc) {
-        const res = v.return.res as ResLogin;
-        if (res.__ssoToken !== undefined) {
-            localStorage.setItem('SSO_TOKEN', res.__ssoToken);
-            localStorage.setItem('USERNAME', res.user.username);
+        if (v.apiName == 'user/Login') { 
+            const res = v.return.res as ResLogin;
+            if (res.__ssoToken !== undefined) {
+                localStorage.setItem('SSO_TOKEN', res.__ssoToken);
+                localStorage.setItem('USERNAME', res.user.username);
+            }
         }
     }
     else if (v.return.err.code === 'NEED_LOGIN') {
