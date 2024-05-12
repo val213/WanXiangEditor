@@ -1,5 +1,5 @@
 import * as path from "path";
-import { WsClient, WsConnection, WsServer } from "tsrpc";
+import { WsConnection, WsServer } from "tsrpc";
 import { serviceProto } from './shared/protocols/serviceProto';
 import { Global } from "./models/Global";
 import { parseCurrentUser } from "./models/parseCurrentUser";
@@ -9,17 +9,15 @@ import { error, time } from "console";
 // Create the Server
 export const server = new WsServer(serviceProto, {
     port: 3000,
-    // Remove this to use binary mode (remove from the client too)
-    json: true
 });
 
 // 初始化启动前的服务
 async function init() {
     // 解析当前用户
     parseCurrentUser(server);
-    
+
     // 启用身份验证
-    enableAuthentication(server);  
+    enableAuthentication(server);
 
     // 自动实现API
     await server.autoImplementApi(path.resolve(__dirname, 'api'));
@@ -39,13 +37,14 @@ async function main() {
     setInterval(() => {
         for (let token in UserUtil.ssoTokenInfo) {
             // server.logger.log(UserUtil.ssoTokenInfo);
-            
+
             // server.logger.log(`Token ${token} 还有 ${UserUtil.ssoTokenInfo[token].expiredTime - Date.now()} ms 过期`);
             if (UserUtil.isTokenExpired(token)) {
-                let conn = server.connections.find(v=>v.userId === UserUtil.ssoTokenInfo[token].uid);
-                if(conn){
-                    conn.sendMsg('user/Expire',{
-                        content:'Token已过期，请重新登录'} );
+                let conn = server.connections.find(v => v.userId === UserUtil.ssoTokenInfo[token].uid);
+                if (conn) {
+                    conn.sendMsg('user/Expire', {
+                        content: 'Token已过期，请重新登录'
+                    });
                 }
                 // 销毁sso token
                 UserUtil.destroySsoToken(token);

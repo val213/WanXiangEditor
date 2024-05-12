@@ -1,7 +1,7 @@
 <template class="noneshadow">
     <!-- 未登录的头像 -->
-    <a-avatar class='head' shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' } "
-       @click="handleClick" v-if="!isLogin" >   
+    <a-avatar class='head' shape="square" :size="50" :auto-fix-font-size="true"
+        :style="{ backgroundColor: 'lightblue' }" @click="handleClick" v-if="!isLogin">
         未登录
         <template #trigger-icon>
             <icon-user size="15" :stroke-width='7' style="color: lightblue" />
@@ -9,8 +9,8 @@
     </a-avatar>
     <!-- 登录框 -->
     <!-- @before-ok="handleBeforeOk" -->
-    <a-modal v-model:visible="modalVisible" title="登录" @cancel="formRef && formRef.resetFields()"
-         footer='true' draggable>
+    <a-modal v-model:visible="modalVisible" title="登录" @cancel="formRef && formRef.resetFields()" footer='true'
+        draggable>
         <a-space direction="vertical" align="end">
             <a-form ref="formRef" :model="form">
                 <a-form-item field="username" label="用户名">
@@ -28,10 +28,10 @@
         </template>
     </a-modal>
     <!-- 登录成功后的头像 -->
-    
-    <a-popover position="bottom" title="个人信息" :style="{ width: '400px', height: '600px'}">
+
+    <a-popover position="bottom" title="个人信息" :style="{ width: '400px', height: '600px' }">
         <a-avatar shape="square" :size="50" :auto-fix-font-size="true" :style="{ backgroundColor: 'lightblue' }"
-            trigger-type='mask' v-if="isLogin" @click="handleMouseEnter">     
+            trigger-type='mask' v-if="isLogin" @click="handleMouseEnter">
             {{ username }}
             <template #trigger-icon>
             </template>
@@ -45,18 +45,15 @@
         </template>
     </a-popover>
     <!-- 处理是否确认退出 -->
-    <a-modal v-model:visible="readyLogout" 
-             :closable="false"
-             :footer="true"
-             :style="{ display: 'flex', justifyContent: 'center', alignItems: 'center' }"
-        >
-         <div style="text-align: center;">
+    <a-modal v-model:visible="readyLogout" :closable="false" :footer="true"
+        :style="{ display: 'flex', justifyContent: 'center', alignItems: 'center' }">
+        <div style="text-align: center;">
             您确定要退出吗？
-         </div>
-         <template #footer>
+        </div>
+        <template #footer>
             <a-button @click="handleCancelQuit">取消</a-button>
             <a-button type="primary" @click="handleLogout">确定</a-button>
-         </template>
+        </template>
     </a-modal>
     <!-- 注册框 -->
     <a-modal v-model:visible="registerVisible" title="注册" @cancel="formRegisterRef && formRegisterRef.resetFields()"
@@ -112,7 +109,7 @@ import { Modal } from '@arco-design/web-vue';
 import { reactive, ref } from 'vue';
 
 export default {
-    setup(props,context) {
+    setup(props, context) {
         // const uid = ref('');
         const db_id = ref('');
 
@@ -145,7 +142,7 @@ export default {
         username.value = localStorage.getItem('USERNAME');
         if (username.value != 'null') {
             context.emit('login-success', username.value);
-       }
+        }
 
         // 处理点击头像的事件
         const handleClick = () => {
@@ -203,7 +200,7 @@ export default {
         };
 
         // 处理取消登录
-        const handleCancelLogin = () =>{
+        const handleCancelLogin = () => {
             modalVisible.value = false;
         }
 
@@ -264,7 +261,7 @@ export default {
                 console.log("注册失败");
             }
             Modal.success({
-                title:'注册成功,请重新回到登录界面',
+                title: '注册成功,请重新回到登录界面',
             });
 
             // 延迟3秒后关闭登录框
@@ -279,28 +276,28 @@ export default {
         const showPersonInfo = ref(false);
         const introduction = ref('此处可添加您的个人简介');
         const changeInfo = ref(false);
-        const handleMouseEnter= async() =>{
+        const handleMouseEnter = async () => {
             showPersonInfo.value = true;
         }
-        const handleMouseLeave = async() =>{
+        const handleMouseLeave = async () => {
             showPersonInfo.value = false;
         }
 
         // 处理准备退出
         const readyLogout = ref(false);
-        const handleReadyLogout = async() =>{
+        const handleReadyLogout = async () => {
             readyLogout.value = true;
         }
         // 处理取消退出
-        const handleCancelQuit = async() =>{
+        const handleCancelQuit = async () => {
             readyLogout.value = false;
         }
         // 处理确认修改个人信息
-        const handleChangeInfo = async() =>{
+        const handleChangeInfo = async () => {
             changeInfo.value = true;
         }
         // 处理取消修改个人信息
-        const handleCancelModify = async() =>{
+        const handleCancelModify = async () => {
             changeInfo.value = false;   //退出修改个人信息框
             showPersonInfo.value = false;  //顺便退出个人信息框
         }
@@ -310,7 +307,7 @@ export default {
             newpassword: form.password, //初始密码
             newIntroduction: introduction,  //初始简介
         });
-        const handleConfirmModify = async() =>{
+        const handleConfirmModify = async () => {
             // let ret1 = await client.callApi('database/GetUser', {
             //     username: username.value,
             // });
@@ -318,7 +315,7 @@ export default {
             //     console.log("获取用户信息失败");
             // }
 
-            let ret2 = await client.callApi('database/UpdateUser', { 
+            let ret2 = await client.callApi('database/UpdateUser', {
                 update: {
                     _id: db_id.value,
                     username: information.updateUsername,
@@ -326,7 +323,7 @@ export default {
                     introduction: information.newIntroduction,
                 }
             });
-            console.log("information"+information.newIntroduction);
+            console.log("information" + information.newIntroduction);
             if (!ret2) {
                 console.log("修改信息失败");
             }
@@ -377,18 +374,18 @@ export default {
 
 <style>
 .person-info {
-  position:absolute;
-  right:10%;
-  background-color: white;
-  border: 1px solid white;
-  box-shadow:none;
-  z-index: 500; 
-  margin-top: 100px;
+    position: absolute;
+    right: 10%;
+    background-color: white;
+    border: 1px solid white;
+    box-shadow: none;
+    z-index: 500;
+    margin-top: 100px;
 }
 </style>
 
-<style  scoped>
-template{
+<style scoped>
+template {
     background-color: white;
     box-shadow: none;
 }
@@ -396,9 +393,9 @@ template{
 
 <style>
 .modal-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

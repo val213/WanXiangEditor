@@ -6,36 +6,17 @@
       <button @click="disable">disable</button>
     </div>
     <div style="border: 1px solid #ccc; margin-top: 10px">
-      <Toolbar
-        :editor="editorRef"
-        :defaultConfig="toolbarConfig"
-        :mode="mode"
-        style="border-bottom: 1px solid #ccc"
-      />
-      <Editor
-        :defaultConfig="editorConfig"
-        :mode="mode"
-        v-model="valueHtml"
-        style="height: 400px; overflow-y: hidden"
-        @onCreated="handleCreated"
-        @onChange="handleChange"
-        @onDestroyed="handleDestroyed"
-        @onFocus="handleFocus"
-        @onBlur="handleBlur"
-        @customAlert="customAlert"
-        @customPaste="customPaste"
-      />
+      <Toolbar :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" style="border-bottom: 1px solid #ccc" />
+      <Editor :defaultConfig="editorConfig" :mode="mode" v-model="valueHtml" style="height: 400px; overflow-y: hidden"
+        @onCreated="handleCreated" @onChange="handleChange" @onDestroyed="handleDestroyed" @onFocus="handleFocus"
+        @onBlur="handleBlur" @customAlert="customAlert" @customPaste="customPaste" />
     </div>
     <div style="margin-top: 10px">
-      <textarea
-        v-model="valueHtml"
-        readonly
-        style="width: 100%; height: 200px; outline: none"
-      ></textarea>
+      <textarea v-model="valueHtml" readonly style="width: 100%; height: 200px; outline: none"></textarea>
     </div>
   </div>
 </template>
-      
+
 <script>
 import '@wangeditor/editor/dist/css/style.css';
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
@@ -63,12 +44,12 @@ export default {
     tabKey() {
       const valueHtml = ref('<p>[请打开文件]</p>');
       console.log(this.tabKey);
-      let path = '/editors/'+ this.tabKey;
+      let path = '/editors/' + this.tabKey;
       axios.get(path).then(response => {
         valueHtml.value = response.data;
       })
       this.valueHtml = valueHtml;
-    } 
+    }
   },
   components: { Editor, Toolbar },
   setup(props) {
@@ -77,20 +58,20 @@ export default {
 
     // 内容 HTML
     const valueHtml = ref('<p>[请选中文件]</p>');
-    let path = '/editors/'+ props.tabKey + '.html';
+    let path = '/editors/' + props.tabKey + '.html';
 
     // 模拟 ajax 异步获取内容
     onMounted(() => {
       setTimeout(() => {
         axios.get(path).then(response => {
-        valueHtml.value = response.data;
-      })
+          valueHtml.value = response.data;
+        })
       }, 150);
     });
 
     const toolbarConfig = {};
     const editorConfig = { placeholder: '请输入内容...' };
-    
+
     // 组件销毁时，也及时销毁编辑器，重要！
     onBeforeUnmount(() => {
       const editor = editorRef.value;
@@ -172,4 +153,3 @@ export default {
   },
 };
 </script>
-      

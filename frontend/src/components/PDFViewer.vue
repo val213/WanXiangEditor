@@ -22,7 +22,6 @@ export default {
             nextTick(update);
         })
         function update() {
-
             pdfState.pdfSource = props.pdfSource
             refresh.value++;
         }
@@ -31,7 +30,6 @@ export default {
             pdfNum: 1,
             pdfPages: 1,
         });
-
         return {
             refresh,
             pdfState,

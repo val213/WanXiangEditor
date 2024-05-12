@@ -51,7 +51,6 @@ export default {
             else {
                 this.fileList.push({ name: file.name, status: 'ready', uid: file.uid });
                 this.file = file; // 在这里获取到文件对象，并保存在data属性中
-
             }
             return false; // 阻止文件自动上传
         },
