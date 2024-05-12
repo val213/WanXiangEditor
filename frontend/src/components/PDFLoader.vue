@@ -1,17 +1,8 @@
 <template>
-    <a-upload 
-    action="/"
-    @before-upload="beforeUpload"
-    @before-remove="beforeRemove"
-    :auto-upload="false"
-    :file-list="fileList"
-    ref="uploadRef"
-    :multiple="true"
-    :accept="application/pdf"
-    >
-      <template #upload-button>
-        <div
-          style="
+    <a-upload action="/" @before-upload="beforeUpload" @before-remove="beforeRemove" :auto-upload="false"
+        :file-list="fileList" ref="uploadRef" :multiple="true" :accept="application / pdf">
+        <template #upload-button>
+            <div style="
           background-color: var(--color-fill-2);
           color: var(--color-text-1);
           border: 1px dashed var(--color-fill-4);
@@ -19,18 +10,17 @@
           width: 380px;
           border-radius: 2;
           line-height: 158px;
-          text-align: center;"
-        >
-          <div>
-            拖拽PDF到此处 或者
-            <span style="color: #3370FF"> 点击上传PDF</span>
-          </div>
-        </div>
-      </template>
+          text-align: center;">
+                <div>
+                    拖拽PDF到此处 或者
+                    <span style="color: #3370FF"> 点击上传PDF</span>
+                </div>
+            </div>
+        </template>
     </a-upload>
     <a-button type="primary" class="upload-button" @click="startUpload"> 开始上传</a-button>
-  </template>
-  
+</template>
+
 <script>
 import { client } from '@/client';
 import { Modal } from '@arco-design/web-vue';
@@ -42,8 +32,8 @@ export default {
     },
     methods: {
         getPdfPath(fileName) {
-            console.log("uploads/"+fileName);
-            return "uploads/"+fileName;
+            console.log("uploads/" + fileName);
+            return "uploads/" + fileName;
         },
         getFileType(fileName) {
             //根据fileName的文件名后缀来判断文件类型
@@ -61,25 +51,7 @@ export default {
             else {
                 this.fileList.push({ name: file.name, status: 'ready', uid: file.uid });
                 this.file = file; // 在这里获取到文件对象，并保存在data属性中
-                //上传前开始预览pdf
-                // console.log("尝试预览");
-                // const reader = new FileReader();
-                // reader.readAsDataURL(file);
-                // reader.onload = () => {
-                //     let pdfBase64 = reader.result;
-                //     this.$emit('pdfView', file.name, pdfBase64, '1');
-                // }
-                // //获取后端pdf文件的base64流
-                // this.getFileType(file.name);
-                // console.log(this.getFileType(file.name));
-                // //处理路径
-                // let filePath = this.getPdfPath(file.name);
-                // client.logger.info("文件路径", filePath);
-                // //使用文件名作为参数去请求接口
-                // let ret = await client.callApi('SelectFile', {selectedTitle: file.name, filePath: filePath, fileType: pdf});
-                // if(ret.isSucc) {
-                // }
-                
+
             }
             return false; // 阻止文件自动上传
         },
