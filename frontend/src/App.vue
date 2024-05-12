@@ -80,6 +80,7 @@ import PDFViewer from './components/PDFViewer.vue';
 import { client } from './client';
 import { ref, reactive } from 'vue';
 import  CodeMirror from './components/CodeMirror.vue';
+import { Modal } from '@arco-design/web-vue';
 export default {
     name: 'App',
     components: {

@@ -37,6 +37,7 @@
 
 <script>
 import { ref } from 'vue';
+import { client } from '@/client';
 
 let count = 1;
 

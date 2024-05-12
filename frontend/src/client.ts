@@ -3,6 +3,8 @@ import { serviceProto } from "./shared/protocols/serviceProto";
 import { ResLogin } from "./shared/protocols/user/PtlLogin";
 // import { WebsocketProvider } from "y-websocket";
 // import * as Y from "yjs";
+
+
 /** 
  * 创建一个全局客户端实例
  */
@@ -10,7 +12,6 @@ export const client = new WsClient(serviceProto, {
     // 这里要换成自己的ip地址
     server: 'ws://192.168.17.131:3000',
     logger: console,
-    json: true,
 });
 
 // 设置一个请求发送前的处理流程。

@@ -14,6 +14,8 @@ import { ReqSelectFile, ResSelectFile } from './PtlSelectFile';
 import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
 import { ReqSetSession, ResSetSession } from './PtlSetSession';
 import { ReqUpload, ResUpload } from './PtlUpload';
+import { MsgUpdateDoc } from './SharedDoc/MsgUpdateDoc';
+import { ReqCreateSharedDoc, ResCreateSharedDoc } from './SharedDoc/PtlCreateSharedDoc';
 import { MsgExpire } from './user/MsgExpire';
 import { ReqLogin, ResLogin } from './user/PtlLogin';
 import { ReqLogout, ResLogout } from './user/PtlLogout';
@@ -80,6 +82,10 @@ export interface ServiceType {
             req: ReqUpload,
             res: ResUpload
         },
+        "SharedDoc/CreateSharedDoc": {
+            req: ReqCreateSharedDoc,
+            res: ResCreateSharedDoc
+        },
         "user/Login": {
             req: ReqLogin,
             res: ResLogin
@@ -90,12 +96,13 @@ export interface ServiceType {
         }
     },
     msg: {
+        "SharedDoc/UpdateDoc": MsgUpdateDoc,
         "user/Expire": MsgExpire
     }
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 19,
+    "version": 21,
     "services": [
         {
             "id": 5,
@@ -192,6 +199,16 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 15,
             "name": "Upload",
+            "type": "api"
+        },
+        {
+            "id": 22,
+            "name": "SharedDoc/UpdateDoc",
+            "type": "msg"
+        },
+        {
+            "id": 21,
+            "name": "SharedDoc/CreateSharedDoc",
             "type": "api"
         },
         {
@@ -350,12 +367,10 @@ export const serviceProto: ServiceProto<ServiceType> = {
                             "target": "../collectionType/DbUser/DbUser"
                         },
                         "keys": [
-                            "_id",
-                            "uid",
-                            "create",
-                            "update"
+                            "username",
+                            "password"
                         ],
-                        "type": "Omit"
+                        "type": "Pick"
                     }
                 }
             ]
@@ -992,6 +1007,42 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 }
             ]
+        },
+        "SharedDoc/MsgUpdateDoc/MsgUpdateDoc": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "updatedDoc",
+                    "type": {
+                        "type": "Buffer",
+                        "arrayType": "Uint8Array"
+                    }
+                }
+            ]
+        },
+        "SharedDoc/PtlCreateSharedDoc/ReqCreateSharedDoc": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "docName",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "gc",
+                    "type": {
+                        "type": "Boolean"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "SharedDoc/PtlCreateSharedDoc/ResCreateSharedDoc": {
+            "type": "Interface"
         },
         "user/MsgExpire/MsgExpire": {
             "type": "Interface",
