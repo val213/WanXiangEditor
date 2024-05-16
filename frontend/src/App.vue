@@ -313,16 +313,13 @@ export default {
                 this.content = sessionStorage.getItem(this.nowTabKey) ?? '';
                 this.notepadContent = this.content;
                 // console.log(this.notepadContent);
-            } else if (type == "PDFViewer") {
+            } else if (type == "PDFViewer") {s
                 this.componentChange(type);
                 // 切换pdf的base64
-                //this.changePdfUrl(sessionStorage.getItem(this.nowTabKey) ?? '');
                 //TOOD::后端和本地预览的source格式不一样导致冲突
                 let source = 'data:application/pdf;base64,' + sessionStorage.getItem(this.nowTabKey) ?? ''
                 this.changeFlag = Date.now();
                 this.pdfSource = source;
-
-                //this.pdfSource = source;
             } else if (type == "CodeMirror") {
                 this.componentChange(type);
             } else if (type == "HomePage") {

@@ -51,25 +51,6 @@ export default {
             else {
                 this.fileList.push({ name: file.name, status: 'ready', uid: file.uid });
                 this.file = file; // 在这里获取到文件对象，并保存在data属性中
-                //上传前开始预览pdf
-                // console.log("尝试预览");
-                // const reader = new FileReader();
-                // reader.readAsDataURL(file);
-                // reader.onload = () => {
-                //     let pdfBase64 = reader.result;
-                //     this.$emit('pdfView', file.name, pdfBase64, '1');
-                // }
-                // //获取后端pdf文件的base64流
-                // this.getFileType(file.name);
-                // console.log(this.getFileType(file.name));
-                // //处理路径
-                // let filePath = this.getPdfPath(file.name);
-                // client.logger.info("文件路径", filePath);
-                // //使用文件名作为参数去请求接口
-                // let ret = await client.callApi('SelectFile', {selectedTitle: file.name, filePath: filePath, fileType: pdf});
-                // if(ret.isSucc) {
-                // }
-
             }
             return false; // 阻止文件自动上传
         },

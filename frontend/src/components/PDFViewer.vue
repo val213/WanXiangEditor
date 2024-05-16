@@ -14,21 +14,14 @@ export default {
         VuePdfEmbed
     },
     props: ['pdfSource', 'changeFlag'],
-    // props: {
-    //     pdfSource: {
-    //         type: String,
-    //         require: true
-    //     },
-    //     changeFlag: 0
-    // },
+
     setup(props) {
         const refresh = ref(0);
         watch(() => props.changeFlag, () => {
-            //console.log("fresh");
+
             nextTick(update);
         })
         function update() {
-            //console.log(pdfState.pdfSource)
             pdfState.pdfSource = props.pdfSource
             refresh.value++;
         }
@@ -37,7 +30,6 @@ export default {
             pdfNum: 1,
             pdfPages: 1,
         });
-        //console.log("2222222"+props.pdfSource);
         return {
             refresh,
             pdfState,
